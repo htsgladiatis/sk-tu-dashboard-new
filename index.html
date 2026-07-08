@@ -1334,13 +1334,13 @@ function toggleTheme(){
     if(btn) btn.setAttribute("aria-checked","false");
     try{ localStorage.setItem("tu-ds-theme","light"); }catch(e){}
   }
-  initCharts(weeks[currentWeek]);
+  showPeriod(currentWeek);
 }
 
 /* ===========================================================
    PERIOD SWITCH
    =========================================================== */
-function showPeriod(id){
+function  showPeriod(id){
   currentWeek = id;
   var w = weeks[id];
   document.querySelectorAll(".period-selector .seg").forEach(function(b){
@@ -1354,10 +1354,8 @@ function showPeriod(id){
   renderDetailTable(w);
   renderTopPages(w);
   renderTopQueries(w);
-  renderSeoCharts(w);
-  renderFinal(w);
+  renderSeoCharts(w);  renderFinal(w);
 }
-
 /* ===========================================================
    SCROLLSPY · REVEAL · TO-TOP · INIT
    =========================================================== */
