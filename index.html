@@ -3,12 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>СК-ТУ — Дашборд рекламы</title>
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+<title>СК «Тёплый угол» · Маркетинговый дашборд · TU OS v2</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
 <style>
+/* ====== TU OS v2 TOKENS ====== */
 :root{
   --bg:#06080d; --bg-2:#0a0d15; --panel:#0f131d; --panel-2:#141a27; --panel-3:#1a2230;
   --line:#1c2433; --line-2:#2a3447; --glass:rgba(20,26,39,.6);
@@ -18,10 +19,11 @@
   --up:#26d07c; --down:#ff5a6e; --up-soft:rgba(38,208,124,.14); --down-soft:rgba(255,90,110,.14);
   --grad-acc:linear-gradient(135deg,#f29c52,#d8721f);
   --grad-text:linear-gradient(100deg,#eaf0fa 0%,#E18335 55%,#8b5cff 100%);
+  --grad-balance:radial-gradient(120% 140% at 0% 0%,#2a2014 0%,#0f131d 42%),linear-gradient(135deg,rgba(225,131,53,.16),rgba(139,92,255,.14));
   --glow-acc:0 0 0 1px rgba(225,131,53,.4),0 8px 30px rgba(225,131,53,.22);
   --elev-1:0 1px 0 rgba(255,255,255,.03) inset,0 6px 18px rgba(0,0,0,.5);
   --elev-2:0 1px 0 rgba(255,255,255,.04) inset,0 16px 44px rgba(0,0,0,.6);
-  --r:14px; --r-sm:10px; --maxw:1200px;
+  --r:14px; --r-sm:10px; --r-xs:7px; --maxw:1240px;
   --ease:cubic-bezier(.22,1,.36,1); --ease-out:cubic-bezier(.16,1,.3,1);
 }
 [data-theme="light"]{
@@ -31,6 +33,7 @@
   --acc:#E18335; --acc-ink:#ffffff; --mint:#00a877; --violet:#6d3bff; --blue:#2563eb; --cyan:#0891b2; --amber:#b8730a;
   --up:#0c9d63; --down:#e23048; --up-soft:rgba(12,157,99,.12); --down-soft:rgba(226,48,72,.12);
   --grad-text:linear-gradient(100deg,#0b1220 0%,#E18335 55%,#6d3bff 100%);
+  --grad-balance:radial-gradient(120% 140% at 0% 0%,#ffedd9 0%,#ffffff 46%),linear-gradient(135deg,rgba(225,131,53,.12),rgba(109,59,255,.10));
   --glow-acc:0 0 0 1px rgba(225,131,53,.35),0 10px 30px rgba(225,131,53,.18);
   --elev-1:0 2px 10px rgba(15,23,42,.07); --elev-2:0 16px 40px rgba(15,23,42,.12);
 }
@@ -39,866 +42,1399 @@ html{scroll-behavior:smooth}
 body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--txt);line-height:1.55;overflow-x:hidden;
   transition:background .5s var(--ease),color .5s var(--ease);-webkit-font-smoothing:antialiased}
 body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
-  background-image:radial-gradient(var(--line) .6px,transparent .6px);background-size:26px 26px;opacity:.5;
+  background-image:radial-gradient(var(--line) .6px,transparent .6px);background-size:26px 26px;opacity:.55;
   -webkit-mask:radial-gradient(ellipse 70% 55% at 50% 0%,#000,transparent 80%);mask:radial-gradient(ellipse 70% 55% at 50% 0%,#000,transparent 80%)}
 .num{font-family:'JetBrains Mono',monospace;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
 ::-webkit-scrollbar{width:10px;height:10px}::-webkit-scrollbar-track{background:transparent}
 ::-webkit-scrollbar-thumb{background:var(--line-2);border-radius:6px;border:2px solid var(--bg)}
 ::-webkit-scrollbar-thumb:hover{background:var(--acc)}
+
+/* ====== CHROME ====== */
 .bar-prog{position:fixed;top:0;left:0;height:2px;width:0;z-index:200;background:var(--grad-acc);box-shadow:0 0 10px rgba(225,131,53,.6)}
-.to-top{position:fixed;right:20px;bottom:20px;z-index:200;width:44px;height:44px;border:1px solid var(--line-2);border-radius:12px;
+.to-top{position:fixed;right:22px;bottom:22px;z-index:200;width:46px;height:46px;border:1px solid var(--line-2);border-radius:12px;
   background:var(--panel);color:var(--acc);cursor:pointer;font-size:18px;font-weight:700;box-shadow:var(--elev-1);
   opacity:0;transform:translateY(14px);transition:all .4s var(--ease)}
 .to-top.show{opacity:1;transform:none}.to-top:hover{border-color:var(--acc);box-shadow:var(--glow-acc)}
+
+/* ====== HEADER ====== */
 .hdr{position:sticky;top:0;z-index:100;background:var(--glass);backdrop-filter:blur(16px) saturate(150%);border-bottom:1px solid var(--line)}
 .hdr-in{max-width:var(--maxw);margin:0 auto;padding:14px 24px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
 .brand{display:flex;align-items:center;gap:11px}
-.brand-mark{width:34px;height:34px;border-radius:9px;background:var(--grad-acc);color:var(--acc-ink);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:17px;box-shadow:var(--glow-acc)}
+.brand-mark{width:34px;height:34px;border-radius:9px;background:var(--grad-acc);color:var(--acc-ink);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;box-shadow:var(--glow-acc);font-family:'Space Grotesk',sans-serif;letter-spacing:-.02em}
 .brand b{font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:700;letter-spacing:.04em}
-.brand span{display:block;font-size:10px;color:var(--txt-3);font-family:'JetBrains Mono',monospace;letter-spacing:.1em}
-.hdr-sp{flex:1}
-.period-selector{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none}
-.period-selector::-webkit-scrollbar{display:none}
+.brand span{display:block;font-size:10px;color:var(--txt-3);font-family:'JetBrains Mono',monospace;letter-spacing:.1em;margin-top:1px}
+.hdr-sp{flex:1;min-width:8px}
+.period-selector{display:inline-flex;background:var(--panel-2);padding:4px;border-radius:11px;border:1px solid var(--line);gap:2px}
 .seg{display:inline-flex;align-items:center;gap:7px;white-space:nowrap;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--txt-2);
-  padding:7px 13px;border-radius:9px;border:1px solid transparent;cursor:pointer;text-decoration:none;transition:all .2s var(--ease);background:none}
-.seg:hover{color:var(--txt);background:var(--panel-2)}
-.seg.active{color:var(--acc);background:var(--panel);border-color:var(--line-2)}
-.tgl{width:54px;height:28px;border-radius:16px;border:1px solid var(--line-2);background:var(--panel-2);position:relative;cursor:pointer;flex-shrink:0}
+  padding:7px 13px;border-radius:8px;border:1px solid transparent;cursor:pointer;text-decoration:none;transition:all .25s var(--ease);background:none}
+.seg:hover{color:var(--txt);background:var(--panel)}
+.seg.active{color:var(--acc);background:var(--panel);border-color:var(--acc);box-shadow:var(--glow-acc)}
+.seg .ix{color:var(--txt-3);font-size:11px}
+.seg.active .ix{color:var(--acc);opacity:.7}
+.tgl{width:54px;height:28px;border-radius:16px;border:1px solid var(--line-2);background:var(--panel-2);position:relative;cursor:pointer;flex-shrink:0;padding:0}
 .tgl-k{position:absolute;top:2px;left:2px;width:22px;height:22px;border-radius:50%;background:var(--panel);box-shadow:var(--elev-1);display:flex;align-items:center;justify-content:center;font-size:12px;transition:transform .4s var(--ease)}
 [data-theme="light"] .tgl-k{transform:translateX(26px)}
-.hero{position:relative;z-index:1;max-width:var(--maxw);margin:0 auto;padding:40px 24px 20px}
-.hero h1{font-family:'Space Grotesk',sans-serif;font-size:clamp(30px,4.6vw,48px);font-weight:700;line-height:1.06;letter-spacing:-.02em;
-  background:var(--grad-text);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:8px}
-.hero p{font-size:14px;color:var(--txt-2)}
-.wrap{position:relative;z-index:1;max-width:var(--maxw);margin:0 auto;padding:20px 24px 60px;display:flex;flex-direction:column;gap:22px}
-.sec{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;box-shadow:var(--elev-1)}
+
+/* ====== HERO ====== */
+.hero{position:relative;z-index:1;max-width:var(--maxw);margin:0 auto;padding:48px 24px 22px;display:grid;grid-template-columns:minmax(0,1fr) 380px;gap:36px;align-items:center}
+.hero-tag{display:inline-flex;align-items:center;gap:8px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--acc);padding:6px 13px;border:1px solid var(--line-2);border-radius:20px;background:var(--panel);margin-bottom:18px}
+.hero h1{font-family:'Space Grotesk',sans-serif;font-size:clamp(28px,4.4vw,46px);font-weight:700;line-height:1.06;letter-spacing:-.02em;
+  background:var(--grad-text);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:14px}
+.hero p{font-size:14px;color:var(--txt-2);max-width:520px;margin-bottom:16px;line-height:1.6}
+.hero p b{color:var(--txt);font-weight:600}
+.hero-note{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--txt-3);line-height:1.85;display:flex;flex-wrap:wrap;gap:8px}
+.hero-note .pill{display:inline-flex;align-items:center;gap:6px;padding:3px 9px;border:1px solid var(--line);border-radius:7px;background:var(--panel-2)}
+.hero-note b{color:var(--acc);font-weight:600}
+.bal{position:relative;border:1px solid var(--line-2);border-radius:18px;padding:22px;background:var(--grad-balance);overflow:hidden;box-shadow:var(--elev-2);min-height:208px}
+.bal::after{content:'';position:absolute;inset:0;background:radial-gradient(80% 60% at 100% 0%,rgba(139,92,255,.14),transparent 60%);pointer-events:none}
+.bal-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;position:relative}
+.bal-label{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--txt-2);letter-spacing:.08em;text-transform:uppercase}
+.bal-chip{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--up);background:var(--up-soft);border:1px solid color-mix(in srgb,var(--up) 35%,transparent);padding:3px 9px;border-radius:8px}
+.bal-chip.down{color:var(--down);background:var(--down-soft);border-color:color-mix(in srgb,var(--down) 35%,transparent)}
+.bal-chip.acc{color:var(--acc);background:color-mix(in srgb,var(--acc) 14%,transparent);border-color:color-mix(in srgb,var(--acc) 35%,transparent)}
+.bal-amt{font-family:'JetBrains Mono',monospace;font-size:38px;font-weight:700;letter-spacing:-.03em;margin:2px 0 4px;line-height:1.05;position:relative}
+.bal-amt .cur{color:var(--txt-3);font-size:18px;font-weight:500;margin-left:6px}
+.bal-sub{font-size:12.5px;color:var(--txt-2);margin-bottom:14px;position:relative;line-height:1.55}
+.bal-sub b{color:var(--txt);font-weight:600}
+.bal-sub .num{color:var(--txt);font-weight:600}
+.spark{width:100%;height:54px;display:block;position:relative}
+.bal-foot{display:flex;justify-content:space-between;margin-top:10px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--txt-3);position:relative}
+.bal-foot span b{color:var(--txt-2);font-weight:600}
+
+/* ====== NAVBAR ====== */
+.navbar{position:sticky;top:62px;z-index:90;background:var(--glass);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+.navbar-in{max-width:var(--maxw);margin:0 auto;padding:8px 24px;display:flex;gap:4px;overflow-x:auto;scrollbar-width:none}
+.navbar-in::-webkit-scrollbar{display:none}
+.nav-seg{display:inline-flex;align-items:center;gap:7px;white-space:nowrap;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--txt-2);
+  padding:8px 13px;border-radius:9px;text-decoration:none;transition:all .2s var(--ease);position:relative}
+.nav-seg:hover{color:var(--txt)}
+.nav-seg.active{color:var(--acc)}
+.nav-seg.active::after{content:'';position:absolute;left:13px;right:13px;bottom:3px;height:2px;background:var(--acc);border-radius:2px}
+.nav-seg .ix{color:var(--txt-3);font-size:11px}
+.nav-seg.active .ix{color:var(--acc);opacity:.7}
+
+/* ====== SECTION SHELL ====== */
+.wrap{position:relative;z-index:1;max-width:var(--maxw);margin:0 auto;padding:24px 24px 70px;display:flex;flex-direction:column;gap:22px}
+.sec{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;box-shadow:var(--elev-1);
+  opacity:0;transform:translateY(20px);transition:opacity .6s var(--ease),transform .6s var(--ease)}
+.sec.in{opacity:1;transform:none}
+@media(prefers-reduced-motion:reduce){.sec{opacity:1;transform:none;transition:none}}
 .sec-h{display:flex;align-items:center;gap:13px;padding:18px 22px;border-bottom:1px solid var(--line);background:var(--panel-2)}
-.sec-ix{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;
-  border:1px solid var(--line-2);background:var(--panel-3)}
+.sec-ix{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;border:1px solid var(--line-2);background:var(--panel-3)}
 .sec-h .ix-n{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--txt-3);letter-spacing:.1em}
 .sec-h .ix-t{font-family:'Space Grotesk',sans-serif;font-size:18px;font-weight:600;letter-spacing:-.01em}
+.sec-h .ix-extra{margin-left:auto;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--txt-3);letter-spacing:.05em}
 .sec-b{padding:22px}
-.eyebrow{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--txt-3);margin:16px 0 12px;display:flex;align-items:center;gap:10px}
+.lead{font-size:14px;color:var(--txt-2);margin-bottom:18px;max-width:760px;line-height:1.6}
+.lead b{color:var(--txt)}
+.eyebrow{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--txt-3);margin:22px 0 12px;display:flex;align-items:center;gap:10px}
 .eyebrow::after{content:'';flex:1;height:1px;background:var(--line)}
-.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:13px}
-@media(max-width:768px){.kpi-grid{grid-template-columns:repeat(2,1fr)}}
-.kpi{position:relative;border:1px solid var(--line);border-radius:13px;padding:17px;background:var(--panel-2);overflow:hidden;transition:transform .3s var(--ease),border-color .3s}
-.kpi:hover{transform:translateY(-4px);border-color:var(--acc)}
-.kpi .lab{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--txt-3);letter-spacing:.05em;text-transform:uppercase;margin-bottom:9px}
-.kpi .val{font-family:'JetBrains Mono',monospace;font-size:clamp(22px,3vw,28px);font-weight:700;letter-spacing:-.02em}
-.kpi .dl{display:inline-flex;align-items:center;gap:4px;font-family:'JetBrains Mono',monospace;font-size:11px;margin-top:8px;padding:2px 8px;border-radius:7px}
-.kpi .dl.up{color:var(--up);background:var(--up-soft)}.kpi .dl.down{color:var(--down);background:var(--down-soft)}
-.kpi .dl.acc{color:var(--acc);background:color-mix(in srgb,var(--acc) 14%,transparent)}
-.charts-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(450px,1fr));gap:18px}
-@media(max-width:768px){.charts-grid{grid-template-columns:1fr}}
-.chart-card{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:20px;box-shadow:var(--elev-1)}
-.chart-card h3{font-family:'Space Grotesk',sans-serif;font-size:16px;font-weight:600;margin-bottom:16px;color:var(--txt)}
-.chart-card .cht{position:relative;height:260px}
-.chart-card .cht canvas{width:100%!important;height:100%!important}
+.eyebrow:first-child{margin-top:0}
+.mono{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--mint)}
+.assump{display:inline-flex;align-items:center;gap:5px;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--amber);background:color-mix(in srgb,var(--amber) 14%,transparent);border:1px solid color-mix(in srgb,var(--amber) 28%,transparent);border-radius:6px;padding:1px 7px;vertical-align:1px;white-space:nowrap}
+
+/* ====== TABLES ====== */
 .tbl-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:var(--r-sm);margin:6px 0}
-.tbl{width:100%;border-collapse:collapse;font-size:12px}
+.tbl{width:100%;border-collapse:collapse;font-size:13px}
 .tbl th{text-align:left;font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--txt-3);
-  background:var(--panel-2);padding:10px 12px;border-bottom:1px solid var(--line);white-space:nowrap}
-.tbl td{padding:10px 12px;color:var(--txt-2);border-bottom:1px solid var(--line);vertical-align:top;white-space:nowrap}
+  background:var(--panel-2);padding:11px 14px;border-bottom:1px solid var(--line);white-space:nowrap}
+.tbl td{padding:11px 14px;color:var(--txt-2);border-bottom:1px solid var(--line);vertical-align:middle}
 .tbl tr:last-child td{border-bottom:none}
 .tbl tbody tr{transition:background .15s}.tbl tbody tr:hover{background:var(--panel-2)}
 .tbl td:first-child{color:var(--txt);font-weight:500}
 .tbl .r{text-align:right}
-.row-account td{font-weight:600;background:color-mix(in srgb,var(--acc) 10%,transparent)}
-.row-channel td{font-weight:600;color:var(--txt)!important}
-.row-total td{font-weight:700;font-size:13px;border-top:2px solid var(--acc);color:var(--txt)!important}
+.row-total td{font-weight:700;font-size:13px;border-top:2px solid var(--acc);color:var(--txt)!important;background:color-mix(in srgb,var(--acc) 6%,transparent)}
+.row-channel td{font-weight:600;color:var(--txt)!important;background:var(--panel-2)}
+.row-account td{font-weight:600;background:color-mix(in srgb,var(--violet) 7%,transparent)}
+.row-campaign td{color:var(--txt-3)}
+.tbl .meta{font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--txt-3);font-weight:500;margin-left:8px;padding:1px 7px;border:1px solid var(--line);border-radius:5px;background:var(--panel-2);letter-spacing:.02em}
+
+/* ====== KPI ====== */
+.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:13px}
+@media(max-width:900px){.kpi-grid{grid-template-columns:repeat(2,1fr)}}
+.kpi{position:relative;border:1px solid var(--line);border-radius:13px;padding:17px;background:var(--panel-2);overflow:hidden;transition:transform .3s var(--ease),border-color .3s;display:flex;flex-direction:column;gap:6px;min-height:128px}
+.kpi:hover{transform:translateY(-3px);border-color:var(--acc)}
+.kpi .lab{font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--txt-3);letter-spacing:.06em;text-transform:uppercase}
+.kpi .val{font-family:'JetBrains Mono',monospace;font-size:26px;font-weight:700;letter-spacing:-.02em;line-height:1.05;color:var(--txt)}
+.kpi .val.acc{color:var(--acc)}
+.kpi .val.up{color:var(--up)}
+.kpi .val.down{color:var(--down)}
+.kpi .dl{display:inline-flex;align-items:center;gap:5px;font-family:'JetBrains Mono',monospace;font-size:11px;padding:3px 9px;border-radius:7px;width:fit-content;margin-top:auto}
+.kpi .dl.up{color:var(--up);background:var(--up-soft)}
+.kpi .dl.down{color:var(--down);background:var(--down-soft)}
+.kpi .dl.flat{color:var(--txt-3);background:var(--panel)}
+.kpi .dl.acc{color:var(--acc);background:color-mix(in srgb,var(--acc) 14%,transparent)}
+
+/* ====== STATUS PILLS ====== */
+.st{display:inline-flex;align-items:center;gap:6px;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:500;padding:4px 10px;border-radius:7px;border:1px solid;white-space:nowrap;line-height:1}
+.st::before{content:'';width:6px;height:6px;border-radius:50%;background:currentColor;flex-shrink:0}
+.st.ok{color:var(--up);background:var(--up-soft);border-color:color-mix(in srgb,var(--up) 30%,transparent)}
+.st.pend{color:var(--amber);background:color-mix(in srgb,var(--amber) 14%,transparent);border-color:color-mix(in srgb,var(--amber) 30%,transparent)}
+.st.fail{color:var(--down);background:var(--down-soft);border-color:color-mix(in srgb,var(--down) 30%,transparent)}
+.st.auth{color:var(--blue);background:color-mix(in srgb,var(--blue) 14%,transparent);border-color:color-mix(in srgb,var(--blue) 30%,transparent)}
+.st.hold{color:var(--violet);background:color-mix(in srgb,var(--violet) 14%,transparent);border-color:color-mix(in srgb,var(--violet) 30%,transparent)}
+.st.acc{color:var(--acc);background:color-mix(in srgb,var(--acc) 14%,transparent);border-color:color-mix(in srgb,var(--acc) 30%,transparent)}
+
+/* ====== CHARTS GRID ====== */
+.charts-6{display:grid;grid-template-columns:repeat(auto-fit,minmax(460px,1fr));gap:16px}
+.charts-3{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:14px}
+@media(max-width:760px){.charts-6,.charts-3{grid-template-columns:1fr}}
+.chart-card{background:var(--panel);border:1px solid var(--line);border-radius:var(--r-sm);padding:18px;box-shadow:var(--elev-1);position:relative}
+.chart-card h3{font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:600;margin-bottom:4px;color:var(--txt);display:flex;justify-content:space-between;align-items:center;gap:8px}
+.chart-card .sub{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--txt-3);letter-spacing:.04em;margin-bottom:14px;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.chart-card .sub .assump{margin-left:6px}
+.chart-card .cht{position:relative;height:240px}
+.chart-card .cht canvas{width:100%!important;height:100%!important}
+.chart-card .badge{position:absolute;top:14px;right:14px;font-family:'JetBrains Mono',monospace;font-size:10.5px;padding:3px 9px;border-radius:7px;letter-spacing:.04em}
+.chart-card .scroll{height:240px;overflow:auto}
+
+/* ====== COMPARISON (3-week) ====== */
+.comp-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px}
+@media(max-width:760px){.comp-grid{grid-template-columns:1fr}}
+.comp-card{background:var(--panel-2);border:1px solid var(--line);border-radius:13px;padding:18px;display:flex;flex-direction:column;gap:10px;transition:transform .3s var(--ease),border-color .3s}
+.comp-card:hover{transform:translateY(-2px);border-color:var(--line-2)}
+.comp-card .hd{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.comp-card .hd b{font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:600}
+.comp-card .hd span{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--txt-3);letter-spacing:.04em;text-align:right}
+.comp-bars{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:6px}
+.comp-bar{display:flex;flex-direction:column;gap:5px}
+.comp-bar .lbl{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--txt-3);letter-spacing:.06em;text-transform:uppercase}
+.comp-bar .big{font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:700;color:var(--txt);letter-spacing:-.01em;line-height:1.05}
+.comp-bar .big.acc{color:var(--acc)}
+.comp-bar .delta{font-family:'JetBrains Mono',monospace;font-size:10.5px}
+.comp-bar .delta.up{color:var(--up)}
+.comp-bar .delta.down{color:var(--down)}
+.comp-bar .delta.flat{color:var(--txt-3)}
+
+/* ====== FINAL CALLOUT ====== */
+.final{border:1px solid color-mix(in srgb,var(--acc) 45%,transparent);border-radius:18px;padding:24px 26px;background:var(--grad-balance);box-shadow:var(--elev-2)}
+.final .ft{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--acc);margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.final p{font-size:14.5px;color:var(--txt-2);max-width:900px;line-height:1.65}
+.final p b{color:var(--txt)}
+.chain{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;align-items:center}
+.chain .cstep{font-family:'JetBrains Mono',monospace;font-size:11.5px;color:var(--acc);background:color-mix(in srgb,var(--acc) 12%,transparent);border:1px solid color-mix(in srgb,var(--acc) 30%,transparent);border-radius:8px;padding:5px 11px}
+.chain .carr{color:var(--txt-3);font-size:12px}
+
+/* ====== FOOTER ====== */
 .footer{position:relative;z-index:1;border-top:1px solid var(--line);background:var(--bg-2);margin-top:30px}
-.footer-in{max-width:var(--maxw);margin:0 auto;padding:30px 24px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--txt-3);line-height:1.9}
+.footer-in{max-width:var(--maxw);margin:0 auto;padding:30px 24px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--txt-3);line-height:1.9;display:flex;flex-wrap:wrap;gap:18px;justify-content:space-between;align-items:flex-start}
 .footer-in b{color:var(--txt-2);font-weight:600}
-@media(max-width:860px){.hero{padding-top:30px}}
-@media(max-width:560px){.hero h1{font-size:29px}.wrap{padding:16px 12px 40px}}
-@media print{.to-top,.tgl,.bar-prog{display:none}}
-@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
-.kpi,.chart-card,.sec{animation:fadeIn .4s ease-out both}
-.kpi:nth-child(1){animation-delay:.05s}.kpi:nth-child(2){animation-delay:.1s}.kpi:nth-child(3){animation-delay:.15s}.kpi:nth-child(4){animation-delay:.2s}
-.kpi:nth-child(5){animation-delay:.25s}.kpi:nth-child(6){animation-delay:.3s}.kpi:nth-child(7){animation-delay:.35s}.kpi:nth-child(8){animation-delay:.4s}
+.footer-in .r{text-align:right;font-size:10.5px;color:var(--txt-3);line-height:1.7}
+.footer-in .r b{color:var(--txt-2);font-weight:600;display:block;font-size:11.5px}
+
+@media(max-width:860px){.hero{grid-template-columns:1fr;padding-top:34px}.bal{order:-1}}
+@media(max-width:560px){.hero h1{font-size:29px}.wrap{padding:18px 14px 50px}.hdr-in{padding:12px 14px}}
+@media print{.to-top,.tgl,.bar-prog,.period-selector,.navbar{display:none!important}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
 </head>
 <body>
 <div class="bar-prog" id="barProg"></div>
 
+<!-- HEADER -->
 <header class="hdr">
   <div class="hdr-in">
     <div class="brand">
-      <div class="brand-mark">🏠</div>
+      <div class="brand-mark">ТУ</div>
       <div>
-        <b>СК-ТУ</b>
-        <span>ДАШБОРД РЕКЛАМЫ</span>
+        <b>Тёплый Угол</b>
+        <span>МАРКЕТИНГ-ДАШБОРД</span>
       </div>
     </div>
     <div class="hdr-sp"></div>
-    <div class="period-selector">
-      <button class="seg" onclick="showPeriod('w1')">15.06–21.06</button>
-      <button class="seg active" onclick="showPeriod('w2')">22.06–28.06</button>
-      <button class="seg" onclick="showPeriod('w3')">29.06–05.07</button>
+    <div class="period-selector" role="tablist" aria-label="Период">
+      <button class="seg" data-w="w1" onclick="showPeriod('w1')"><span class="ix">w1</span>15.06–21.06</button>
+      <button class="seg active" data-w="w2" onclick="showPeriod('w2')"><span class="ix">w2</span>22.06–28.06</button>
+      <button class="seg" data-w="w3" onclick="showPeriod('w3')"><span class="ix">w3</span>29.06–05.07</button>
     </div>
-    <button class="tgl" id="tgl" onclick="toggleTheme()" aria-label="Тема"><span class="tgl-k" id="tglK">☀️</span></button>
+    <button class="tgl" id="tgl" role="switch" aria-checked="false" aria-label="Тема"><span class="tgl-k" id="tglK">☀️</span></button>
   </div>
 </header>
 
+<!-- HERO -->
 <section class="hero">
-  <h1>Маркетинговый дашборд</h1>
-  <p id="subtitle">Яндекс.Директ · 2 кабинета · sk-tu.ru + msk.sk-tu.ru · 22.06–28.06.2026</p>
+  <div>
+    <span class="hero-tag">◈ TU OS v2 · маркетинговый терминал</span>
+    <h1>Рекламный дашборд · Яндекс.Директ + SEO</h1>
+    <p>Еженедельная аналитика 2 кабинетов <b>sk-tu.ru</b> (СПб) и <b>msk.sk-tu.ru</b> (Москва): показы, клики, расход, лиды, целевые лиды, конверсия и SEO-эффективность для обоих доменов.</p>
+    <div class="hero-note">
+      <span class="pill">▸ Источник: Яндекс.Директ API · Вебмастер · Метрика · amoCRM</span>
+      <span class="pill">▸ Светлая тема — по умолчанию</span>
+      <span class="pill">▸ Обновление: <b>ручное</b> · еженедельно</span>
+    </div>
+  </div>
+  <div class="bal">
+    <div class="bal-top">
+      <span class="bal-label">Главный KPI · целевые лиды</span>
+      <span class="bal-chip" id="balChip">▲ горячий интент</span>
+    </div>
+    <div class="bal-amt"><span id="balAmt">21</span><span class="cur">целевых лидов</span></div>
+    <div class="bal-sub" id="balSub">—</div>
+    <svg class="spark" id="spark" viewBox="0 0 360 54" preserveAspectRatio="none" fill="none"></svg>
+    <div class="bal-foot" id="balFoot"><span>—</span><span>—</span></div>
+  </div>
 </section>
+
+<!-- NAVBAR (scrollspy) -->
+<nav class="navbar"><div class="navbar-in" id="topNav">
+  <a class="nav-seg active" href="#sec-kpi"><span class="ix">01</span> KPI</a>
+  <a class="nav-seg" href="#sec-charts"><span class="ix">02</span> Графики</a>
+  <a class="nav-seg" href="#sec-compare"><span class="ix">03</span> 3 недели</a>
+  <a class="nav-seg" href="#sec-drilldown"><span class="ix">04</span> Детали</a>
+  <a class="nav-seg" href="#sec-seo-spb"><span class="ix">05</span> SEO · СПБ</a>
+  <a class="nav-seg" href="#sec-seo-msk"><span class="ix">06</span> SEO · МСК</a>
+  <a class="nav-seg" href="#sec-final"><span class="ix">07</span> Выводы</a>
+</div></nav>
 
 <main class="wrap">
 
-<div class="kpi-grid" id="kpiGrid"></div>
-
-<div class="charts-grid">
-  <div class="chart-card"><h3>💰 Расход и лиды по кабинетам</h3><div class="cht"><canvas id="spendLeadsChart"></canvas></div></div>
-  <div class="chart-card"><h3>📈 Показы и клики по кабинетам</h3><div class="cht"><canvas id="impressionsClicksChart"></canvas></div></div>
-  <div class="chart-card"><h3>🎯 Эффективность кампаний</h3><div class="cht"><canvas id="efficiencyChart"></canvas></div></div>
-  <div class="chart-card"><h3>💵 Стоимость лида (CPA / CPL)</h3><div class="cht"><canvas id="costChart"></canvas></div></div>
-  <div class="chart-card"><h3>🏢 Расход по кабинетам</h3><div class="cht"><canvas id="accountSpendChart"></canvas></div></div>
-  <div class="chart-card"><h3>👥 Лиды по каналам</h3><div class="cht"><canvas id="channelLeadsChart"></canvas></div></div>
-</div>
-
-<section class="sec">
-  <div class="sec-h"><div class="sec-ix">📋</div><div><div class="ix-n">01 · DRILLDOWN</div><div class="ix-t" id="detailTableTitle">Детализация за период</div></div></div>
+<!-- 01 KPI -->
+<section class="sec" id="sec-kpi">
+  <div class="sec-h">
+    <div class="sec-ix">📊</div>
+    <div>
+      <div class="ix-n">01 · OVERVIEW</div>
+      <div class="ix-t">Ключевые метрики периода</div>
+    </div>
+    <div class="ix-extra" id="kpiPeriod">22.06.2026 — 28.06.2026</div>
+  </div>
   <div class="sec-b">
+    <p class="lead">8 метрик с дельтами относительно предыдущей недели. <b>Зелёный</b> — рост показателя (для CPC/CPL/CPA рост считается ухудшением и отмечается красным). Для w1 сравнения нет (baseline).</p>
+    <div class="kpi-grid" id="kpiGrid"></div>
+  </div>
+</section>
+
+<!-- 02 CHARTS -->
+<section class="sec" id="sec-charts">
+  <div class="sec-h">
+    <div class="sec-ix">📈</div>
+    <div>
+      <div class="ix-n">02 · CHARTS</div>
+      <div class="ix-t">Графики эффективности</div>
+    </div>
+    <div class="ix-extra">Chart.js 4.4.7 · responsive</div>
+  </div>
+  <div class="sec-b">
+    <p class="lead">Шесть графиков по двум кабинетам Директа. Используется палитра TU OS v2: <b>#E18335</b> амбер, <b>#00a877</b> рост, <b>#6d3bff</b> цели. Для недели <b>w2 и w3</b> аккаунтные показы отсутствуют в источнике — график «Показы и клики» показывает данные УРОВНЯ НЕДЕЛИ.</p>
+    <div class="charts-6">
+      <div class="chart-card">
+        <h3>Расход и лиды по кабинетам</h3>
+        <div class="sub"><span id="spendLeadsTotals">—</span></div>
+        <div class="cht"><canvas id="spendLeadsChart"></canvas></div>
+      </div>
+      <div class="chart-card">
+        <h3>Показы и клики по кабинетам</h3>
+        <div class="sub"><span id="impClicksTotals">—</span><span class="assump">w2/w3: оценка по CTR w1</span></div>
+        <div class="cht"><canvas id="impressionsClicksChart"></canvas></div>
+      </div>
+      <div class="chart-card">
+        <h3>Эффективность ТОП-8 кампаний</h3>
+        <div class="sub">CTR % vs Конверсия в лид % (по расходу)</div>
+        <div class="cht"><canvas id="efficiencyChart"></canvas></div>
+      </div>
+      <div class="chart-card">
+        <h3>Стоимость лида (CPA / CPL)</h3>
+        <div class="sub">Цена за лид · Цена за целевой лид</div>
+        <div class="cht"><canvas id="costChart"></canvas></div>
+      </div>
+      <div class="chart-card">
+        <h3>Расход по кабинетам</h3>
+        <div class="sub">Структура бюджета</div>
+        <div class="cht"><canvas id="accountSpendChart"></canvas></div>
+      </div>
+      <div class="chart-card">
+        <h3>Лиды по каналам</h3>
+        <div class="sub">Все источники за период</div>
+        <div class="cht"><canvas id="channelLeadsChart"></canvas></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 03 COMPARE -->
+<section class="sec" id="sec-compare">
+  <div class="sec-h">
+    <div class="sec-ix">∿</div>
+    <div>
+      <div class="ix-n">03 · COMPARISON</div>
+      <div class="ix-t">Сравнение 3 недель</div>
+    </div>
+    <div class="ix-extra">22.06 → 29.06</div>
+  </div>
+  <div class="sec-b">
+    <p class="lead">Динамика по 6 ключевым метрикам за 3 недели. На каждой карточке — 3 числа и дельта относительно предыдущей. Серый — без изменений или &lt;0.5%.</p>
+    <div class="comp-grid" id="compareGrid"></div>
+  </div>
+</section>
+
+<!-- 04 DRILLDOWN -->
+<section class="sec" id="sec-drilldown">
+  <div class="sec-h">
+    <div class="sec-ix">📋</div>
+    <div>
+      <div class="ix-n">04 · DRILLDOWN</div>
+      <div class="ix-t" id="drillTitle">Детализация по кабинетам и кампаниям</div>
+    </div>
+    <div class="ix-extra">2 уровня · статусы кампаний</div>
+  </div>
+  <div class="sec-b">
+    <p class="lead">Полная таблица: канал → кабинет → кампания. У кампаний статус: <span class="st ok">★ эффективная</span> если есть целевые лиды, <span class="st pend">● в работе</span> если есть лиды без целевых, <span class="st fail">✕ ревизия</span> если 0 лидов при расходе ≥ 15 000 ₽, <span class="st hold">◆ низкая отдача</span> если 0 лидов при расходе 5–15 тыс ₽.</p>
     <div class="tbl-wrap"><table class="tbl" id="detailTable"></table></div>
   </div>
 </section>
 
-<section class="sec">
-  <div class="sec-h"><div class="sec-ix">🔍</div><div><div class="ix-n">02 · SEO</div><div class="ix-t">SEO Аналитика — <span id="seoTitle"></span></div></div></div>
-  <div class="sec-b">
-
-    <div class="eyebrow">📍 СПБ — sk-tu.ru</div>
-    <div class="charts-grid" style="grid-template-columns:repeat(auto-fit,minmax(350px,1fr))">
-      <div class="chart-card"><h3>📊 SEO Performance</h3><div class="cht"><canvas id="seoPerformanceChartSpb"></canvas></div></div>
-      <div class="chart-card">
-        <h3>📄 Топ посадочных страниц</h3>
-        <div style="max-height:300px;overflow-y:auto">
-          <table class="tbl" style="font-size:11px"><thead><tr><th>#</th><th>Страница</th><th class="r">Клики</th><th class="r">Показы</th></tr></thead><tbody id="topPagesBodySpb"></tbody></table>
-        </div>
-      </div>
-      <div class="chart-card">
-        <h3>🔎 Топ поисковых запросов</h3>
-        <div style="max-height:300px;overflow-y:auto">
-          <table class="tbl" style="font-size:11px"><thead><tr><th>#</th><th>Запрос</th><th class="r">Визиты</th></tr></thead><tbody id="topQueriesBodySpb"></tbody></table>
-        </div>
-      </div>
+<!-- 05 SEO SPB -->
+<section class="sec" id="sec-seo-spb">
+  <div class="sec-h">
+    <div class="sec-ix">🔍</div>
+    <div>
+      <div class="ix-n">05 · SEO</div>
+      <div class="ix-t">sk-tu.ru · Санкт-Петербург <span class="assump">Вебмастер + Метрика</span></div>
     </div>
-
-    <div class="eyebrow">📍 МСК — msk.sk-tu.ru</div>
-    <div class="charts-grid" style="grid-template-columns:repeat(auto-fit,minmax(350px,1fr))">
-      <div class="chart-card"><h3>📊 SEO Performance</h3><div class="cht"><canvas id="seoPerformanceChartMsk"></canvas></div></div>
-      <div class="chart-card">
-        <h3>📄 Топ посадочных страниц</h3>
-        <div style="max-height:300px;overflow-y:auto">
-          <table class="tbl" style="font-size:11px"><thead><tr><th>#</th><th>Страница</th><th class="r">Клики</th><th class="r">Показы</th></tr></thead><tbody id="topPagesBodyMsk"></tbody></table>
-        </div>
-      </div>
-      <div class="chart-card">
-        <h3>🔎 Топ поисковых запросов</h3>
-        <div style="max-height:300px;overflow-y:auto">
-          <table class="tbl" style="font-size:11px"><thead><tr><th>#</th><th>Запрос</th><th class="r">Визиты</th></tr></thead><tbody id="topQueriesBodyMsk"></tbody></table>
-        </div>
-      </div>
-    </div>
-
+    <div class="ix-extra" id="seoSpbPeriod">—</div>
   </div>
+  <div class="sec-b">
+    <p class="lead">Органический трафик СПБ: визиты, пользователи, глубина и время на сайте по Яндекс.Метрике. Топ-10 страниц и запросов по Яндекс.Вебмастеру. Метрики <b>не суммируются с МСК</b> — каждая компания показана отдельно.</p>
+    <div class="charts-3">
+      <div class="chart-card">
+        <h3>SEO Performance СПБ</h3>
+        <div class="sub">Визиты · Пользователи · Глубина · Время</div>
+        <div class="badge" id="spbMetricBadge">—</div>
+        <div class="cht"><canvas id="seoPerformanceChartSpb"></canvas></div>
+      </div>
+      <div class="chart-card">
+        <h3>Топ посадочных страниц СПБ</h3>
+        <div class="sub">Клики · Показы по Вебмастеру</div>
+        <div class="cht scroll">
+          <table class="tbl" style="font-size:11.5px">
+            <thead><tr><th>#</th><th>URL</th><th class="r">Клики</th><th class="r">Показы</th></tr></thead>
+            <tbody id="topPagesBodySpb"></tbody>
+          </table>
+        </div>
+      </div>
+      <div class="chart-card">
+        <h3>Топ поисковых запросов СПБ</h3>
+        <div class="sub">Визиты по Яндекс.Метрике</div>
+        <div class="cht scroll">
+          <table class="tbl" style="font-size:11.5px">
+            <thead><tr><th>#</th><th>Запрос</th><th class="r">Визиты</th></tr></thead>
+            <tbody id="topQueriesBodySpb"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 06 SEO MSK -->
+<section class="sec" id="sec-seo-msk">
+  <div class="sec-h">
+    <div class="sec-ix">🔍</div>
+    <div>
+      <div class="ix-n">06 · SEO</div>
+      <div class="ix-t">msk.sk-tu.ru · Москва <span class="assump">Вебмастер + Метрика</span></div>
+    </div>
+    <div class="ix-extra" id="seoMskPeriod">—</div>
+  </div>
+  <div class="sec-b">
+    <p class="lead">Органический трафик МСК: визиты, пользователи, глубина и время по Яндекс.Метрике. Топ-10 страниц и запросов по Яндекс.Вебмастеру.</p>
+    <div class="charts-3">
+      <div class="chart-card">
+        <h3>SEO Performance МСК</h3>
+        <div class="sub">Визиты · Пользователи · Глубина · Время</div>
+        <div class="badge" id="mskMetricBadge">—</div>
+        <div class="cht"><canvas id="seoPerformanceChartMsk"></canvas></div>
+      </div>
+      <div class="chart-card">
+        <h3>Топ посадочных страниц МСК</h3>
+        <div class="sub">Клики · Показы по Вебмастеру</div>
+        <div class="cht scroll">
+          <table class="tbl" style="font-size:11.5px">
+            <thead><tr><th>#</th><th>URL</th><th class="r">Клики</th><th class="r">Показы</th></tr></thead>
+            <tbody id="topPagesBodyMsk"></tbody>
+          </table>
+        </div>
+      </div>
+      <div class="chart-card">
+        <h3>Топ поисковых запросов МСК</h3>
+        <div class="sub">Визиты по Яндекс.Метрике</div>
+        <div class="cht scroll">
+          <table class="tbl" style="font-size:11.5px">
+            <thead><tr><th>#</th><th>Запрос</th><th class="r">Визиты</th></tr></thead>
+            <tbody id="topQueriesBodyMsk"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 07 FINAL -->
+<section class="sec" id="sec-final">
+  <div class="sec-h">
+    <div class="sec-ix">🏁</div>
+    <div>
+      <div class="ix-n">07 · OUTCOMES</div>
+      <div class="ix-t" id="finalTitle">Главные выводы по периоду</div>
+    </div>
+    <div class="ix-extra">insights · next steps</div>
+  </div>
+  <div class="sec-b" id="finalBody"><!-- populated by renderFinal --></div>
 </section>
 
 </main>
 
-<footer class="footer"><div class="footer-in"><b>СК-ТУ</b> · Маркетинговый дашборд · sk-tu.ru · TU OS v2 · <span id="footerPeriod">22.06–28.06.2026</span></div></footer>
+<footer class="footer">
+  <div class="footer-in">
+    <div>
+      <b>СК «Тёплый угол»</b> · Маркетинговый дашборд · sk-tu.ru + msk.sk-tu.ru<br>
+      TU OS v2 · дизайн-код артефактов · акцент <span class="num">#E18335</span> · светлая тема по умолчанию<br>
+      Источники: Яндекс.Директ API · Яндекс.Вебмастер · Яндекс.Метрика · amoCRM
+    </div>
+    <div class="r">
+      <b id="footerVer">TU OS v2.1 · build 2026-07-08</b>
+      Методология: данные за календарную неделю (пн–вс)<br>
+      Допущения помечаются <span class="assump">⚠ допущение</span>
+    </div>
+  </div>
+</footer>
+
 <button class="to-top" id="toTop" aria-label="Наверх">↑</button>
 
 <script>
-// ===== DATA =====
+"use strict";
+
+/* ===========================================================
+   DATA — все 3 недели
+   Источники:
+     w1: sk-tu-dashboard-deploy (15.06–21.06 из исходных парсеров)
+     w2: sk-tu-dashboard-deploy (22.06–28.06 с верхнеуровневыми имп.)
+     w3: sk-tu-dashboard-deploy w3 финальный (29.06–05.07)
+   ВАЖНО по показам:
+     • impressions верхнего уровня ≠ сумма account.imp у w2 и w3
+     • w1: account.imp суммируется в impressions
+     • w2: account имп. в источнике отсутствуют (imp=0), показы верхнего
+       уровня = общее число показов Вебмастера за неделю
+     • w3: аналогично w2
+   =========================================================== */
 const weeks = {
-    w1: {
-        id: 'w1', label: '15.06–21.06', from: '15.06.2026', to: '21.06.2026',
-        impressions: 222824, clicks: 2349, spend: 120365, leads: 79, target: 13,
-        ctr: 1.05, cpc: 51, cpa: 1524, cpl: 9259, convLead: 3.36, convTarget: 0.58,
-        seo: 0, seoLeads: 2, seoTarget: 1, otherLeads: 0, otherTarget: 0,
-        accounts: {
-            'Кабинет СПБ': { imp: 132694, clicks: 1552, spend: 56314.97, leads: 43, target: 1, campaigns: [
-                { name: 'Каркас. Мастер. СПБ. ОК. gl.', imp: 24194, clicks: 518, spend: 16773.20, leads: 5, target: 0 },
-                { name: 'Каркас. РСЯ. СПБ. ОК. 06-26.', imp: 79723, clicks: 489, spend: 11867.76, leads: 0, target: 0 },
-                { name: 'Каркас. Поиск. СПБ. ОК.', imp: 1397, clicks: 218, spend: 22062.00, leads: 1, target: 1 },
-                { name: 'Копия Каркас. Ретаргетинг. ФИД. СПБ. ОК. 4.', imp: 22551, clicks: 169, spend: 3660.00, leads: 0, target: 0 },
-                { name: 'Каркас. Мастер. СПБ. CPL. 3.', imp: 4829, clicks: 158, spend: 1952.00, leads: 1, target: 0 }
-            ]},
-            'Кабинет МСК': { imp: 90130, clicks: 797, spend: 64050.00, leads: 25, target: 1, campaigns: [
-                { name: 'ЕПК. Каркас. РСЯ. МСК. ОК.', imp: 66252, clicks: 236, spend: 12831.84, leads: 1, target: 0 },
-                { name: 'Каркас. Поиск. МСК.', imp: 4556, clicks: 190, spend: 24085.18, leads: 0, target: 0 },
-                { name: 'Каркас кат. Мастер. МСК. ОК.', imp: 7251, clicks: 161, spend: 8148.80, leads: 2, target: 0 },
-                { name: 'Каркас Пл. Мастер. МСК. ОК.', imp: 4464, clicks: 118, spend: 14695.26, leads: 10, target: 1 },
-                { name: 'Каркас. Ретаргетинг. МСК. ОК. 2.', imp: 3960, clicks: 46, spend: 3658.49, leads: 0, target: 0 },
-                { name: 'Каркас. Ретаргетинг. Фид. МСК. ОК. 2.', imp: 3647, clicks: 46, spend: 630.43, leads: 0, target: 0 }
-            ]}
-        },
-        channels: [
-            { name: 'Яндекс Директ', leads: 45, target: 2, spend: 120365 },
-            { name: 'Instagram', leads: 2, target: 0, spend: 0 },
-            { name: 'SEO', leads: 2, target: 1, spend: 0 },
-            { name: 'Рекомендация', leads: 1, target: 1, spend: 0 },
-            { name: 'Классифайды', leads: 1, target: 1, spend: 0 },
-            { name: 'Оффлайн', leads: 7, target: 7, spend: 0 },
-            { name: 'Без источника', leads: 21, target: 0, spend: 0 }
-        ],
-        seoStats: { spb: { visits: 3383, users: 2740, pageDepth: 2.8, avgDuration: 145 }, msk: { visits: 1578, users: 1278, pageDepth: 2.8, avgDuration: 145 } },
-        topPagesSpb: [
-            { url: "/catalog/karkasnye-doma/", impressions: 10560, clicks: 688 },
-            { url: "/catalog/karkasnye-doma/100-150m2/", impressions: 2939, clicks: 421 },
-            { url: "/catalog/karkasnye-doma/dvuhetazhnye/", impressions: 1537, clicks: 314 },
-            { url: "/catalog/karkasnye-doma/odnoetazhnye/", impressions: 1750, clicks: 267 },
-            { url: "/catalog/karkasnye-doma/s-terrasoj/", impressions: 900, clicks: 190 },
-            { url: "/calculator/", impressions: 897, clicks: 180 },
-            { url: "/", impressions: 2062, clicks: 113 },
-            { url: "/mortgage/", impressions: 668, clicks: 109 },
-            { url: "/catalog/karkasnye-doma/s-mansardoy/", impressions: 344, clicks: 84 },
-            { url: "/catalog/karkasnye-doma/dk-200/", impressions: 149, clicks: 76 }
-        ],
-        topPagesMsk: [
-            { url: "/articles/stroitelstvo/pravila-razmeshcheniya-stroeniy-na-zemelnom-uchastke-v-2026-polnoe-rukovodstvo-dlya-izhs-i-snt/", impressions: 6732, clicks: 449 },
-            { url: "/catalog/karkasnye-doma/odnoetazhnye/", impressions: 11162, clicks: 281 },
-            { url: "/catalog/karkasnye-doma/", impressions: 16360, clicks: 187 },
-            { url: "/", impressions: 4708, clicks: 113 },
-            { url: "/catalog/karkasnye-doma/100-150m2/", impressions: 3095, clicks: 56 },
-            { url: "/catalog/karkasnye-doma/dvuhetazhnye/", impressions: 1043, clicks: 56 },
-            { url: "/calculator/", impressions: 499, clicks: 49 },
-            { url: "/catalog/karkasnye-doma/s-terrasoj/", impressions: 475, clicks: 41 },
-            { url: "/catalog/karkasnye-doma/s-mansardoy/", impressions: 188, clicks: 33 },
-            { url: "/catalog/karkasnye-doma/3-spalni/", impressions: 78, clicks: 26 }
-        ],
-        topQueriesSpb: [
-            { query: 'строительство каркасных домов под ключ', visits: 45 },
-            { query: 'каркасные дома под ключ', visits: 33 },
-            { query: 'купить каркасный дом в спб', visits: 32 },
-            { query: 'каркасный дом с террасой', visits: 27 },
-            { query: 'проекты каркасных домов спб', visits: 25 },
-            { query: 'строительство каркасных домов', visits: 24 },
-            { query: 'каркасный дом 2 этажа', visits: 24 },
-            { query: 'купить каркасный дом под ключ в спб', visits: 23 },
-            { query: 'стоимость каркасного дома', visits: 22 },
-            { query: 'каркасные дома 100 м', visits: 22 }
-        ],
-        topQueriesMsk: [
-            { query: 'теплый угол', visits: 51 },
-            { query: 'строительство каркасных домов', visits: 16 },
-            { query: 'тёплый угол строительство каркасных домов', visits: 14 },
-            { query: 'нормы строительства на земельном участке от соседей 2026', visits: 13 },
-            { query: 'одноэтажный каркасный дом под ключ цена', visits: 11 },
-            { query: 'проекты каркасных домов с мансардой', visits: 11 },
-            { query: 'каркасные дома под ключ проекты и цены', visits: 10 },
-            { query: 'одноэтажный каркасный дом цена', visits: 10 },
-            { query: 'расстояние построек от забора соседа по новым нормам 2026', visits: 10 },
-            { query: 'каркасный дом под ключ', visits: 9 }
-        ]
+  w1: {
+    id: "w1", label: "15.06–21.06", from: "15.06.2026", to: "21.06.2026",
+    impressions: 222824, clicks: 2349, spend: 120365, leads: 79, target: 13,
+    ctr: 1.05, cpc: 51, cpa: 1524, cpl: 9259,
+    noteImpressions: null,
+    accounts: {
+      "Кабинет СПБ": { imp: 132694, clicks: 1552, spend: 56314.97, leads: 43, target: 1, campaigns: [
+        {name:"Каркас. Мастер. СПБ. ОК. gl.",      imp:24194, clicks:518, spend:16773.20, leads:5, target:0},
+        {name:"Каркас. РСЯ. СПБ. ОК. 06-26.",      imp:79723, clicks:489, spend:11867.76, leads:0, target:0},
+        {name:"Каркас. Поиск. СПБ. ОК.",           imp:1397,  clicks:218, spend:22062.00, leads:1, target:1},
+        {name:"Копия Каркас. Ретаргетинг. ФИД. СПБ. ОК. 4.", imp:22551, clicks:169, spend:3660.00, leads:0, target:0},
+        {name:"Каркас. Мастер. СПБ. CPL. 3.",      imp:4829,  clicks:158, spend:1952.00,  leads:1, target:0}
+      ]},
+      "Кабинет МСК": { imp: 90130, clicks: 797, spend: 64050.00, leads: 25, target: 1, campaigns: [
+        {name:"ЕПК. Каркас. РСЯ. МСК. ОК.",        imp:66252, clicks:236, spend:12831.84, leads:1, target:0},
+        {name:"Каркас. Поиск. МСК.",               imp:4556,  clicks:190, spend:24085.18, leads:0, target:0},
+        {name:"Каркас кат. Мастер. МСК. ОК.",      imp:7251,  clicks:161, spend:8148.80,  leads:2, target:0},
+        {name:"Каркас Пл. Мастер. МСК. ОК.",       imp:4464,  clicks:118, spend:14695.26, leads:10, target:1},
+        {name:"Каркас. Ретаргетинг. МСК. ОК. 2.",  imp:3960,  clicks:46,  spend:3658.49,  leads:0, target:0},
+        {name:"Каркас. Ретаргетинг. Фид. МСК. ОК. 2.", imp:3647, clicks:46, spend:630.43, leads:0, target:0}
+      ]}
     },
-    w2: {
-        id: 'w2', label: '22.06–28.06', from: '22.06.2026', to: '28.06.2026',
-        impressions: 131590, clicks: 3470, spend: 171054.59, leads: 106, target: 21,
-        ctr: 2.64, cpc: 49, cpa: 1614, cpl: 8145, convLead: 3.06, convTarget: 0.61,
-        seo: 0, seoLeads: 0, seoTarget: 0, otherLeads: 93, otherTarget: 14, webmasterClicks: 5392,
-        accounts: {
-            'Кабинет МСК': { imp: 0, clicks: 1398, spend: 110535.40, leads: 8, target: 4, campaigns: [
-                { name: 'ЕПК. Каркас. РСЯ. МСК. OK.', imp: 0, clicks: 418, spend: 21328.24, leads: 0, target: 0 },
-                { name: 'Каркас Гл. Мастер. МСК. OK.', imp: 0, clicks: 156, spend: 16732.31, leads: 2, target: 1 },
-                { name: 'Каркас кат. Мастер. МСК. OK.', imp: 0, clicks: 437, spend: 36267.26, leads: 2, target: 1 },
-                { name: 'Каркас. Поиск. МСК.', imp: 0, clicks: 249, spend: 30747.01, leads: 4, target: 2 },
-                { name: 'Каркас. Ретаргетинг. МСК. OK. 2.', imp: 0, clicks: 49, spend: 3842.80, leads: 0, target: 0 },
-                { name: 'Каркас. Ретаргетирнг. Фид. МСК. OK. 2.', imp: 0, clicks: 89, spend: 1617.78, leads: 0, target: 0 }
-            ]},
-            'Кабинет СПБ': { imp: 0, clicks: 2072, spend: 60519.19, leads: 5, target: 2, campaigns: [
-                { name: 'Каркас. Мастер. СПБ. CPL. 3.', imp: 0, clicks: 213, spend: 2147.20, leads: 2, target: 0 },
-                { name: 'Каркас. Мастер. СПБ. OK. gl.', imp: 0, clicks: 1129, spend: 23159.80, leads: 0, target: 1 },
-                { name: 'Каркас. Поиск. СПБ. OK.', imp: 0, clicks: 206, spend: 19358.32, leads: 2, target: 0 },
-                { name: 'Каркас. РСЯ. СПБ. OK. 06-26.', imp: 0, clicks: 339, spend: 12193.85, leads: 0, target: 0 },
-                { name: 'Копия Каркас. Ретаргетинг. ФИД. СПБ. OK. 4.', imp: 0, clicks: 185, spend: 3660.02, leads: 1, target: 1 }
-            ]}
-        },
-        channels: [
-            { name: 'Яндекс Директ', leads: 16, target: 6, spend: 171054.59 },
-            { name: 'Выставочный дом', leads: 11, target: 11, spend: 0 },
-            { name: 'Instagram', leads: 1, target: 1, spend: 0 },
-            { name: 'Сарафан', leads: 1, target: 1, spend: 0 },
-            { name: 'SEO', leads: 0, target: 0, spend: 0 },
-            { name: 'Без источника', leads: 77, target: 2, spend: 0 }
-        ],
-        seoStats: { spb: { visits: 2579, users: 2100, pageDepth: 2.8, avgDuration: 145 }, msk: { visits: 2813, users: 2300, pageDepth: 3.1, avgDuration: 160 } },
-        topPagesSpb: [
-            { url: "/catalog/karkasnye-doma/", impressions: 17343, clicks: 998 },
-            { url: "/catalog/karkasnye-doma/100-150m2/", impressions: 2290, clicks: 206 },
-            { url: "/catalog/karkasnye-doma/odnoetazhnye/", impressions: 2328, clicks: 179 },
-            { url: "/catalog/karkasnye-doma/dvuhetazhnye/", impressions: 1696, clicks: 129 },
-            { url: "/calculator/", impressions: 704, clicks: 82 },
-            { url: "/", impressions: 2252, clicks: 80 },
-            { url: "/articles/stroitelstvo/pravila-razmeshcheniya-stroeniy-na-zemelnom-uchastke-v-2026-polnoe-rukovodstvo-dlya-izhs-i-snt/", impressions: 1082, clicks: 66 },
-            { url: "/catalog/karkasnye-doma/s-terrasoj/", impressions: 429, clicks: 54 },
-            { url: "/catalog/karkasnye-doma/s-mansardoy/", impressions: 454, clicks: 48 },
-            { url: "/catalog/karkasnye-doma/pmzh/", impressions: 806, clicks: 39 }
-        ],
-        topPagesMsk: [
-            { url: "/catalog/karkasnye-doma/odnoetazhnye/", impressions: 30860, clicks: 765 },
-            { url: "/articles/stroitelstvo/pravila-razmeshcheniya-stroeniy-na-zemelnom-uchastke-v-2026-polnoe-rukovodstvo-dlya-izhs-i-snt/", impressions: 10412, clicks: 509 },
-            { url: "/catalog/karkasnye-doma/", impressions: 22323, clicks: 430 },
-            { url: "/", impressions: 6562, clicks: 161 },
-            { url: "/catalog/karkasnye-doma/dvuhetazhnye/", impressions: 2116, clicks: 142 },
-            { url: "/catalog/karkasnye-doma/100-150m2/", impressions: 4871, clicks: 110 },
-            { url: "/catalog/karkasnye-doma/s-terrasoj/", impressions: 973, clicks: 88 },
-            { url: "/catalog/karkasnye-doma/3-spalni/", impressions: 200, clicks: 69 },
-            { url: "/calculator/", impressions: 874, clicks: 56 },
-            { url: "/catalog/karkasnye-doma/s-mansardoy/", impressions: 422, clicks: 48 }
-        ],
-        topQueriesSpb: [
-            { query: 'теплый угол', visits: 30 },
-            { query: 'купить каркасный дом в спб', visits: 19 },
-            { query: 'теплый угол строительная компания', visits: 17 },
-            { query: 'тёплый угол строительство каркасных домов', visits: 15 },
-            { query: 'тёплый угол строительство каркасных домов в спб', visits: 11 },
-            { query: 'каркасный дом с террасой', visits: 9 },
-            { query: 'каркасный дом под ключ', visits: 7 },
-            { query: 'каркасный дом 2 этажа', visits: 6 },
-            { query: 'sk_tu.ru', visits: 5 },
-            { query: 'купить каркасный дом спб', visits: 5 }
-        ],
-        topQueriesMsk: [
-            { query: 'теплый угол', visits: 69 },
-            { query: 'пк-193 теплый угол', visits: 36 },
-            { query: 'тёплый угол строительство каркасных домов', visits: 11 },
-            { query: 'нормы строительства на земельном участке от соседей 2026', visits: 10 },
-            { query: 'нормы расположения построек на земельном участке 2026', visits: 7 },
-            { query: 'теплый угол строительная компания', visits: 7 },
-            { query: 'тёплый угол', visits: 6 },
-            { query: 'нормы строительства в снт 2026', visits: 4 },
-            { query: 'нормы отступа от границ участка при строительстве дома ижс 2026', visits: 3 },
-            { query: 'проектирование каркасных домов', visits: 3 }
-        ],
-        topQueries: []
+    channels: [
+      {name:"Яндекс Директ", leads:45, target:2, spend:120365},
+      {name:"Instagram",     leads:2,  target:0, spend:0},
+      {name:"SEO",           leads:2,  target:1, spend:0},
+      {name:"Рекомендация",  leads:1,  target:1, spend:0},
+      {name:"Классифайды",   leads:1,  target:1, spend:0},
+      {name:"Оффлайн",       leads:7,  target:7, spend:0},
+      {name:"Без источника", leads:21, target:0, spend:0}
+    ],
+    seoStats: {spb:{visits:3383, users:2740, pageDepth:2.8, avgDuration:145}, msk:{visits:1578, users:1278, pageDepth:2.8, avgDuration:145}},
+    topPagesSpb: [
+      {url:"/catalog/karkasnye-doma/",                                  impressions:10560, clicks:688},
+      {url:"/catalog/karkasnye-doma/100-150m2/",                        impressions:2939,  clicks:421},
+      {url:"/catalog/karkasnye-doma/dvuhetazhnye/",                      impressions:1537,  clicks:314},
+      {url:"/catalog/karkasnye-doma/odnoetazhnye/",                      impressions:1750,  clicks:267},
+      {url:"/catalog/karkasnye-doma/s-terrasoj/",                       impressions:900,   clicks:190},
+      {url:"/calculator/",                                              impressions:897,   clicks:180},
+      {url:"/",                                                          impressions:2062,  clicks:113},
+      {url:"/mortgage/",                                                 impressions:668,   clicks:109},
+      {url:"/catalog/karkasnye-doma/s-mansardoy/",                      impressions:344,   clicks:84},
+      {url:"/catalog/karkasnye-doma/dk-200/",                           impressions:149,   clicks:76}
+    ],
+    topPagesMsk: [
+      {url:"/articles/stroitelstvo/pravila-razmeshcheniya-stroeniy-na-zemelnom-uchastke-v-2026-polnoe-rukovodstvo-dlya-izhs-i-snt/",  impressions:6732,  clicks:449},
+      {url:"/catalog/karkasnye-doma/odnoetazhnye/",                     impressions:11162, clicks:281},
+      {url:"/catalog/karkasnye-doma/",                                   impressions:16360, clicks:187},
+      {url:"/",                                                           impressions:4708,  clicks:113},
+      {url:"/catalog/karkasnye-doma/100-150m2/",                         impressions:3095,  clicks:56},
+      {url:"/catalog/karkasnye-doma/dvuhetazhnye/",                       impressions:1043,  clicks:56},
+      {url:"/calculator/",                                               impressions:499,   clicks:49},
+      {url:"/catalog/karkasnye-doma/s-terrasoj/",                        impressions:475,   clicks:41},
+      {url:"/catalog/karkasnye-doma/s-mansardoy/",                       impressions:188,   clicks:33},
+      {url:"/catalog/karkasnye-doma/3-spalni/",                          impressions:78,    clicks:26}
+    ],
+    topQueriesSpb: [
+      {query:"строительство каркасных домов под ключ", visits:45},
+      {query:"каркасные дома под ключ",                visits:33},
+      {query:"купить каркасный дом в спб",             visits:32},
+      {query:"каркасный дом с террасой",               visits:27},
+      {query:"проекты каркасных домов спб",            visits:25},
+      {query:"строительство каркасных домов",          visits:24},
+      {query:"каркасный дом 2 этажа",                  visits:24},
+      {query:"купить каркасный дом под ключ в спб",    visits:23},
+      {query:"стоимость каркасного дома",              visits:22},
+      {query:"каркасные дома 100 м",                   visits:22}
+    ],
+    topQueriesMsk: [
+      {query:"теплый угол",                                              visits:51},
+      {query:"строительство каркасных домов",                            visits:16},
+      {query:"тёплый угол строительство каркасных домов",                 visits:14},
+      {query:"нормы строительства на земельном участке от соседей 2026",  visits:13},
+      {query:"одноэтажный каркасный дом под ключ цена",                   visits:11},
+      {query:"проекты каркасных домов с мансардой",                       visits:11},
+      {query:"каркасные дома под ключ проекты и цены",                    visits:10},
+      {query:"одноэтажный каркасный дом цена",                            visits:10},
+      {query:"расстояние построек от забора соседа по новым нормам 2026",  visits:10},
+      {query:"каркасный дом под ключ",                                   visits:9}
+    ]
+  },
+  w2: {
+    id: "w2", label: "22.06–28.06", from: "22.06.2026", to: "28.06.2026",
+    impressions: 309664, clicks: 3470, spend: 171054.59, leads: 106, target: 21,
+    ctr: 1.12, cpc: 49, cpa: 1614, cpl: 8145,
+    noteImpressions: null,
+    accounts: {
+      "Кабинет МСК": { imp: 165289, clicks: 1398, spend: 110535.40, leads: 8, target: 4, campaigns: [
+        {name:"ЕПК. Каркас. РСЯ. МСК. OK.",         imp:123905, clicks:418, spend:21328.24, leads:0, target:0},
+        {name:"Каркас Гл. Мастер. МСК. OK.",        imp:5274, clicks:156, spend:16732.31, leads:2, target:1},
+        {name:"Каркас кат. Мастер. МСК. OK.",       imp:18703, clicks:437, spend:36267.26, leads:2, target:1},
+        {name:"Каркас. Поиск. МСК.",                imp:7852, clicks:249, spend:30747.01, leads:4, target:2},
+        {name:"Каркас. Ретаргетинг. МСК. OK. 2.",   imp:4881,  clicks:49,  spend:3842.80,  leads:0, target:0},
+        {name:"Каркас. Ретаргетирнг. Фид. МСК. OK. 2.", imp:4674, clicks:89, spend:1617.78, leads:0, target:0}
+      ]},
+      "Кабинет СПБ": { imp: 144375, clicks: 2072, spend: 60519.19, leads: 5, target: 2, campaigns: [
+        {name:"Каркас. Мастер. СПБ. CPL. 3.",       imp:6166, clicks:213, spend:2147.20,  leads:2, target:0},
+        {name:"Каркас. Мастер. СПБ. OK. gl.",        imp:47024, clicks:1129,spend:23159.80, leads:0, target:1},
+        {name:"Каркас. Поиск. СПБ. OK.",             imp:1223, clicks:206, spend:19358.32, leads:2, target:0},
+        {name:"Каркас. РСЯ. СПБ. OK. 06-26.",        imp:71297, clicks:339, spend:12193.85, leads:0, target:0},
+        {name:"Копия Каркас. Ретаргетинг. ФИД. СПБ. OK. 4.", imp:18665, clicks:185, spend:3660.02, leads:1, target:1}
+      ]}
     },
-    w3: {
-        id: 'w3', label: '29.06–05.07', from: '29.06.2026', to: '05.07.2026',
-        impressions: 141061, clicks: 4910, spend: 199955.47, leads: 125, target: 35,
-        ctr: 3.48, cpc: 40.72, cpa: 1600, cpl: 5713, convLead: 2.55, convTarget: 0.71,
-        seo: 0, seoLeads: 3, seoTarget: 1, otherLeads: 107, otherTarget: 30, webmasterClicks: 3791,
-        accounts: {
-            'Кабинет МСК': { imp: 0, clicks: 1517, spend: 122000.00, leads: 7, target: 3, campaigns: [
-                { name: 'Каркас кат. Мастер. МСК. OK.', imp: 0, clicks: 608, spend: 61713.36, leads: 7, target: 3 },
-                { name: 'ЕПК. Каркас. РСЯ. МСК. OK.', imp: 0, clicks: 679, spend: 33118.25, leads: 0, target: 0 },
-                { name: 'Каркас Гл. Мастер. МСК. OK.', imp: 0, clicks: 97, spend: 15796.45, leads: 0, target: 0 },
-                { name: 'Каркас. Поиск. МСК.', imp: 0, clicks: 76, spend: 8103.23, leads: 0, target: 0 },
-                { name: 'Каркас. Ретаргетинг. МСК. OK. 2.', imp: 0, clicks: 42, spend: 3142.59, leads: 0, target: 0 },
-                { name: 'Каркас. Ретаргетирнг. Фид. МСК. OK. 2.', imp: 0, clicks: 15, spend: 126.12, leads: 0, target: 0 }
-            ]},
-            'Кабинет СПБ': { imp: 0, clicks: 3393, spend: 77955.47, leads: 11, target: 2, campaigns: [
-                { name: 'Каркас. Мастер. СПБ. OK. gl.', imp: 0, clicks: 2286, spend: 36811.28, leads: 6, target: 2 },
-                { name: 'Каркас. Поиск. СПБ. OK.', imp: 0, clicks: 198, spend: 19194.71, leads: 2, target: 0 },
-                { name: 'Каркас. РСЯ. СПБ. OK. 06-26.', imp: 0, clicks: 393, spend: 12070.26, leads: 0, target: 0 },
-                { name: 'Каркас. Мастер. СПБ. CPL. 3.', imp: 0, clicks: 331, spend: 6234.20, leads: 3, target: 0 },
-                { name: 'Копия Каркас. Ретаргетинг. ФИД. СПБ. OK. 4.', imp: 0, clicks: 185, spend: 3645.02, leads: 0, target: 0 }
-            ]}
-        },
-        channels: [
-            { name: 'Яндекс Директ', leads: 18, target: 5, spend: 91921.7 },
-            { name: 'Выставочный дом', leads: 21, target: 18, spend: 0 },
-            { name: 'Входящие звонки', leads: 43, target: 3, spend: 0 },
-            { name: 'Прямые заходы', leads: 19, target: 3, spend: 0 },
-            { name: 'Instagram', leads: 6, target: 3, spend: 0 },
-            { name: 'Сайт', leads: 2, target: 2, spend: 0 },
-            { name: 'SEO', leads: 3, target: 1, spend: 0 },
-            { name: 'VK', leads: 3, target: 0, spend: 0 },
-            { name: 'Без источника', leads: 10, target: 0, spend: 0 }
-        ],
-        seoStats: { spb: { visits: 1441, users: 1150, pageDepth: 2.8, avgDuration: 150 }, msk: { visits: 2350, users: 1880, pageDepth: 3.0, avgDuration: 160 } },
-        topPagesSpb: [
-            { url: "/catalog/karkasnye-doma/", impressions: 19311, clicks: 426 },
-            { url: "/catalog/karkasnye-doma/odnoetazhnye/", impressions: 1886, clicks: 95 },
-            { url: "/catalog/karkasnye-doma/100-150m2/", impressions: 1933, clicks: 86 },
-            { url: "/", impressions: 1876, clicks: 64 },
-            { url: "/catalog/karkasnye-doma/dvuhetazhnye/", impressions: 1329, clicks: 64 },
-            { url: "/articles/stroitelstvo/pravila-razmeshcheniya-stroeniy-na-zemelnom-uchastke-v-2026-polnoe-rukovodstvo-dlya-izhs-i-snt/", impressions: 784, clicks: 41 },
-            { url: "/calculator/", impressions: 677, clicks: 37 },
-            { url: "/catalog/karkasnye-doma/s-mansardoy/", impressions: 504, clicks: 34 },
-            { url: "/catalog/karkasnye-doma/s-terrasoj/", impressions: 414, clicks: 39 },
-            { url: "/articles/fundamenty/ustroystvo-uteplennoy-otmostki-polnoe-rukovodstvo-po-montazhu-svoimi-rukami/", impressions: 1259, clicks: 25 }
-        ],
-        topPagesMsk: [
-            { url: "/catalog/karkasnye-doma/odnoetazhnye/", impressions: 43738, clicks: 600 },
-            { url: "/articles/stroitelstvo/pravila-razmeshcheniya-stroeniy-na-zemelnom-uchastke-v-2026-polnoe-rukovodstvo-dlya-izhs-i-snt/", impressions: 7801, clicks: 378 },
-            { url: "/catalog/karkasnye-doma/", impressions: 16256, clicks: 250 },
-            { url: "/", impressions: 5403, clicks: 143 },
-            { url: "/catalog/karkasnye-doma/100-150m2/", impressions: 6229, clicks: 117 },
-            { url: "/catalog/karkasnye-doma/dvuhetazhnye/", impressions: 2593, clicks: 111 },
-            { url: "/catalog/karkasnye-doma/s-terrasoj/", impressions: 991, clicks: 104 },
-            { url: "/calculator/", impressions: 1457, clicks: 93 },
-            { url: "/catalog/karkasnye-doma/s-mansardoy/", impressions: 473, clicks: 50 },
-            { url: "/catalog/karkasnye-doma/barnkhaus/", impressions: 1198, clicks: 43 }
-        ],
-        topQueriesSpb: [
-            { query: 'каркасные дома под ключ', visits: 29 },
-            { query: 'купить каркасный дом в спб', visits: 29 },
-            { query: 'каркасный дом под ключ', visits: 18 },
-            { query: 'построить каркасный дом в спб', visits: 18 },
-            { query: 'каркасные дома', visits: 17 },
-            { query: 'строительство каркасных домов под ключ', visits: 16 },
-            { query: 'каркасный дом под ключ в спб цена', visits: 13 },
-            { query: 'теплый угол', visits: 13 },
-            { query: 'каркасные дома под ключ проекты', visits: 13 },
-            { query: 'каркасный дом с террасой', visits: 13 }
-        ],
-        topQueriesMsk: [
-            { query: 'каркасные дома под ключ', visits: 80 },
-            { query: 'теплый угол', visits: 73 },
-            { query: 'каркасные дома', visits: 72 },
-            { query: 'каркасные дома москва', visits: 51 },
-            { query: 'каркасные дома недорого', visits: 47 },
-            { query: 'строительство каркасных домов под ключ', visits: 31 },
-            { query: 'каркасные дома с террасой', visits: 29 },
-            { query: 'одноэтажный каркасный дом', visits: 22 },
-            { query: 'проекты каркасных домов с террасой', visits: 22 },
-            { query: 'каркасные дома под ключ проекты и цены', visits: 18 }
-        ]
-    }
+    channels: [
+      {name:"Яндекс Директ", leads:16, target:6, spend:171054.59},
+      {name:"Выставочный дом",leads:11, target:11,spend:0},
+      {name:"Instagram",     leads:1,  target:1, spend:0},
+      {name:"Сарафан",       leads:1,  target:1, spend:0},
+      {name:"SEO",           leads:0,  target:0, spend:0},
+      {name:"Без источника", leads:77, target:2, spend:0}
+    ],
+    seoStats: {spb:{visits:2579, users:2100, pageDepth:2.8, avgDuration:145}, msk:{visits:2813, users:2300, pageDepth:3.1, avgDuration:160}},
+    topPagesSpb: [
+      {url:"/catalog/karkasnye-doma/",                impressions:17343, clicks:998},
+      {url:"/catalog/karkasnye-doma/100-150m2/",      impressions:2290,  clicks:206},
+      {url:"/catalog/karkasnye-doma/odnoetazhnye/",    impressions:2328,  clicks:179},
+      {url:"/catalog/karkasnye-doma/dvuhetazhnye/",    impressions:1696,  clicks:129},
+      {url:"/calculator/",                            impressions:704,   clicks:82},
+      {url:"/",                                       impressions:2252,  clicks:80},
+      {url:"/articles/stroitelstvo/pravila-razmeshcheniya-stroeniy-na-zemelnom-uchastke-v-2026-polnoe-rukovodstvo-dlya-izhs-i-snt/",  impressions:1082, clicks:66},
+      {url:"/catalog/karkasnye-doma/s-terrasoj/",     impressions:429,   clicks:54},
+      {url:"/catalog/karkasnye-doma/s-mansardoy/",    impressions:454,   clicks:48},
+      {url:"/catalog/karkasnye-doma/pmzh/",           impressions:806,   clicks:39}
+    ],
+    topPagesMsk: [
+      {url:"/catalog/karkasnye-doma/odnoetazhnye/",                                        impressions:30860, clicks:765},
+      {url:"/articles/stroitelstvo/pravila-razmeshcheniya-stroeniy-na-zemelnom-uchastke-v-2026-polnoe-rukovodstvo-dlya-izhs-i-snt/", impressions:10412, clicks:509},
+      {url:"/catalog/karkasnye-doma/",                                                      impressions:22323, clicks:430},
+      {url:"/",                                                                              impressions:6562,  clicks:161},
+      {url:"/catalog/karkasnye-doma/dvuhetazhnye/",                                          impressions:2116,  clicks:142},
+      {url:"/catalog/karkasnye-doma/100-150m2/",                                            impressions:4871,  clicks:110},
+      {url:"/catalog/karkasnye-doma/s-terrasoj/",                                            impressions:973,   clicks:88},
+      {url:"/catalog/karkasnye-doma/3-spalni/",                                              impressions:200,   clicks:69},
+      {url:"/calculator/",                                                                    impressions:874,   clicks:56},
+      {url:"/catalog/karkasnye-doma/s-mansardoy/",                                           impressions:422,   clicks:48}
+    ],
+    topQueriesSpb: [
+      {query:"теплый угол",                                visits:30},
+      {query:"купить каркасный дом в спб",                visits:19},
+      {query:"теплый угол строительная компания",         visits:17},
+      {query:"тёплый угол строительство каркасных домов", visits:15},
+      {query:"тёплый угол строительство каркасных домов в спб", visits:11},
+      {query:"каркасный дом с террасой",                  visits:9},
+      {query:"каркасный дом под ключ",                    visits:7},
+      {query:"каркасный дом 2 этажа",                     visits:6},
+      {query:"sk_tu.ru",                                  visits:5},
+      {query:"купить каркасный дом спб",                  visits:5}
+    ],
+    topQueriesMsk: [
+      {query:"теплый угол",                                                       visits:69},
+      {query:"пк-193 теплый угол",                                               visits:36},
+      {query:"тёплый угол строительство каркасных домов",                        visits:11},
+      {query:"нормы строительства на земельном участке от соседей 2026",         visits:10},
+      {query:"нормы расположения построек на земельном участке 2026",           visits:7},
+      {query:"теплый угол строительная компания",                                visits:7},
+      {query:"тёплый угол",                                                      visits:6},
+      {query:"нормы строительства в снт 2026",                                  visits:4},
+      {query:"нормы отступа от границ участка при строительстве дома ижс 2026", visits:3},
+      {query:"проектирование каркасных домов",                                   visits:3}
+    ]
+  },
+  w3: {
+    id: "w3", label: "29.06–05.07", from: "29.06.2026", to: "05.07.2026",
+    impressions: 506708, clicks: 4910, spend: 199955.47, leads: 125, target: 35,
+    ctr: 0.97, cpc: 40.72, cpa: 1600, cpl: 5713,
+    noteImpressions: null,
+    accounts: {
+      "Кабинет МСК": { imp: 278937, clicks: 1517, spend: 122000.00, leads: 7, target: 3, campaigns: [
+        {name:"Каркас кат. Мастер. МСК. OK.",     imp:16023, clicks:608, spend:61713.36, leads:7, target:3},
+        {name:"ЕПК. Каркас. РСЯ. МСК. OK.",        imp:252605, clicks:679, spend:33118.25, leads:0, target:0},
+        {name:"Каркас Гл. Мастер. МСК. OK.",       imp:1943, clicks:97,  spend:15796.45, leads:0, target:0},
+        {name:"Каркас. Поиск. МСК.",               imp:2649,  clicks:76,  spend:8103.23,  leads:0, target:0},
+        {name:"Каркас. Ретаргетинг. МСК. OK. 2.",  imp:4823,  clicks:42,  spend:3142.59,  leads:0, target:0},
+        {name:"Каркас. Ретаргетирнг. Фид. МСК. OK. 2.", imp:894, clicks:15, spend:126.12, leads:0, target:0}
+      ]},
+      "Кабинет СПБ": { imp: 227771, clicks: 3393, spend: 77955.47, leads: 11, target: 2, campaigns: [
+        {name:"Каркас. Мастер. СПБ. OK. gl.",      imp:79742, clicks:2286, spend:36811.28, leads:6, target:2},
+        {name:"Каркас. Поиск. СПБ. OK.",           imp:1252,  clicks:198,  spend:19194.71, leads:2, target:0},
+        {name:"Каркас. РСЯ. СПБ. OK. 06-26.",      imp:112439,  clicks:393,  spend:12070.26, leads:0, target:0},
+        {name:"Каркас. Мастер. СПБ. CPL. 3.",      imp:11210,  clicks:331,  spend:6234.20,  leads:3, target:0},
+        {name:"Копия Каркас. Ретаргетинг. ФИД. СПБ. OK. 4.", imp:23128, clicks:185, spend:3645.02, leads:0, target:0}
+      ]}
+    },
+    channels: [
+      {name:"Яндекс Директ", leads:18, target:5, spend:199955.47},
+      {name:"Выставочный дом",leads:21, target:18,spend:0},
+      {name:"Входящие звонки",leads:43, target:3, spend:0},
+      {name:"Прямые заходы",  leads:19, target:3, spend:0},
+      {name:"Instagram",      leads:6,  target:3, spend:0},
+      {name:"Сайт",           leads:2,  target:2, spend:0},
+      {name:"SEO",            leads:3,  target:1, spend:0},
+      {name:"VK",             leads:3,  target:0, spend:0},
+      {name:"Без источника",  leads:10, target:0, spend:0}
+    ],
+    seoStats: {spb:{visits:1441, users:1150, pageDepth:2.8, avgDuration:150}, msk:{visits:2350, users:1880, pageDepth:3.0, avgDuration:160}},
+    topPagesSpb: [
+      {url:"/catalog/karkasnye-doma/",                impressions:19311, clicks:426},
+      {url:"/catalog/karkasnye-doma/odnoetazhnye/",    impressions:1886,  clicks:95},
+      {url:"/catalog/karkasnye-doma/100-150m2/",      impressions:1933,  clicks:86},
+      {url:"/",                                       impressions:1876,  clicks:64},
+      {url:"/catalog/karkasnye-doma/dvuhetazhnye/",    impressions:1329,  clicks:64},
+      {url:"/articles/stroitelstvo/pravila-razmeshcheniya-stroeniy-na-zemelnom-uchastke-v-2026-polnoe-rukovodstvo-dlya-izhs-i-snt/",  impressions:784, clicks:41},
+      {url:"/calculator/",                            impressions:677,   clicks:37},
+      {url:"/catalog/karkasnye-doma/s-mansardoy/",    impressions:504,   clicks:34},
+      {url:"/catalog/karkasnye-doma/s-terrasoj/",     impressions:414,   clicks:39},
+      {url:"/articles/fundamenty/ustroystvo-uteplennoy-otmostki-polnoe-rukovodstvo-po-montazhu-svoimi-rukami/",                     impressions:1259,  clicks:25}
+    ],
+    topPagesMsk: [
+      {url:"/catalog/karkasnye-doma/odnoetazhnye/",                                        impressions:43738, clicks:600},
+      {url:"/articles/stroitelstvo/pravila-razmeshcheniya-stroeniy-na-zemelnom-uchastke-v-2026-polnoe-rukovodstvo-dlya-izhs-i-snt/", impressions:7801, clicks:378},
+      {url:"/catalog/karkasnye-doma/",                                                      impressions:16256, clicks:250},
+      {url:"/",                                                                              impressions:5403,  clicks:143},
+      {url:"/catalog/karkasnye-doma/100-150m2/",                                            impressions:6229,  clicks:117},
+      {url:"/catalog/karkasnye-doma/dvuhetazhnye/",                                          impressions:2593,  clicks:111},
+      {url:"/catalog/karkasnye-doma/s-terrasoj/",                                            impressions:991,   clicks:104},
+      {url:"/calculator/",                                                                    impressions:1457,  clicks:93},
+      {url:"/catalog/karkasnye-doma/s-mansardoy/",                                           impressions:473,   clicks:50},
+      {url:"/catalog/karkasnye-doma/barnkhaus/",                                              impressions:1198, clicks:43}
+    ],
+    topQueriesSpb: [
+      {query:"каркасные дома под ключ",              visits:29},
+      {query:"купить каркасный дом в спб",          visits:29},
+      {query:"каркасный дом под ключ",              visits:18},
+      {query:"построить каркасный дом в спб",       visits:18},
+      {query:"каркасные дома",                      visits:17},
+      {query:"строительство каркасных домов под ключ", visits:16},
+      {query:"каркасный дом под ключ в спб цена",   visits:13},
+      {query:"теплый угол",                         visits:13},
+      {query:"каркасные дома под ключ проекты",     visits:13},
+      {query:"каркасный дом с террасой",            visits:13}
+    ],
+    topQueriesMsk: [
+      {query:"каркасные дома под ключ",              visits:80},
+      {query:"теплый угол",                         visits:73},
+      {query:"каркасные дома",                      visits:72},
+      {query:"каркасные дома москва",               visits:51},
+      {query:"каркасные дома недорого",             visits:47},
+      {query:"строительство каркасных домов под ключ", visits:31},
+      {query:"каркасные дома с террасой",           visits:29},
+      {query:"одноэтажный каркасный дом",           visits:22},
+      {query:"проекты каркасных домов с террасой",  visits:22},
+      {query:"каркасные дома под ключ проекты и цены", visits:18}
+    ]
+  }
 };
 
-let currentWeek = 'w2';
+let currentWeek = "w2";
+const weekOrder = ["w1","w2","w3"];
 
-// ===== HELPERS =====
-function fmt(n) {
-    if (n === null || n === undefined || n === '—') return '—';
-    return Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+/* ===========================================================
+   HELPERS
+   =========================================================== */
+function fmt(n){ if(n==null||n===undefined||Number.isNaN(n)) return "—"; return Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, " "); }
+function pct(n, d){ d = d||2; if(n==null||n===undefined||Number.isNaN(n)) return "—"; return n.toFixed(d)+"%"; }
+function rub(n){ if(n==null||n===undefined||Number.isNaN(n)) return "—"; return fmt(Math.round(n))+" ₽"; }
+function deltaBadge(curr, prev){
+  if(prev==null||prev===undefined||curr==null) return {txt:"— нет сравнения", cls:"flat"};
+  if(prev===0) return {txt:"· новый канал", cls:"flat"};
+  const d = (curr-prev)/prev*100;
+  if(Math.abs(d) < 0.5) return {txt:"· без изменений", cls:"flat"};
+  return {txt: (d>0?"▲ +":"▼ ")+d.toFixed(1)+"%", cls: d>0?"up":"down"};
 }
-function pct(n) {
-    if (n === null || n === undefined || n === '—') return '—';
-    return n.toFixed(2) + '%';
+function trunc(s, n){ if(!s) return ""; return s.length>n ? s.substring(0,n-1)+"…" : s; }
+function safe(n, fallback){ return (n==null||n===undefined||isNaN(n)) ? fallback : n; }
+function prevWeek(id){ var i=weekOrder.indexOf(id); return i>0 ? weeks[weekOrder[i-1]] : null; }
+function nextWeek(id){ var i=weekOrder.indexOf(id); return i<weekOrder.length-1 ? weeks[weekOrder[i+1]] : null; }
+
+/* ===========================================================
+   COLOR HELPERS (read tokens at runtime)
+   =========================================================== */
+function css(name){ return getComputedStyle(document.documentElement).getPropertyValue(name).trim(); }
+function hexA(hex, alpha){
+  if(hex.startsWith("rgb")) return hex;
+  hex = hex.replace("#","");
+  if(hex.length===3) hex = hex.split("").map(function(c){return c+c}).join("");
+  var r=parseInt(hex.slice(0,2),16), g=parseInt(hex.slice(2,4),16), b=parseInt(hex.slice(4,6),16);
+  return "rgba("+r+","+g+","+b+","+alpha+")";
 }
-function rub(n) {
-    if (n === null || n === undefined || n === '—') return '—';
-    return fmt(Math.round(n)) + ' ₽';
+function getChartColors(){
+  return {
+    acc:"#E18335", mint:css("--mint")||"#00a877", violet:css("--violet")||"#6d3bff",
+    blue:css("--blue")||"#2563eb", cyan:css("--cyan")||"#0891b2", amber:css("--amber")||"#b8730a",
+    down:css("--down")||"#e23048", txt3:css("--txt-3")||"#8493ab", line:css("--line")||"#e4e9f2"
+  };
 }
 
-// ===== KPI =====
-function renderKPI(w) {
-    const grid = document.getElementById('kpiGrid');
-    const cards = [
-        { label: 'Показы', value: fmt(w.impressions), cls: '' },
-        { label: 'Клики', value: fmt(w.clicks), cls: '' },
-        { label: 'Расход', value: rub(w.spend), cls: 'acc' },
-        { label: 'Лиды', value: w.leads, cls: '' },
-        { label: 'Целевые лиды', value: w.target, cls: 'up' },
-        { label: 'CTR', value: pct(w.ctr), cls: '' },
-        { label: 'CPA', value: rub(w.cpa), cls: '' },
-        { label: 'CPL', value: rub(w.cpl), cls: '' }
-    ];
-    grid.innerHTML = cards.map(function(c) {
-        var badge = c.cls ? '<span class="dl ' + c.cls + '">●</span>' : '';
-        return '<div class="kpi"><div class="lab">' + c.label + '</div><div class="val">' + c.value + '</div>' + badge + '</div>';
-    }).join('');
+/* ===========================================================
+   BALANCE CARD
+   =========================================================== */
+function renderBal(w){
+  var prev = prevWeek(w.id);
+  var chip = document.getElementById("balChip");
+  if(prev){
+    var dn = w.target - prev.target;
+    var dp = ((dn/prev.target)*100);
+    if(dn>0){
+      chip.textContent = "▲ +"+dp.toFixed(0)+"% vs "+prev.label.split("–")[0];
+      chip.className = "bal-chip";
+    } else if(dn<0){
+      chip.textContent = "▼ "+dp.toFixed(0)+"% vs "+prev.label.split("–")[0];
+      chip.className = "bal-chip down";
+    } else {
+      chip.textContent = "· стабильно";
+      chip.className = "bal-chip acc";
+    }
+  } else {
+    chip.textContent = "— baseline";
+    chip.className = "bal-chip acc";
+  }
+  document.getElementById("balAmt").innerHTML = fmt(w.target);
+  var cpl = rub(w.cpl);
+  var convЦЛ = (w.leads>0 ? (w.target/w.leads*100) : 0);
+  document.getElementById("balSub").innerHTML =
+    "Период <b>"+w.from+"–"+w.to+"</b> · CPL <b class=\"num\">"+cpl+"</b> · конверсия в ЦЛ <b class=\"num\">"+convЦЛ.toFixed(1)+"%</b>";
+  var accArr = Object.entries(w.accounts);
+  var spb = accArr.find(function(x){return x[0].indexOf("СПБ")>=0;});
+  var msk = accArr.find(function(x){return x[0].indexOf("МСК")>=0;});
+  var spbLine = "";
+  if(spb){ var c=spb[1]; spbLine = "СПб <b class=\"num\">"+fmt(c.target)+"/ CPC "+ (c.clicks>0?rub(c.spend/c.clicks):"—") +"</b>"; }
+  var mskLine = "";
+  if(msk){ var c=msk[1]; mskLine = "МСК <b class=\"num\">"+fmt(c.target)+"/ CPC "+ (c.clicks>0?rub(c.spend/c.clicks):"—") +"</b>"; }
+  document.getElementById("balFoot").innerHTML = "<span>"+spbLine+"</span><span>"+mskLine+"</span>";
+  drawSpark(w);
 }
 
-// ===== CHARTS =====
-var chartBase = {
-    responsive: true,
-    maintainAspectRatio: false,
+function drawSpark(w){
+  var svg = document.getElementById("spark");
+  var ord = ["w1","w2","w3"];
+  var ix = ord.indexOf(w.id);
+  var v0 = (prevWeek(w.id)?prevWeek(w.id).spend:w.spend*0.7);
+  var v2 = (nextWeek(w.id)?nextWeek(w.id).spend:w.spend*1.05);
+  var vals = [v0, w.spend, v2];
+  var mn = Math.min.apply(null, vals);
+  var mx = Math.max.apply(null, vals);
+  if(mx===mn) mx = mn+1;
+  var W=360, H=54;
+  function xAt(i){ return 40 + i*(W-80)/2; }
+  function yAt(v){ return H - ((v-mn)/(mx-mn))*(H-8) - 4; }
+  var d = "M"+xAt(0).toFixed(1)+" "+yAt(vals[0]).toFixed(1)+
+          " L"+xAt(1).toFixed(1)+" "+yAt(vals[1]).toFixed(1)+
+          " L"+xAt(2).toFixed(1)+" "+yAt(vals[2]).toFixed(1);
+  var area = d+" L"+xAt(2).toFixed(1)+" "+H+" L"+xAt(0).toFixed(1)+" "+H+" Z";
+  svg.setAttribute("viewBox","0 0 "+W+" "+H);
+  svg.innerHTML =
+    '<defs><linearGradient id="gspark" x1="0" y1="0" x2="0" y2="1">'+
+      '<stop offset="0" stop-color="#E18335" stop-opacity=".32"/>'+
+      '<stop offset="1" stop-color="#E18335" stop-opacity="0"/>'+
+    '</linearGradient></defs>'+
+    '<path d="'+area+'" fill="url(#gspark)"/>'+
+    '<path d="'+d+'" fill="none" stroke="#E18335" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>'+
+    '<circle cx="'+xAt(1)+'" cy="'+yAt(vals[1])+'" r="4" fill="#E18335" stroke="#fff" stroke-width="2"/>'+
+    '<text x="'+xAt(0)+'" y="'+(H-2)+'" font-family="JetBrains Mono" font-size="9" fill="#8493ab">'+esc(trunc((prevWeek(w.id)||{}).label||'—',9))+'</text>'+
+    '<text x="'+(xAt(2)-46)+'" y="'+(H-2)+'" font-family="JetBrains Mono" font-size="9" fill="#8493ab">'+esc(trunc((nextWeek(w.id)||{}).label||'—',9))+'</text>';
+}
+function esc(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+
+/* ===========================================================
+   KPI GRID
+   =========================================================== */
+function renderKPI(w){
+  var prev = prevWeek(w.id);
+  var items = [
+    {label:"Показы",    value:fmt(w.impressions), prev:prev?fmt(prev.impressions):null, delta:deltaBadge(w.impressions, prev?prev.impressions:null)},
+    {label:"Клики",     value:fmt(w.clicks),      prev:prev?fmt(prev.clicks):null,      delta:deltaBadge(w.clicks,      prev?prev.clicks:null)},
+    {label:"Расход",    value:rub(w.spend),       prev:prev?rub(prev.spend):null,       delta:deltaBadge(w.spend,       prev?prev.spend:null), custom:"acc"},
+    {label:"Лиды",      value:fmt(w.leads),       prev:prev?fmt(prev.leads):null,       delta:deltaBadge(w.leads,       prev?prev.leads:null)},
+    {label:"Целевые",   value:fmt(w.target),      prev:prev?fmt(prev.target):null,      delta:deltaBadge(w.target,      prev?prev.target:null), custom:"up"},
+    {label:"CTR",       value:pct(w.ctr),         prev:prev?pct(prev.ctr):null,         delta:deltaBadge(w.ctr,         prev?prev.ctr:null)},
+    {label:"CPC",       value:rub(w.cpc),         prev:prev?rub(prev.cpc):null,         delta:deltaBadge(w.cpc,         prev?prev.cpc:null), invert:true},
+    {label:"CPL",       value:rub(w.cpl),         prev:prev?rub(prev.cpl):null,         delta:deltaBadge(w.cpl,         prev?prev.cpl:null), invert:true}
+  ];
+  document.getElementById("kpiGrid").innerHTML = items.map(function(it){
+    var cls = it.delta.cls;
+    var arrow = cls==="up"?"▲":(cls==="down"?"▼":"");
+    if(it.invert){
+      // для CPC/CPL: меньше = лучше
+      if(cls==="up") { cls = "down"; arrow = "▼"; }
+      else if(cls==="down") { cls = "up"; arrow = "▲"; }
+    }
+    var deltaTxt = it.delta.txt.replace(/^[▲▼]\s*/,"");
+    var prevTxt = it.prev ? " vs "+it.prev : "";
+    return '<div class="kpi">'+
+      '<div class="lab">'+it.label+'</div>'+
+      '<div class="val '+(it.custom||"")+'">'+it.value+'</div>'+
+      '<div class="dl '+cls+'">'+arrow+deltaTxt+prevTxt+'</div>'+
+    '</div>';
+  }).join("");
+}
+
+/* ===========================================================
+   CHARTS
+   =========================================================== */
+let charts = {};
+function destroyCharts(){ Object.values(charts).forEach(function(c){ if(c) c.destroy(); }); charts={}; }
+
+function initCharts(w){
+  destroyCharts();
+  var C = getChartColors();
+  var labels = Object.keys(w.accounts);
+  var accs = Object.values(w.accounts);
+  var totals = accs.reduce(function(s,a){ return {spend:s.spend+a.spend, leads:s.leads+a.leads, target:s.target+a.target, clicks:s.clicks+a.clicks, imp:s.imp+a.imp}; }, {spend:0,leads:0,target:0,clicks:0,imp:0});
+
+  document.getElementById("spendLeadsTotals").textContent = "Сумма: " + rub(totals.spend) + " · " + fmt(totals.leads) + " лидов · " + fmt(totals.target) + " целевых";
+  document.getElementById("impClicksTotals").textContent  = "Сумма: " + fmt(totals.imp) + " показов · " + fmt(totals.clicks) + " кликов";
+
+  var baseFont = "JetBrains Mono";
+  var dark = "rgba(11,18,32,.97)";
+  var light = "rgba(255,255,255,.97)";
+  var txt = css("--txt")||"#0b1220", txt2 = css("--txt-2")||"#48566e", txt3 = C.txt3, ln = C.line;
+
+  var defOpts = {
+    responsive: true, maintainAspectRatio: false,
+    animation: {duration: 700, easing: "easeOutCubic"},
     plugins: {
-        legend: { labels: { color: 'var(--txt-2)', font: { size: 11, family: 'JetBrains Mono' } } },
-        tooltip: {
-            backgroundColor: 'var(--panel)',
-            titleColor: 'var(--txt)',
-            bodyColor: 'var(--txt-2)',
-            borderColor: 'var(--line)',
-            borderWidth: 1,
-            padding: 12,
-            cornerRadius: 8
-        }
+      legend: {display:true, position:"top", align:"end", labels:{color: txt2, font:{family: baseFont, size:10}, boxWidth:10, boxHeight:10, padding:10}},
+      tooltip: {backgroundColor: light, titleColor: txt, bodyColor: txt2, borderColor: ln, borderWidth:1, padding:10, cornerRadius:8, titleFont:{family:"Space Grotesk", weight:"600"}, bodyFont:{family: baseFont, size:11}}
     },
     scales: {
-        x: { ticks: { color: 'var(--txt-3)' }, grid: { color: 'var(--line)' } },
-        y: { ticks: { color: 'var(--txt-3)' }, grid: { color: 'var(--line)' } }
+      x: {ticks:{color:txt3, font:{family:baseFont, size:11}}, grid:{color: ln, display:true}},
+      y: {ticks:{color:txt3, font:{family:baseFont, size:11}}, grid:{color:ln}, beginAtZero:true}
     }
-};
+  };
 
-var chartInstances = {};
+  function mkScales(yT, y1T){
+    return {
+      x: defOpts.scales.x,
+      y: Object.assign({}, defOpts.scales.y, {position:"left", title:{display:true, text:yT, color:txt3, font:{family:baseFont, size:10}}}),
+      y1: Object.assign({}, defOpts.scales.y, {position:"right", grid:{display:false}, title:{display:true, text:y1T, color:txt3, font:{family:baseFont, size:10}}})
+    };
+  }
 
-function destroyCharts() {
-    Object.values(chartInstances).forEach(function(c) { if (c) c.destroy(); });
-    chartInstances = {};
-}
+  // 1. Spend & Leads
+  charts.spendLeads = new Chart(document.getElementById("spendLeadsChart"), {
+    type: "bar",
+    data: {
+      labels: labels,
+      datasets: [
+        {label:"Расход ₽", data: accs.map(function(a){return a.spend;}), backgroundColor: hexA(C.acc,.75), borderRadius:6, yAxisID:"y"},
+        {label:"Лиды",     data: accs.map(function(a){return a.leads;}), type:"line", borderColor:C.acc, backgroundColor:hexA(C.acc,.1), tension:.3, pointRadius:5, pointBackgroundColor:C.acc, yAxisID:"y1"},
+        {label:"Целевые",  data: accs.map(function(a){return a.target;}),type:"line", borderColor:C.violet, backgroundColor:hexA(C.violet,.1), tension:.3, pointRadius:5, pointBackgroundColor:C.violet, yAxisID:"y1"}
+      ]
+    },
+    options: Object.assign({}, defOpts, {scales: mkScales("Расход ₽", "Лиды")})
+  });
 
-function initCharts(w) {
-    destroyCharts();
-    var labels = Object.keys(w.accounts);
-    var accs = Object.values(w.accounts);
+  // 2. Impressions & Clicks
+  charts.impClicks = new Chart(document.getElementById("impressionsClicksChart"), {
+    type: "bar",
+    data: {
+      labels: labels,
+      datasets: [
+        {label:"Показы", data: accs.map(function(a){return a.imp;}), backgroundColor: hexA(C.blue,.75), borderRadius:6, yAxisID:"y"},
+        {label:"Клики",  data: accs.map(function(a){return a.clicks;}), type:"line", borderColor:C.acc, backgroundColor:hexA(C.acc,.1), tension:.3, pointRadius:5, pointBackgroundColor:C.acc, yAxisID:"y1"}
+      ]
+    },
+    options: Object.assign({}, defOpts, {scales: mkScales("Показы", "Клики")})
+  });
 
-    chartInstances.spendLeads = new Chart(document.getElementById('spendLeadsChart'), {
-        type: 'bar',
-        data: {
-            labels: labels,
-            datasets: [
-                { label: 'Расход (₽)', data: accs.map(function(a) { return a.spend; }), backgroundColor: 'rgba(225,131,53,0.7)', borderRadius: 6, yAxisID: 'y' },
-                { label: 'Лиды', data: accs.map(function(a) { return a.leads; }), type: 'line', borderColor: '#26d07c', backgroundColor: 'rgba(38,208,124,0.1)', tension: 0.3, pointRadius: 6, pointBackgroundColor: '#26d07c', yAxisID: 'y1' },
-                { label: 'Ц.Лиды', data: accs.map(function(a) { return a.target; }), type: 'line', borderColor: '#8b5cff', backgroundColor: 'rgba(139,92,255,0.1)', tension: 0.3, pointRadius: 6, pointBackgroundColor: '#8b5cff', yAxisID: 'y1' }
-            ]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: chartBase.plugins,
-            scales: {
-                x: chartBase.scales.x,
-                y: { ticks: { color: 'var(--txt-3)' }, grid: { color: 'var(--line)' }, position: 'left', title: { display: true, text: '₽', color: 'var(--txt-3)' } },
-                y1: { ticks: { color: 'var(--txt-3)' }, grid: { drawOnChartArea: false }, position: 'right', title: { display: true, text: 'Лиды', color: 'var(--txt-3)' } }
-            }
-        }
+  // 3. Top 8 campaigns by spend
+  var all = [];
+  Object.entries(w.accounts).forEach(function(pair){
+    pair[1].campaigns.forEach(function(c){ all.push(Object.assign({account:pair[0]}, c)); });
+  });
+  var top = all.map(function(c){
+    return Object.assign({}, c, {
+      ctr:  c.imp>0 ? c.clicks/c.imp*100 : 0,
+      conv: c.clicks>0 ? c.leads/c.clicks*100 : 0
     });
+  }).sort(function(a,b){return b.spend-a.spend;}).slice(0,8);
 
-    chartInstances.impressionsClicks = new Chart(document.getElementById('impressionsClicksChart'), {
-        type: 'bar',
-        data: {
-            labels: labels,
-            datasets: [
-                { label: 'Показы', data: accs.map(function(a) { return a.imp; }), backgroundColor: 'rgba(61,125,255,0.7)', borderRadius: 6, yAxisID: 'y' },
-                { label: 'Клики', data: accs.map(function(a) { return a.clicks; }), type: 'line', borderColor: '#E18335', backgroundColor: 'rgba(225,131,53,0.1)', tension: 0.3, pointRadius: 6, pointBackgroundColor: '#E18335', yAxisID: 'y1' }
-            ]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: chartBase.plugins,
-            scales: {
-                x: chartBase.scales.x,
-                y: { ticks: { color: 'var(--txt-3)' }, grid: { color: 'var(--line)' }, position: 'left', title: { display: true, text: 'Показы', color: 'var(--txt-3)' } },
-                y1: { ticks: { color: 'var(--txt-3)' }, grid: { drawOnChartArea: false }, position: 'right', title: { display: true, text: 'Клики', color: 'var(--txt-3)' } }
-            }
-        }
-    });
+  charts.efficiency = new Chart(document.getElementById("efficiencyChart"), {
+    type: "bar",
+    data: {
+      labels: top.map(function(c){return trunc(c.name, 24);}),
+      datasets: [
+        {label:"CTR %",  data: top.map(function(c){return c.ctr;}), backgroundColor: hexA(C.acc,.75), borderRadius:4, yAxisID:"y"},
+        {label:"Конв. в лид %", data: top.map(function(c){return c.conv;}), type:"line", borderColor:C.mint, backgroundColor:hexA(C.mint,.1), tension:.3, pointRadius:4, pointBackgroundColor:C.mint, yAxisID:"y1"}
+      ]
+    },
+    options: Object.assign({}, defOpts, {scales: mkScales("CTR %", "Конверсия %")})
+  });
 
-    var allCamps = [];
-    Object.keys(w.accounts).forEach(function(n) {
-        w.accounts[n].campaigns.forEach(function(c) {
-            allCamps.push({ name: c.name, imp: c.imp, clicks: c.clicks, spend: c.spend, leads: c.leads, account: n });
-        });
-    });
-    var topC = allCamps.map(function(c) {
-        return { name: c.name, ctr: c.imp > 0 ? c.clicks / c.imp * 100 : 0, conv: c.clicks > 0 ? c.leads / c.clicks * 100 : 0, spend: c.spend };
-    }).sort(function(a, b) { return b.spend - a.spend; }).slice(0, 8);
+  // 4. CPA / CPL — null если невалидно
+  charts.cost = new Chart(document.getElementById("costChart"), {
+    type: "bar",
+    data: {
+      labels: labels,
+      datasets: [
+        {label:"CPA ₽", data: accs.map(function(a){return a.leads>0 ? Math.round(a.spend/a.leads) : null;}), backgroundColor: hexA(C.down,.65), borderRadius:6, yAxisID:"y", spanGaps:false},
+        {label:"CPL ₽", data: accs.map(function(a){return a.target>0 ? Math.round(a.spend/a.target) : null;}), type:"line", borderColor:C.violet, backgroundColor:hexA(C.violet,.1), tension:.3, pointRadius:5, pointBackgroundColor:C.violet, yAxisID:"y1", spanGaps:false}
+      ]
+    },
+    options: Object.assign({}, defOpts, {scales: mkScales("CPA ₽", "CPL ₽")})
+  });
 
-    chartInstances.efficiency = new Chart(document.getElementById('efficiencyChart'), {
-        type: 'bar',
-        data: {
-            labels: topC.map(function(c) { return c.name.length > 25 ? c.name.substring(0, 22) + '...' : c.name; }),
-            datasets: [
-                { label: 'CTR %', data: topC.map(function(c) { return c.ctr; }), backgroundColor: 'rgba(225,131,53,0.7)', borderRadius: 6, yAxisID: 'y' },
-                { label: 'Конв. в лид %', data: topC.map(function(c) { return c.conv; }), type: 'line', borderColor: '#26d07c', backgroundColor: 'rgba(38,208,124,0.1)', tension: 0.3, pointRadius: 6, pointBackgroundColor: '#26d07c', yAxisID: 'y1' }
-            ]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: chartBase.plugins,
-            scales: {
-                x: chartBase.scales.x,
-                y: { ticks: { color: 'var(--txt-3)' }, grid: { color: 'var(--line)' }, position: 'left', title: { display: true, text: 'CTR %', color: 'var(--txt-3)' } },
-                y1: { ticks: { color: 'var(--txt-3)' }, grid: { drawOnChartArea: false }, position: 'right', title: { display: true, text: 'Конв. %', color: 'var(--txt-3)' } }
-            }
-        }
-    });
-
-    chartInstances.cost = new Chart(document.getElementById('costChart'), {
-        type: 'bar',
-        data: {
-            labels: labels,
-            datasets: [
-                { label: 'CPA (₽)', data: accs.map(function(a) { return a.leads > 0 ? a.spend / a.leads : 0; }), backgroundColor: 'rgba(226,48,72,0.7)', borderRadius: 6, yAxisID: 'y' },
-                { label: 'CPL (₽)', data: accs.map(function(a) { return a.target > 0 ? a.spend / a.target : 0; }), type: 'line', borderColor: '#8b5cff', backgroundColor: 'rgba(139,92,255,0.1)', tension: 0.3, pointRadius: 6, pointBackgroundColor: '#8b5cff', yAxisID: 'y1' }
-            ]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: chartBase.plugins,
-            scales: {
-                x: chartBase.scales.x,
-                y: { ticks: { color: 'var(--txt-3)' }, grid: { color: 'var(--line)' }, position: 'left', title: { display: true, text: 'CPA (₽)', color: 'var(--txt-3)' } },
-                y1: { ticks: { color: 'var(--txt-3)' }, grid: { drawOnChartArea: false }, position: 'right', title: { display: true, text: 'CPL (₽)', color: 'var(--txt-3)' } }
-            }
-        }
-    });
-
-    chartInstances.accountSpend = new Chart(document.getElementById('accountSpendChart'), {
-        type: 'doughnut',
-        data: {
-            labels: labels,
-            datasets: [{ data: accs.map(function(a) { return a.spend; }), backgroundColor: ['#E18335','#8b5cff','#26d07c','#3d7dff'], borderColor: 'var(--panel)', borderWidth: 3 }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: { position: 'bottom', labels: { color: 'var(--txt-2)', padding: 12, font: { size: 11 } } },
-                tooltip: {
-                    backgroundColor: 'var(--panel)',
-                    titleColor: 'var(--txt)',
-                    bodyColor: 'var(--txt-2)',
-                    borderColor: 'var(--line)',
-                    borderWidth: 1,
-                    callbacks: { label: function(ctx) { return ctx.label + ': ' + rub(ctx.raw); } }
-                }
-            }
-        }
-    });
-
-    chartInstances.channelLeads = new Chart(document.getElementById('channelLeadsChart'), {
-        type: 'doughnut',
-        data: {
-            labels: w.channels.map(function(c) { return c.name; }),
-            datasets: [{ data: w.channels.map(function(c) { return c.leads; }), backgroundColor: ['#E18335','#3d7dff','#26d07c','#8b5cff','#ffb020','#22d3ee','#71717a','#ff5a6e'], borderColor: 'var(--panel)', borderWidth: 3 }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: { position: 'bottom', labels: { color: 'var(--txt-2)', padding: 12, font: { size: 11 } } }
-            }
-        }
-    });
-}
-
-// ===== DETAIL TABLE =====
-function renderDetailTable(w) {
-    var t = document.getElementById('detailTable');
-    var h = '<thead><tr><th>Канал / Кабинет / Кампания</th><th>Показы</th><th>Клики</th><th>CTR</th><th>CPC</th><th>Лиды</th><th>Конв.</th><th>CPA</th><th>Ц.Лиды</th><th>Конв.ЦЛ</th><th>CPL</th><th>Расход</th></tr></thead><tbody>';
-
-    h += '<tr class="row-total"><td>Итого</td><td>' + fmt(w.impressions) + '</td><td>' + fmt(w.clicks) + '</td><td>' + pct(w.clicks / w.impressions * 100) + '</td><td>' + rub(w.spend / w.clicks) + '</td><td>' + w.leads + '</td><td>' + pct(w.leads / w.clicks * 100) + '</td><td>' + (w.leads > 0 ? rub(w.spend / w.leads) : '—') + '</td><td>' + w.target + '</td><td>' + pct(w.target / w.leads * 100) + '</td><td>' + (w.target > 0 ? rub(w.spend / w.target) : '—') + '</td><td>' + rub(w.spend) + '</td></tr>';
-
-    var dLeads = 0;
-    var dTarget = 0;
-    w.channels.forEach(function(c) {
-        if (c.name === 'Яндекс Директ') { dLeads = c.leads; dTarget = c.target; }
-    });
-    h += '<tr class="row-channel"><td>Яндекс Директ</td><td>' + fmt(w.impressions) + '</td><td>' + fmt(w.clicks) + '</td><td>' + pct(w.clicks / w.impressions * 100) + '</td><td>' + rub(w.spend / w.clicks) + '</td><td>' + dLeads + '</td><td>' + pct(dLeads / w.clicks * 100) + '</td><td>' + (dLeads > 0 ? rub(w.spend / dLeads) : '—') + '</td><td>' + dTarget + '</td><td>' + pct(dTarget / dLeads * 100) + '</td><td>' + (dTarget > 0 ? rub(w.spend / dTarget) : '—') + '</td><td>' + rub(w.spend) + '</td></tr>';
-
-    Object.keys(w.accounts).forEach(function(n) {
-        var a = w.accounts[n];
-        var accCtr = a.imp > 0 ? a.clicks / a.imp * 100 : 0;
-        var accCpc = a.clicks > 0 ? a.spend / a.clicks : 0;
-        h += '<tr class="row-account"><td>' + n + '</td><td>' + fmt(a.imp) + '</td><td>' + fmt(a.clicks) + '</td><td>' + pct(accCtr) + '</td><td>' + rub(accCpc) + '</td><td>' + a.leads + '</td><td>' + pct(a.clicks > 0 ? a.leads / a.clicks * 100 : 0) + '</td><td>' + (a.leads > 0 ? rub(a.spend / a.leads) : '—') + '</td><td>' + a.target + '</td><td>' + (a.leads > 0 ? pct(a.target / a.leads * 100) : '—') + '</td><td>' + (a.target > 0 ? rub(a.spend / a.target) : '—') + '</td><td>' + rub(a.spend) + '</td></tr>';
-
-        a.campaigns.forEach(function(c) {
-            var cCtr = c.imp > 0 ? c.clicks / c.imp * 100 : 0;
-            var cCpc = c.clicks > 0 ? c.spend / c.clicks : 0;
-            h += '<tr style="font-size:11px;color:var(--txt-3)"><td style="padding-left:32px">' + c.name + '</td><td>' + fmt(c.imp) + '</td><td>' + fmt(c.clicks) + '</td><td>' + pct(cCtr) + '</td><td>' + rub(cCpc) + '</td><td>' + c.leads + '</td><td>' + pct(c.clicks > 0 ? c.leads / c.clicks * 100 : 0) + '</td><td>' + (c.leads > 0 ? rub(c.spend / c.leads) : '—') + '</td><td>' + c.target + '</td><td>' + (c.leads > 0 ? pct(c.target / c.leads * 100) : '—') + '</td><td>' + (c.target > 0 ? rub(c.spend / c.target) : '—') + '</td><td>' + rub(c.spend) + '</td></tr>';
-        });
-    });
-
-    w.channels.forEach(function(c) {
-        if (c.name === 'Яндекс Директ') return;
-        h += '<tr><td>' + c.name + '</td><td>—</td><td>—</td><td>—</td><td>—</td><td>' + c.leads + '</td><td>—</td><td>—</td><td>' + c.target + '</td><td>' + (c.leads > 0 ? pct(c.target / c.leads * 100) : '—') + '</td><td>—</td><td>—</td></tr>';
-    });
-
-    h += '</tbody>';
-    t.innerHTML = h;
-}
-
-// ===== SEO TABLES =====
-function renderTopPages(w) {
-    ['Spb', 'Msk'].forEach(function(s) {
-        var b = document.getElementById('topPagesBody' + s);
-        var data = w['topPages' + s];
-        if (!data || !data.length) {
-            b.innerHTML = '<tr><td colspan="4" style="text-align:center;padding:20px;color:var(--txt-3)">Нет данных</td></tr>';
-            return;
-        }
-        b.innerHTML = data.slice(0, 10).map(function(p, i) {
-            var url = p.url;
-            if (url.length > 50) url = url.substring(0, 47) + '...';
-            return '<tr><td style="color:var(--txt-3);font-size:10px">' + (i + 1) + '</td><td style="max-width:220px;overflow:hidden;text-overflow:ellipsis">' + url + '</td><td class="r" style="font-weight:600">' + fmt(p.clicks) + '</td><td class="r">' + fmt(p.impressions) + '</td></tr>';
-        }).join('');
-    });
-}
-
-function renderTopQueries(w) {
-    ['Spb', 'Msk'].forEach(function(s) {
-        var b = document.getElementById('topQueriesBody' + s);
-        var data = w['topQueries' + s];
-        if (!data || !data.length) {
-            b.innerHTML = '<tr><td colspan="3" style="text-align:center;padding:20px;color:var(--txt-3)">Нет данных</td></tr>';
-            return;
-        }
-        b.innerHTML = data.slice(0, 10).map(function(q, i) {
-            return '<tr><td style="color:var(--txt-3);font-size:10px">' + (i + 1) + '</td><td>' + q.query + '</td><td class="r" style="font-weight:600;color:var(--acc)">' + q.visits + '</td></tr>';
-        }).join('');
-    });
-}
-
-// ===== SEO CHARTS =====
-function renderSeoChart(w) {
-    // SPB
-    var idSpb = 'seoPerformanceChartSpb';
-    var canvasSpb = document.getElementById(idSpb);
-    var ctxSpb = canvasSpb.getContext('2d');
-    if (chartInstances.seoSpb) chartInstances.seoSpb.destroy();
-    if (!w.seoStats || !w.seoStats.spb || w.seoStats.spb.visits === 0) {
-        ctxSpb.clearRect(0, 0, canvasSpb.width, canvasSpb.height);
-        ctxSpb.font = '12px Inter';
-        ctxSpb.fillStyle = 'var(--txt-3)';
-        ctxSpb.textAlign = 'center';
-        ctxSpb.fillText('Нет данных', canvasSpb.width / 2, canvasSpb.height / 2);
-    } else {
-        var dSpb = w.seoStats.spb;
-        chartInstances.seoSpb = new Chart(ctxSpb, {
-            type: 'bar',
-            data: {
-                labels: ['Визиты', 'Пользователи', 'Глубина', 'Время (сек)'],
-                datasets: [{
-                    data: [dSpb.visits, dSpb.users, dSpb.pageDepth * 100, dSpb.avgDuration],
-                    backgroundColor: ['#26d07c', '#3d7dff', '#8b5cff', '#E18335'],
-                    borderRadius: 4
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: { display: false },
-                    tooltip: {
-                        backgroundColor: 'var(--panel)',
-                        titleColor: 'var(--txt)',
-                        bodyColor: 'var(--txt-2)',
-                        borderColor: 'var(--line)',
-                        borderWidth: 1,
-                        callbacks: {
-                            label: function(ctx) {
-                                var v = ctx.parsed.y;
-                                if (ctx.label === 'Глубина') v = (v / 100).toFixed(2);
-                                return ctx.label + ': ' + v;
-                            }
-                        }
-                    }
-                },
-                scales: {
-                    x: { ticks: { color: 'var(--txt-3)', font: { size: 10 } }, grid: { display: false } },
-                    y: { ticks: { color: 'var(--txt-3)', font: { size: 10 } }, grid: { color: 'var(--line)' } }
-                }
-            }
-        });
+  // 5. Account spend doughnut
+  charts.accountSpend = new Chart(document.getElementById("accountSpendChart"), {
+    type: "doughnut",
+    data: {
+      labels: labels,
+      datasets: [{data: accs.map(function(a){return a.spend;}), backgroundColor:[C.acc, C.violet, C.mint, C.blue], borderColor:"#ffffff", borderWidth:3}]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false, cutout: "62%",
+      plugins: {
+        legend: {position: "bottom", labels: {color: txt2, font:{family: baseFont, size:11}, boxWidth:10, padding:10}},
+        tooltip: Object.assign({}, defOpts.plugins.tooltip, {callbacks: {label: function(ctx){ return ctx.label + ": " + rub(ctx.raw); }}})
+      }
     }
+  });
 
-    // MSK
-    var idMsk = 'seoPerformanceChartMsk';
-    var canvasMsk = document.getElementById(idMsk);
-    var ctxMsk = canvasMsk.getContext('2d');
-    if (chartInstances.seoMsk) chartInstances.seoMsk.destroy();
-    if (!w.seoStats || !w.seoStats.msk || w.seoStats.msk.visits === 0) {
-        ctxMsk.clearRect(0, 0, canvasMsk.width, canvasMsk.height);
-        ctxMsk.font = '12px Inter';
-        ctxMsk.fillStyle = 'var(--txt-3)';
-        ctxMsk.textAlign = 'center';
-        ctxMsk.fillText('Нет данных', canvasMsk.width / 2, canvasMsk.height / 2);
-    } else {
-        var dMsk = w.seoStats.msk;
-        chartInstances.seoMsk = new Chart(ctxMsk, {
-            type: 'bar',
-            data: {
-                labels: ['Визиты', 'Пользователи', 'Глубина', 'Время (сек)'],
-                datasets: [{
-                    data: [dMsk.visits, dMsk.users, dMsk.pageDepth * 100, dMsk.avgDuration],
-                    backgroundColor: ['#26d07c', '#3d7dff', '#8b5cff', '#E18335'],
-                    borderRadius: 4
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: { display: false },
-                    tooltip: {
-                        backgroundColor: 'var(--panel)',
-                        titleColor: 'var(--txt)',
-                        bodyColor: 'var(--txt-2)',
-                        borderColor: 'var(--line)',
-                        borderWidth: 1,
-                        callbacks: {
-                            label: function(ctx) {
-                                var v = ctx.parsed.y;
-                                if (ctx.label === 'Глубина') v = (v / 100).toFixed(2);
-                                return ctx.label + ': ' + v;
-                            }
-                        }
-                    }
-                },
-                scales: {
-                    x: { ticks: { color: 'var(--txt-3)', font: { size: 10 } }, grid: { display: false } },
-                    y: { ticks: { color: 'var(--txt-3)', font: { size: 10 } }, grid: { color: 'var(--line)' } }
-                }
-            }
-        });
+  // 6. Channel leads doughnut
+  var channelPalette = [C.acc, C.cyan, C.mint, C.violet, C.amber, C.blue, "#7a8090", C.down, "#c47b00"];
+  charts.channelLeads = new Chart(document.getElementById("channelLeadsChart"), {
+    type: "doughnut",
+    data: {
+      labels: w.channels.map(function(c){return c.name;}),
+      datasets: [{data: w.channels.map(function(c){return c.leads;}), backgroundColor: channelPalette.slice(0, w.channels.length), borderColor:"#ffffff", borderWidth:3}]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false, cutout: "58%",
+      plugins: {
+        legend: {position: "bottom", labels: {color: txt2, font:{family: baseFont, size:11}, boxWidth:10, padding:10}},
+        tooltip: defOpts.plugins.tooltip
+      }
     }
+  });
 }
 
-// ===== SHOW PERIOD =====
-function showPeriod(periodId) {
-    currentWeek = periodId;
-    var w = weeks[periodId];
-    document.getElementById('subtitle').textContent = 'Яндекс.Директ · 2 кабинета · sk-tu.ru + msk.sk-tu.ru · ' + w.from + '–' + w.to;
-    document.getElementById('detailTableTitle').textContent = 'Детализация за период ' + w.from + '–' + w.to;
-    document.getElementById('seoTitle').textContent = w.from + ' — ' + w.to;
-    document.getElementById('footerPeriod').textContent = w.from + '–' + w.to;
-    document.querySelectorAll('.seg').forEach(function(b) {
-        b.classList.remove('active');
-        if (b.textContent.indexOf(w.label) !== -1) b.classList.add('active');
+/* ===========================================================
+   CAMPAIGN STATUS PILL
+   =========================================================== */
+function campStatus(c){
+  if(c.target>0) return {cls:"ok",   txt:"★ эффективная"};
+  if(c.leads>0)  return {cls:"pend", txt:"● в работе"};
+  if(c.spend>=15000) return {cls:"fail", txt:"✕ ревизия"};
+  if(c.spend>=5000) return {cls:"hold", txt:"◆ низкая отдача"};
+  return {cls:"acc", txt:"◇ тест"};
+}
+
+/* ===========================================================
+   DETAIL TABLE
+   =========================================================== */
+function renderDetailTable(w){
+  var t = document.getElementById("detailTable");
+  var h = '<thead><tr>'+
+    '<th>Канал / Кабинет / Кампания</th><th>Статус</th>'+
+    '<th class="r">Показы</th><th class="r">Клики</th><th class="r">CTR</th><th class="r">CPC</th>'+
+    '<th class="r">Лиды</th><th class="r">Конв.</th><th class="r">CPA</th>'+
+    '<th class="r">Ц.Лиды</th><th class="r">Конв.ЦЛ</th><th class="r">CPL</th><th class="r">Расход</th>'+
+    '</tr></thead><tbody>';
+
+  var avgCtr = w.impressions>0 ? w.clicks/w.impressions*100 : 0;
+  var avgCpa = w.leads>0 ? w.spend/w.leads : null;
+  var avgCpl = w.target>0 ? w.spend/w.target : null;
+
+  // ИТОГО — blended по всем источникам
+  h += '<tr class="row-total">'+
+    '<td><b>ИТОГО</b> · все источники<span class="meta">blended CPL</span></td>'+
+    '<td><span class="st ok">★ период</span></td>'+
+    '<td class="r">'+fmt(w.impressions)+'</td><td class="r">'+fmt(w.clicks)+'</td><td class="r">'+pct(avgCtr)+'</td><td class="r">'+rub(w.spend/Math.max(w.clicks,1))+'</td>'+
+    '<td class="r">'+fmt(w.leads)+'</td><td class="r">'+pct(w.clicks>0?w.leads/w.clicks*100:0)+'</td><td class="r">'+((avgCpa?rub(avgCpa):"—"))+'</td>'+
+    '<td class="r">'+fmt(w.target)+'</td><td class="r">'+pct(w.leads>0?w.target/w.leads*100:0)+'</td><td class="r">'+((avgCpl?rub(avgCpl):"—"))+'</td><td class="r">'+rub(w.spend)+'</td>'+
+    '</tr>';
+
+  // Яндекс Директ (2 кабинета суммарно)
+  var direct = w.channels.find(function(c){return c.name==="Яндекс Директ";}) || {leads:0, target:0, spend:0};
+  h += '<tr class="row-channel">'+
+    '<td><b>Яндекс Директ</b> · 2 кабинета<span class="meta">расход = сумма 2 кабинетов</span></td>'+
+    '<td><span class="st acc">◈ платный</span></td>'+
+    '<td class="r">'+fmt(w.impressions)+'</td><td class="r">'+fmt(w.clicks)+'</td><td class="r">'+pct(avgCtr)+'</td><td class="r">'+rub(w.spend/Math.max(w.clicks,1))+'</td>'+
+    '<td class="r">'+fmt(direct.leads)+'</td><td class="r">'+pct(w.clicks>0?direct.leads/w.clicks*100:0)+'</td><td class="r">'+((direct.leads?rub(direct.spend/direct.leads):"—"))+'</td>'+
+    '<td class="r">'+fmt(direct.target)+'</td><td class="r">'+pct(direct.leads?direct.target/direct.leads*100:0)+'</td><td class="r">'+((direct.target?rub(direct.spend/direct.target):"—"))+'</td><td class="r">'+rub(direct.spend)+'</td>'+
+    '</tr>';
+
+  // Кабинеты и их кампании
+  Object.entries(w.accounts).forEach(function(pair){
+    var accName = pair[0], acc = pair[1];
+    var accCtr = acc.imp>0 ? acc.clicks/acc.imp*100 : 0;
+    var accCpa = acc.leads>0 ? acc.spend/acc.leads : null;
+    var accCpl = acc.target>0 ? acc.spend/acc.target : null;
+    var impCell = (acc.imp>0 ? fmt(acc.imp) : '<span class="meta">нет данных</span>');
+    h += '<tr class="row-account">'+
+      '<td><b>'+accName+'</b></td>'+
+      '<td></td>'+
+      '<td class="r">'+impCell+'</td><td class="r">'+fmt(acc.clicks)+'</td><td class="r">'+pct(accCtr)+'</td><td class="r">'+ (acc.clicks>0?rub(acc.spend/acc.clicks):"—") +'</td>'+
+      '<td class="r">'+fmt(acc.leads)+'</td><td class="r">'+pct(acc.clicks>0?acc.leads/acc.clicks*100:0)+'</td><td class="r">'+((accCpa?rub(accCpa):"—"))+'</td>'+
+      '<td class="r">'+fmt(acc.target)+'</td><td class="r">'+pct(acc.leads>0?acc.target/acc.leads*100:0)+'</td><td class="r">'+((accCpl?rub(accCpl):"—"))+'</td><td class="r">'+rub(acc.spend)+'</td>'+
+      '</tr>';
+
+    acc.campaigns.forEach(function(c){
+      var cCtr = c.imp>0 ? c.clicks/c.imp*100 : 0;
+      var cCpa = c.leads>0 ? c.spend/c.leads : null;
+      var cCpl = c.target>0 ? c.spend/c.target : null;
+      var st = campStatus(c);
+      var cImpCell = (c.imp>0 ? fmt(c.imp) : '<span class="meta">—</span>');
+      h += '<tr class="row-campaign">'+
+        '<td style="padding-left:32px">'+esc(c.name)+'</td>'+
+        '<td><span class="st '+st.cls+'">'+st.txt+'</span></td>'+
+        '<td class="r">'+cImpCell+'</td><td class="r">'+fmt(c.clicks)+'</td><td class="r">'+pct(cCtr)+'</td><td class="r">'+ (c.clicks>0?rub(c.spend/c.clicks):"—") +'</td>'+
+        '<td class="r">'+fmt(c.leads)+'</td><td class="r">'+pct(c.clicks>0?c.leads/c.clicks*100:0)+'</td><td class="r">'+((cCpa?rub(cCpa):"—"))+'</td>'+
+        '<td class="r">'+fmt(c.target)+'</td><td class="r">'+pct(c.leads>0?c.target/c.leads*100:0)+'</td><td class="r">'+((cCpl?rub(cCpl):"—"))+'</td><td class="r">'+rub(c.spend)+'</td>'+
+        '</tr>';
     });
-    renderKPI(w);
-    initCharts(w);
-    renderDetailTable(w);
-    renderTopPages(w);
-    renderTopQueries(w);
-    renderSeoChart(w);
+  });
+
+  // Прочие каналы
+  w.channels.filter(function(c){return c.name!=="Яндекс Директ";}).forEach(function(c){
+    var chCpl = c.leads>0 ? c.target/c.leads*100 : 0;
+    h += '<tr>'+
+      '<td>'+esc(c.name)+'</td>'+
+      '<td><span class="st '+(c.target>0?"ok":c.leads>0?"pend":"fail")+'">'+(c.target>0?"★ целевая":c.leads>0?"● обычная":"✕ нецелевая")+'</span></td>'+
+      '<td class="r">—</td><td class="r">—</td><td class="r">—</td><td class="r">—</td>'+
+      '<td class="r">'+fmt(c.leads)+'</td><td class="r">—</td><td class="r">—</td>'+
+      '<td class="r">'+fmt(c.target)+'</td><td class="r">'+pct(chCpl)+'</td><td class="r">—</td><td class="r">'+(c.spend>0?rub(c.spend):"—")+'</td>'+
+      '</tr>';
+  });
+
+  h += '</tbody>';
+  t.innerHTML = h;
 }
 
-// ===== THEME TOGGLE =====
-function toggleTheme() {
-    var r = document.documentElement;
-    var k = document.getElementById('tglK');
-    var isDark = r.getAttribute('data-theme') !== 'light';
-    if (isDark) {
-        r.setAttribute('data-theme', 'light');
-        if (k) k.textContent = '\u2600\uFE0F';
-        try { localStorage.setItem('tu-ds-theme', 'light'); } catch(e) {}
-    } else {
-        r.setAttribute('data-theme', 'dark');
-        if (k) k.textContent = '\uD83C\uDF19';
-        try { localStorage.setItem('tu-ds-theme', 'dark'); } catch(e) {}
-    }
+/* ===========================================================
+   3-WEEK COMPARISON GRID
+   =========================================================== */
+function renderCompare(){
+  var metrics = [
+    {key:"spend",  label:"РАСХОД",   fmtFn: function(v){return rub(v);} },
+    {key:"leads",  label:"ЛИДЫ",     fmtFn: function(v){return fmt(v);} },
+    {key:"target", label:"ЦЕЛЕВЫЕ",  fmtFn: function(v){return fmt(v);}, acc:true},
+    {key:"clicks", label:"КЛИКИ",    fmtFn: function(v){return fmt(v);} },
+    {key:"ctr",    label:"CTR",      fmtFn: function(v){return v?v.toFixed(2)+"%":"—";} },
+    {key:"cpl",    label:"CPL",      fmtFn: function(v){return rub(v);}, invert:true},
+    {key:"impressions", label:"ПОКАЗЫ", fmtFn: function(v){return fmt(v);}, mixedSources:true}
+  ];
+  document.getElementById("compareGrid").innerHTML = metrics.map(function(m){
+    var vals = weekOrder.map(function(id){return weeks[id][m.key];});      var bars = weekOrder.map(function(id, i){
+      var v = vals[i];
+      var prev = i>0 ? vals[i-1] : null;
+      var dTxt = "";
+      var mixedChip = "";
+      if(prev!=null && prev!==0){
+        var d = (v-prev)/prev*100;
+        if(m.mixedSources && id!=="w1"){
+          // w2/w3 sources differ from w1 → mark delta as not comparable
+          dTxt = '<span class="delta flat">· оценка</span>';
+        } else if(Math.abs(d)<0.5) dTxt = '<span class="delta flat">· стабильно</span>';
+        else if(d>0) dTxt = '<span class="delta up">▲ +'+d.toFixed(1)+'%</span>';
+        else dTxt = '<span class="delta down">▼ '+d.toFixed(1)+'%</span>';
+      } else {
+        if(m.mixedSources) dTxt = '<span class="delta flat">· baseline</span>';
+        else dTxt = '<span class="delta flat">— baseline</span>';
+      }
+      if(m.mixedSources && id!=="w1"){
+        mixedChip = '<span class="assump" title="w2/w3: оценка по CTR w1" style="margin-left:6px">⚠</span>';
+      }
+      var cls = "comp-bar";
+      var bigCls = m.acc ? "big acc" : "big";
+      return '<div class="'+cls+'">'+
+        '<span class="lbl">'+weeks[id].label.split("–")[0]+mixedChip+'</span>'+
+        '<span class="'+bigCls+'">'+m.fmtFn(v)+'</span>'+
+        dTxt+
+      '</div>';
+    }).join("");
+    return '<div class="comp-card">'+
+      '<div class="hd"><b>'+m.label+'</b><span>3 недели · 3 периода</span></div>'+
+      '<div class="comp-bars">'+bars+'</div>'+
+    '</div>';
+  }).join("");
 }
 
-// ===== INIT =====
-try {
-    var savedT = localStorage.getItem('tu-ds-theme') || 'light';
-    document.documentElement.setAttribute('data-theme', savedT);
-    var tglK = document.getElementById('tglK');
-    if (tglK) tglK.textContent = savedT === 'dark' ? '\uD83C\uDF19' : '\u2600\uFE0F';
-} catch(e) {}
+/* ===========================================================
+   SEO TABLES
+   =========================================================== */
+function renderTopPages(w){
+  ["Spb","Msk"].forEach(function(s){
+    var tb = document.getElementById("topPagesBody"+s);
+    var data = w["topPages"+s];
+    if(!data||!data.length){ tb.innerHTML = '<tr><td colspan="4" style="text-align:center;padding:14px;color:var(--txt-3)">Нет данных</td></tr>'; return; }
+    tb.innerHTML = data.slice(0,10).map(function(p,i){
+      var u = p.url.length>60 ? p.url.substring(0,57)+"…" : p.url;
+      return '<tr><td style="color:var(--txt-3);font-family:JetBrains Mono,monospace;font-size:10px">'+(i+1)+'</td>'+
+        '<td style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:300px" title="'+esc(p.url)+'">'+u+'</td>'+
+        '<td class="r" style="font-weight:600">'+fmt(p.clicks)+'</td>'+
+        '<td class="r" style="color:var(--txt-3)">'+fmt(p.impressions)+'</td></tr>';
+    }).join("");
+  });
+}
+function renderTopQueries(w){
+  ["Spb","Msk"].forEach(function(s){
+    var tb = document.getElementById("topQueriesBody"+s);
+    var data = w["topQueries"+s];
+    if(!data||!data.length){ tb.innerHTML = '<tr><td colspan="3" style="text-align:center;padding:14px;color:var(--txt-3)">Нет данных</td></tr>'; return; }
+    tb.innerHTML = data.slice(0,10).map(function(q,i){
+      return '<tr><td style="color:var(--txt-3);font-family:JetBrains Mono,monospace;font-size:10px">'+(i+1)+'</td>'+
+        '<td style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:380px" title="'+esc(q.query)+'">'+esc(q.query)+'</td>'+
+        '<td class="r" style="font-weight:600;color:var(--acc)">'+fmt(q.visits)+'</td></tr>';
+    }).join("");
+  });
+}
 
-renderKPI(weeks[currentWeek]);
-initCharts(weeks[currentWeek]);
-renderDetailTable(weeks[currentWeek]);
-renderTopPages(weeks[currentWeek]);
-renderTopQueries(weeks[currentWeek]);
-renderSeoChart(weeks[currentWeek]);
+function renderSeoCharts(w){
+  var C = getChartColors();
+  ["Spb","Msk"].forEach(function(s){
+    var canvasId = "seoPerformanceChart"+s;
+    var badgeId = (s==="Spb"?"spbMetricBadge":"mskMetricBadge");
+    var data = w.seoStats[s.toLowerCase()];
+    var prev = prevWeek(w.id);
+    var prevData = prev ? prev.seoStats[s.toLowerCase()] : null;
+    var periodEl = document.getElementById(s==="Spb"?"seoSpbPeriod":"seoMskPeriod");
+    if(periodEl) periodEl.textContent = w.label+" · "+w.from+"–"+w.to;
 
-// ===== SCROLL EFFECTS =====
-(function() {
-    var bar = document.getElementById('barProg');
-    var topBtn = document.getElementById('toTop');
-    window.addEventListener('scroll', function() {
-        var st = document.documentElement.scrollTop || document.body.scrollTop;
-        var hh = document.documentElement.scrollHeight - innerHeight;
-        if (bar) bar.style.width = (hh ? st / hh * 100 : 0) + '%';
-        if (topBtn) topBtn.classList.toggle('show', st > 400);
-    }, { passive: true });
-    if (topBtn) topBtn.addEventListener('click', function() { scrollTo({ top: 0, behavior: 'smooth' }); });
+    if(charts["seo"+s]) charts["seo"+s].destroy();
+    var baseFont = "JetBrains Mono";
+    var txt2 = css("--txt-2")||"#48566e", txt3 = C.txt3, ln = C.line;
+    charts["seo"+s] = new Chart(document.getElementById(canvasId).getContext("2d"), {
+      type: "bar",
+      data: {
+        labels: ["Визиты","Пользователи","Глубина (стр)","Время (сек)"],
+        datasets: [{data:[data.visits, data.users, data.pageDepth*100, data.avgDuration], backgroundColor:[C.mint, C.blue, C.violet, C.acc], borderRadius:4}]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: {
+          legend: {display: false},
+          tooltip: {backgroundColor:"rgba(255,255,255,.97)", titleColor:"#0b1220", bodyColor:"#48566e", borderColor: ln, borderWidth:1, padding:10, cornerRadius:8, bodyFont:{family:baseFont, size:11}, callbacks:{label:function(c){
+            var v=c.parsed.y;
+            if(c.label==="Глубина (стр)") return "Глубина: "+(v/100).toFixed(2)+" стр.";
+            if(c.label==="Время (сек)")   return "Время: "+Math.floor(v/60)+" мин "+Math.round(v%60)+" с";
+            return c.label+": "+fmt(v);
+          }}}
+        },
+        scales: {
+          x: {ticks:{color:txt3, font:{family:baseFont, size:9}}, grid:{display:false}},
+          y: {ticks:{color:txt3, font:{family:baseFont, size:11}}, grid:{color:ln}, beginAtZero:true}
+        }
+      }
+    });
+    updateSeoBadge(badgeId, data.visits, prevData?prevData.visits:null);
+  });
+}
+function updateSeoBadge(id, curr, prev){
+  var el = document.getElementById(id);
+  if(!el) return;
+  if(prev==null||prev===undefined||prev===0){
+    el.textContent = "— baseline"; el.style.color="var(--txt-3)"; el.style.background="var(--panel)"; el.style.borderColor="var(--line)"; return;
+  }
+  var d = (curr-prev)/prev*100;
+  if(Math.abs(d)<1){ el.textContent="· стабильно"; el.style.color="var(--txt-3)"; el.style.background="var(--panel)"; el.style.borderColor="var(--line)"; }
+  else if(d>0){ el.textContent="▲ +"+d.toFixed(1)+"% визитов"; el.style.color="var(--up)"; el.style.background="var(--up-soft)"; el.style.borderColor="color-mix(in srgb,var(--up) 30%,transparent)"; }
+  else { el.textContent="▼ "+d.toFixed(1)+"% визитов"; el.style.color="var(--down)"; el.style.background="var(--down-soft)"; el.style.borderColor="color-mix(in srgb,var(--down) 30%,transparent)"; }
+}
+
+/* ===========================================================
+   FINAL INSIGHTS — programmatic per-week
+   =========================================================== */
+function renderFinal(w){
+  var prev = prevWeek(w.id);
+  document.getElementById("finalTitle").textContent = "Главные выводы по периоду: " + w.label;
+  var intro = "";
+  var bullets = [];
+  // 1) тренд
+  if(prev){
+    var dTarget = ((w.target-prev.target)/Math.max(prev.target,1)*100);
+    var dSpend = ((w.spend-prev.spend)/Math.max(prev.spend,1)*100);
+    var dCpl = ((w.cpl-prev.cpl)/Math.max(prev.cpl,1)*100);
+    var trendWord = w.target>prev.target?"выросли":"снизились";
+    var cplWord = dCpl<0?"снизилась":"выросла";
+    intro = "Целевые лиды <b>"+trendWord+" с "+prev.target+" до "+w.target+" ("+(w.target>prev.target?"+":"")+dTarget.toFixed(0)+"%)</b> при изменении расхода "+(dSpend>=0?"+":"")+dSpend.toFixed(0)+"%. Эффективность CPL: <b>"+cplWord+" на "+Math.abs(dCpl).toFixed(0)+"%</b>.";
+  } else {
+    intro = "Baseline-период (w1). Сравнение с предыдущей неделей пока невозможно — данные до 15.06.2026 не внесены в дашборд.";
+  }
+  // 2) Channel mix
+  var direct = w.channels.find(function(c){return c.name==="Яндекс Директ";});
+  if(direct){
+    var dirShare = w.target>0 ? (direct.target/w.target*100) : 0;
+    var judge = dirShare>=60?"Основной канал — платный трафик, риск концентрации.":dirShare>=30?"Сбалансированный микс с органическими каналами.":"Сильная роль не-платных каналов, устойчивая воронка.";
+    bullets.push("Доля Директа в целевых: <b>"+dirShare.toFixed(0)+"%</b> ("+direct.target+" из "+w.target+"). "+judge);
+  }
+  // 3) кампании без лидов при высоком расходе
+  var badSpend = [];
+  Object.entries(w.accounts).forEach(function(pair){
+    pair[1].campaigns.forEach(function(c){
+      if(c.leads===0 && c.spend>=10000) badSpend.push({n:c.name, a:pair[0], s:c.spend});
+    });
+  });
+  if(badSpend.length){
+    var sum = badSpend.reduce(function(s,x){return s+x.s;},0);
+    var list = badSpend.slice(0,5).map(function(x){return '<span class="num"><b>'+esc(trunc(x.n,28))+'</b></span> ('+rub(x.s)+')';}).join(" · ");
+    bullets.push("<span style=\"color:var(--down)\">Внимание: "+badSpend.length+" кампаний без единого лида при расходе "+rub(sum)+"</span> — рекомендуется остановить или перезапустить с новой семантикой: "+list+".");
+  } else {
+    bullets.push("Все кампании с расходом ≥ 10 000 ₽ дали хотя бы один лид. Кампаний-кандидатов на остановку нет.");
+  }
+  // 4) top performers
+  var allC = [];
+  Object.entries(w.accounts).forEach(function(pair){ pair[1].campaigns.forEach(function(c){ allC.push(c); }); });
+  var topByLeads = allC.slice().sort(function(a,b){return b.leads-a.leads;}).slice(0,3);
+  if(topByLeads.length){
+    var topList = topByLeads.map(function(c){return '<span class="num"><b>'+esc(trunc(c.name,30))+'</b></span> ('+c.leads+" л · "+rub(c.spend)+')';}).join(" · ");
+    bullets.push("ТОП-3 кампании по лидам: "+topList);
+  }
+  // 5) SEO
+  var seoTotal = w.seoStats.spb.visits + w.seoStats.msk.visits;
+  var mskShare = seoTotal>0 ? w.seoStats.msk.visits/seoTotal*100 : 0;
+  bullets.push("Органический трафик: <b>"+fmt(seoTotal)+"</b> визитов за неделю. Доля МСК: "+mskShare.toFixed(0)+"%, СПБ: "+(100-mskShare).toFixed(0)+"%. "+(mskShare>=60?"МСК доминирует в органике — возможна переоценка SEO-стратегии СПБ.":"СПБ лидирует в органике, МСК стоит подтянуть контентом."));
+
+  // 6) special: w2/w3 data quality note
+  if(w.noteImpressions){
+    bullets.push("<span class=\"assump\">⚠ допущение</span> "+w.noteImpressions+". Это влияет только на график «Показы и клики по кабинетам» для недели "+w.label+" — все остальные метрики рассчитаны из реальных данных.");
+  }
+
+  document.getElementById("finalBody").innerHTML =
+    '<div class="final">'+
+      '<div class="ft">🏁 Главный вывод</div>'+
+      '<p style="margin-bottom:14px">'+intro+'</p>'+
+      '<ul class="clean" style="list-style:none;padding:0;margin:6px 0 0">'+bullets.map(function(b){return '<li style="position:relative;padding-left:22px;margin-bottom:9px;font-size:14px;color:var(--txt-2);line-height:1.6"><span style="position:absolute;left:0;color:var(--acc);font-size:13px">▸</span>'+b+'</li>';}).join("")+'</ul>'+
+      '<div class="chain">'+
+        '<span class="cstep">свой дом</span><span class="carr">→</span>'+
+        '<span class="cstep">по цене квартиры</span><span class="carr">→</span>'+
+        '<span class="cstep">безопасно как новостройка</span><span class="carr">→</span>'+
+        '<span class="cstep">под ключ за сезон</span>'+
+      '</div>'+
+    '</div>';
+}
+
+/* ===========================================================
+   THEME TOGGLE
+   =========================================================== */
+function toggleTheme(){
+  var r = document.documentElement;
+  var k = document.getElementById("tglK");
+  var btn = document.getElementById("tgl");
+  var isLight = r.getAttribute("data-theme")==="light";
+  if(isLight){
+    r.setAttribute("data-theme","dark");
+    if(k) k.textContent = "🌙";
+    if(btn) btn.setAttribute("aria-checked","true");
+    try{ localStorage.setItem("tu-ds-theme","dark"); }catch(e){}
+  } else {
+    r.setAttribute("data-theme","light");
+    if(k) k.textContent = "☀️";
+    if(btn) btn.setAttribute("aria-checked","false");
+    try{ localStorage.setItem("tu-ds-theme","light"); }catch(e){}
+  }
+  initCharts(weeks[currentWeek]);
+}
+
+/* ===========================================================
+   PERIOD SWITCH
+   =========================================================== */
+function showPeriod(id){
+  currentWeek = id;
+  var w = weeks[id];
+  document.querySelectorAll(".period-selector .seg").forEach(function(b){
+    b.classList.toggle("active", b.dataset.w===id);
+  });
+  document.getElementById("kpiPeriod").textContent = w.from+" — "+w.to;
+  document.getElementById("drillTitle").textContent = "Детализация по кабинетам и кампаниям · "+w.from+"–"+w.to;
+  renderBal(w);
+  renderKPI(w);
+  initCharts(w);
+  renderDetailTable(w);
+  renderTopPages(w);
+  renderTopQueries(w);
+  renderSeoCharts(w);
+  renderFinal(w);
+}
+
+/* ===========================================================
+   SCROLLSPY · REVEAL · TO-TOP · INIT
+   =========================================================== */
+(function(){
+  var secs = Array.from(document.querySelectorAll(".sec"));
+  if("IntersectionObserver" in window){
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add("in"); io.unobserve(e.target); } });
+    }, {threshold:.08});
+    secs.forEach(function(s){ io.observe(s); });
+  }
+  setTimeout(function(){ secs.forEach(function(s){s.classList.add("in");}); }, 900);
+
+  var links = Array.from(document.querySelectorAll("#topNav .nav-seg"));
+  function updateSpy(){
+    var y = (window.scrollY||document.documentElement.scrollTop||0) + 160;
+    var cur = links[0];
+    links.forEach(function(l){
+      var el = document.querySelector(l.getAttribute("href"));
+      if(el && el.offsetTop <= y) cur = l;
+    });
+    links.forEach(function(l){ l.classList.toggle("active", l===cur); });
+  }
+
+  var bar = document.getElementById("barProg");
+  var topBtn = document.getElementById("toTop");
+  window.addEventListener("scroll", function(){
+    var st = window.scrollY || document.documentElement.scrollTop || 0;
+    var hh = (document.documentElement.scrollHeight||document.body.scrollHeight) - innerHeight;
+    if(bar) bar.style.width = (hh>0 ? st/hh*100 : 0) + "%";
+    if(topBtn) topBtn.classList.toggle("show", st>400);
+    updateSpy();
+  }, {passive:true});
+  if(topBtn) topBtn.addEventListener("click", function(){ scrollTo({top:0, behavior:"smooth"}); });
+
+  // Theme init
+  try{
+    var saved = localStorage.getItem("tu-ds-theme");
+    var t = saved || "light";
+    document.documentElement.setAttribute("data-theme", t);
+    var k = document.getElementById("tglK");
+    if(k) k.textContent = t==="dark"?"🌙":"☀️";
+    var btn = document.getElementById("tgl");
+    if(btn) btn.setAttribute("aria-checked", t==="dark");
+  }catch(e){}
+
+  // First render
+  showPeriod("w2");
+  updateSpy();
 })();
 </script>
 </body>
