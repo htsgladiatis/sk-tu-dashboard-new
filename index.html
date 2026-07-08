@@ -1404,6 +1404,10 @@ function showPeriod(id){
     if(btn) btn.setAttribute("aria-checked", t==="dark");
   }catch(e){}
 
+  // Theme toggle click handler — wire existing toggleTheme() fn to .tgl button
+  var tglBtn = document.getElementById("tgl");
+  if(tglBtn) tglBtn.addEventListener("click", toggleTheme);
+
   // First render
   showPeriod("w2");
   updateSpy();
