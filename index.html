@@ -135,19 +135,21 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
 
 /* ====== TABLES ====== */
 .tbl-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:var(--r-sm);margin:6px 0}
-.tbl{width:100%;border-collapse:collapse;font-size:13px}
-.tbl th{text-align:left;font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--txt-3);
-  background:var(--panel-2);padding:11px 14px;border-bottom:1px solid var(--line);white-space:nowrap}
-.tbl td{padding:11px 14px;color:var(--txt-2);border-bottom:1px solid var(--line);vertical-align:middle}
+.tbl{width:100%;border-collapse:collapse;font-size:12.5px;font-variant-numeric:tabular-nums;font-feature-settings:"tnum" 1,"lnum" 1}
+.tbl th,.tbl td{font-variant-numeric:tabular-nums;font-feature-settings:"tnum" 1,"lnum" 1}
+.tbl th{text-align:left;font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--txt-3);
+  background:var(--panel-2);padding:10px 9px;border-bottom:1px solid var(--line);white-space:nowrap}
+.tbl td{padding:9px 9px;color:var(--txt-2);border-bottom:1px solid var(--line);vertical-align:middle;line-height:1.35}
 .tbl tr:last-child td{border-bottom:none}
 .tbl tbody tr{transition:background .15s}.tbl tbody tr:hover{background:var(--panel-2)}
-.tbl td:first-child{color:var(--txt);font-weight:500}
-.tbl .r{text-align:right}
+.tbl td:first-child{color:var(--txt);font-weight:500;max-width:280px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tbl th.r,.tbl td.r{text-align:right;font-family:'JetBrains Mono',monospace;font-feature-settings:"tnum" 1,"lnum" 1;font-variant-numeric:tabular-nums}
+.tbl th.r{font-weight:600}
 .row-total td{font-weight:700;font-size:13px;border-top:2px solid var(--acc);color:var(--txt)!important;background:color-mix(in srgb,var(--acc) 6%,transparent)}
 .row-channel td{font-weight:600;color:var(--txt)!important;background:var(--panel-2)}
 .row-account td{font-weight:600;background:color-mix(in srgb,var(--violet) 7%,transparent)}
 .row-campaign td{color:var(--txt-3)}
-.tbl .meta{font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--txt-3);font-weight:500;margin-left:8px;padding:1px 7px;border:1px solid var(--line);border-radius:5px;background:var(--panel-2);letter-spacing:.02em}
+.tbl .meta{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--txt-3);font-weight:500;margin-left:6px;padding:1px 6px;border:1px solid var(--line);border-radius:5px;background:var(--panel-2);letter-spacing:.02em;white-space:nowrap}
 
 /* ====== KPI ====== */
 .kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:13px}
@@ -164,16 +166,6 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
 .kpi .dl.down{color:var(--down);background:var(--down-soft)}
 .kpi .dl.flat{color:var(--txt-3);background:var(--panel)}
 .kpi .dl.acc{color:var(--acc);background:color-mix(in srgb,var(--acc) 14%,transparent)}
-
-/* ====== STATUS PILLS ====== */
-.st{display:inline-flex;align-items:center;gap:6px;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:500;padding:4px 10px;border-radius:7px;border:1px solid;white-space:nowrap;line-height:1}
-.st::before{content:'';width:6px;height:6px;border-radius:50%;background:currentColor;flex-shrink:0}
-.st.ok{color:var(--up);background:var(--up-soft);border-color:color-mix(in srgb,var(--up) 30%,transparent)}
-.st.pend{color:var(--amber);background:color-mix(in srgb,var(--amber) 14%,transparent);border-color:color-mix(in srgb,var(--amber) 30%,transparent)}
-.st.fail{color:var(--down);background:var(--down-soft);border-color:color-mix(in srgb,var(--down) 30%,transparent)}
-.st.auth{color:var(--blue);background:color-mix(in srgb,var(--blue) 14%,transparent);border-color:color-mix(in srgb,var(--blue) 30%,transparent)}
-.st.hold{color:var(--violet);background:color-mix(in srgb,var(--violet) 14%,transparent);border-color:color-mix(in srgb,var(--violet) 30%,transparent)}
-.st.acc{color:var(--acc);background:color-mix(in srgb,var(--acc) 14%,transparent);border-color:color-mix(in srgb,var(--acc) 30%,transparent)}
 
 /* ====== CHARTS GRID ====== */
 .charts-6{display:grid;grid-template-columns:repeat(auto-fit,minmax(460px,1fr));gap:16px}
@@ -313,9 +305,8 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
       <div class="ix-t">Графики эффективности</div>
     </div>
     <div class="ix-extra">Chart.js 4.4.7 · responsive</div>
-  </div>
-  <div class="sec-b">
-    <p class="lead">Шесть графиков по двум кабинетам Директа. Используется палитра TU OS v2: <b>#E18335</b> амбер, <b>#00a877</b> рост, <b>#6d3bff</b> цели. Для недели <b>w2 и w3</b> аккаунтные показы отсутствуют в источнике — график «Показы и клики» показывает данные УРОВНЯ НЕДЕЛИ.</p>
+  </div>    <div class="sec-b">
+    <p class="lead">Шесть графиков по двум кабинетам Директа. Используется палитра TU OS v2: <b>#E18335</b> амбер, <b>#00a877</b> рост, <b>#6d3bff</b> цели. Все цифры — из реальных выгрузок Яндекс.Директа.</p>
     <div class="charts-6">
       <div class="chart-card">
         <h3>Расход и лиды по кабинетам</h3>
@@ -324,7 +315,7 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
       </div>
       <div class="chart-card">
         <h3>Показы и клики по кабинетам</h3>
-        <div class="sub"><span id="impClicksTotals">—</span><span class="assump">w2/w3: оценка по CTR w1</span></div>
+        <div class="sub"><span id="impClicksTotals">—</span></div>
         <div class="cht"><canvas id="impressionsClicksChart"></canvas></div>
       </div>
       <div class="chart-card">
@@ -375,10 +366,10 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
       <div class="ix-n">04 · DRILLDOWN</div>
       <div class="ix-t" id="drillTitle">Детализация по кабинетам и кампаниям</div>
     </div>
-    <div class="ix-extra">2 уровня · статусы кампаний</div>
+    <div class="ix-extra">числа · без оценок</div>
   </div>
   <div class="sec-b">
-    <p class="lead">Полная таблица: канал → кабинет → кампания. У кампаний статус: <span class="st ok">★ эффективная</span> если есть целевые лиды, <span class="st pend">● в работе</span> если есть лиды без целевых, <span class="st fail">✕ ревизия</span> если 0 лидов при расходе ≥ 15 000 ₽, <span class="st hold">◆ низкая отдача</span> если 0 лидов при расходе 5–15 тыс ₽.</p>
+    <p class="lead">Полная таблица: канал → кабинет → кампания. 11 показателей: Показы, Клики, CTR, CPC, Лиды, Конверсия в лид, CPA, Целевые лиды, Конверсия в ЦЛ, CPL, Расход. Оценки и субъективные вердикты не выводятся — смотрите на цифры.</p>
     <div class="tbl-wrap"><table class="tbl" id="detailTable"></table></div>
   </div>
 </section>
@@ -494,7 +485,7 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
     <div class="r">
       <b id="footerVer">TU OS v2.1 · build 2026-07-08</b>
       Методология: данные за календарную неделю (пн–вс)<br>
-      Допущения помечаются <span class="assump">⚠ допущение</span>
+      Все цифры — из реальных выгрузок Яндекс.Директа, Вебмастера и Метрики
     </div>
   </div>
 </footer>
@@ -1048,23 +1039,12 @@ function initCharts(w){
 }
 
 /* ===========================================================
-   CAMPAIGN STATUS PILL
-   =========================================================== */
-function campStatus(c){
-  if(c.target>0) return {cls:"ok",   txt:"★ эффективная"};
-  if(c.leads>0)  return {cls:"pend", txt:"● в работе"};
-  if(c.spend>=15000) return {cls:"fail", txt:"✕ ревизия"};
-  if(c.spend>=5000) return {cls:"hold", txt:"◆ низкая отдача"};
-  return {cls:"acc", txt:"◇ тест"};
-}
-
-/* ===========================================================
    DETAIL TABLE
    =========================================================== */
 function renderDetailTable(w){
   var t = document.getElementById("detailTable");
   var h = '<thead><tr>'+
-    '<th>Канал / Кабинет / Кампания</th><th>Статус</th>'+
+    '<th>Канал / Кабинет / Кампания</th>'+
     '<th class="r">Показы</th><th class="r">Клики</th><th class="r">CTR</th><th class="r">CPC</th>'+
     '<th class="r">Лиды</th><th class="r">Конв.</th><th class="r">CPA</th>'+
     '<th class="r">Ц.Лиды</th><th class="r">Конв.ЦЛ</th><th class="r">CPL</th><th class="r">Расход</th>'+
@@ -1077,7 +1057,6 @@ function renderDetailTable(w){
   // ИТОГО — blended по всем источникам
   h += '<tr class="row-total">'+
     '<td><b>ИТОГО</b> · все источники<span class="meta">blended CPL</span></td>'+
-    '<td><span class="st ok">★ период</span></td>'+
     '<td class="r">'+fmt(w.impressions)+'</td><td class="r">'+fmt(w.clicks)+'</td><td class="r">'+pct(avgCtr)+'</td><td class="r">'+rub(w.spend/Math.max(w.clicks,1))+'</td>'+
     '<td class="r">'+fmt(w.leads)+'</td><td class="r">'+pct(w.clicks>0?w.leads/w.clicks*100:0)+'</td><td class="r">'+((avgCpa?rub(avgCpa):"—"))+'</td>'+
     '<td class="r">'+fmt(w.target)+'</td><td class="r">'+pct(w.leads>0?w.target/w.leads*100:0)+'</td><td class="r">'+((avgCpl?rub(avgCpl):"—"))+'</td><td class="r">'+rub(w.spend)+'</td>'+
@@ -1087,7 +1066,6 @@ function renderDetailTable(w){
   var direct = w.channels.find(function(c){return c.name==="Яндекс Директ";}) || {leads:0, target:0, spend:0};
   h += '<tr class="row-channel">'+
     '<td><b>Яндекс Директ</b> · 2 кабинета<span class="meta">расход = сумма 2 кабинетов</span></td>'+
-    '<td><span class="st acc">◈ платный</span></td>'+
     '<td class="r">'+fmt(w.impressions)+'</td><td class="r">'+fmt(w.clicks)+'</td><td class="r">'+pct(avgCtr)+'</td><td class="r">'+rub(w.spend/Math.max(w.clicks,1))+'</td>'+
     '<td class="r">'+fmt(direct.leads)+'</td><td class="r">'+pct(w.clicks>0?direct.leads/w.clicks*100:0)+'</td><td class="r">'+((direct.leads?rub(direct.spend/direct.leads):"—"))+'</td>'+
     '<td class="r">'+fmt(direct.target)+'</td><td class="r">'+pct(direct.leads?direct.target/direct.leads*100:0)+'</td><td class="r">'+((direct.target?rub(direct.spend/direct.target):"—"))+'</td><td class="r">'+rub(direct.spend)+'</td>'+
@@ -1102,7 +1080,6 @@ function renderDetailTable(w){
     var impCell = (acc.imp>0 ? fmt(acc.imp) : '<span class="meta">нет данных</span>');
     h += '<tr class="row-account">'+
       '<td><b>'+accName+'</b></td>'+
-      '<td></td>'+
       '<td class="r">'+impCell+'</td><td class="r">'+fmt(acc.clicks)+'</td><td class="r">'+pct(accCtr)+'</td><td class="r">'+ (acc.clicks>0?rub(acc.spend/acc.clicks):"—") +'</td>'+
       '<td class="r">'+fmt(acc.leads)+'</td><td class="r">'+pct(acc.clicks>0?acc.leads/acc.clicks*100:0)+'</td><td class="r">'+((accCpa?rub(accCpa):"—"))+'</td>'+
       '<td class="r">'+fmt(acc.target)+'</td><td class="r">'+pct(acc.leads>0?acc.target/acc.leads*100:0)+'</td><td class="r">'+((accCpl?rub(accCpl):"—"))+'</td><td class="r">'+rub(acc.spend)+'</td>'+
@@ -1112,11 +1089,9 @@ function renderDetailTable(w){
       var cCtr = c.imp>0 ? c.clicks/c.imp*100 : 0;
       var cCpa = c.leads>0 ? c.spend/c.leads : null;
       var cCpl = c.target>0 ? c.spend/c.target : null;
-      var st = campStatus(c);
       var cImpCell = (c.imp>0 ? fmt(c.imp) : '<span class="meta">—</span>');
       h += '<tr class="row-campaign">'+
         '<td style="padding-left:32px">'+esc(c.name)+'</td>'+
-        '<td><span class="st '+st.cls+'">'+st.txt+'</span></td>'+
         '<td class="r">'+cImpCell+'</td><td class="r">'+fmt(c.clicks)+'</td><td class="r">'+pct(cCtr)+'</td><td class="r">'+ (c.clicks>0?rub(c.spend/c.clicks):"—") +'</td>'+
         '<td class="r">'+fmt(c.leads)+'</td><td class="r">'+pct(c.clicks>0?c.leads/c.clicks*100:0)+'</td><td class="r">'+((cCpa?rub(cCpa):"—"))+'</td>'+
         '<td class="r">'+fmt(c.target)+'</td><td class="r">'+pct(c.leads>0?c.target/c.leads*100:0)+'</td><td class="r">'+((cCpl?rub(cCpl):"—"))+'</td><td class="r">'+rub(c.spend)+'</td>'+
@@ -1129,7 +1104,6 @@ function renderDetailTable(w){
     var chCpl = c.leads>0 ? c.target/c.leads*100 : 0;
     h += '<tr>'+
       '<td>'+esc(c.name)+'</td>'+
-      '<td><span class="st '+(c.target>0?"ok":c.leads>0?"pend":"fail")+'">'+(c.target>0?"★ целевая":c.leads>0?"● обычная":"✕ нецелевая")+'</span></td>'+
       '<td class="r">—</td><td class="r">—</td><td class="r">—</td><td class="r">—</td>'+
       '<td class="r">'+fmt(c.leads)+'</td><td class="r">—</td><td class="r">—</td>'+
       '<td class="r">'+fmt(c.target)+'</td><td class="r">'+pct(chCpl)+'</td><td class="r">—</td><td class="r">'+(c.spend>0?rub(c.spend):"—")+'</td>'+
@@ -1151,28 +1125,20 @@ function renderCompare(){
     {key:"clicks", label:"КЛИКИ",    fmtFn: function(v){return fmt(v);} },
     {key:"ctr",    label:"CTR",      fmtFn: function(v){return v?v.toFixed(2)+"%":"—";} },
     {key:"cpl",    label:"CPL",      fmtFn: function(v){return rub(v);}, invert:true},
-    {key:"impressions", label:"ПОКАЗЫ", fmtFn: function(v){return fmt(v);}, mixedSources:true}
+    {key:"impressions", label:"ПОКАЗЫ", fmtFn: function(v){return fmt(v);} }
   ];
   document.getElementById("compareGrid").innerHTML = metrics.map(function(m){
     var vals = weekOrder.map(function(id){return weeks[id][m.key];});      var bars = weekOrder.map(function(id, i){
       var v = vals[i];
       var prev = i>0 ? vals[i-1] : null;
       var dTxt = "";
-      var mixedChip = "";
       if(prev!=null && prev!==0){
         var d = (v-prev)/prev*100;
-        if(m.mixedSources && id!=="w1"){
-          // w2/w3 sources differ from w1 → mark delta as not comparable
-          dTxt = '<span class="delta flat">· оценка</span>';
-        } else if(Math.abs(d)<0.5) dTxt = '<span class="delta flat">· стабильно</span>';
+        if(Math.abs(d)<0.5) dTxt = '<span class="delta flat">· стабильно</span>';
         else if(d>0) dTxt = '<span class="delta up">▲ +'+d.toFixed(1)+'%</span>';
         else dTxt = '<span class="delta down">▼ '+d.toFixed(1)+'%</span>';
       } else {
-        if(m.mixedSources) dTxt = '<span class="delta flat">· baseline</span>';
-        else dTxt = '<span class="delta flat">— baseline</span>';
-      }
-      if(m.mixedSources && id!=="w1"){
-        mixedChip = '<span class="assump" title="w2/w3: оценка по CTR w1" style="margin-left:6px">⚠</span>';
+        dTxt = '<span class="delta flat">— baseline</span>';
       }
       var cls = "comp-bar";
       var bigCls = m.acc ? "big acc" : "big";
