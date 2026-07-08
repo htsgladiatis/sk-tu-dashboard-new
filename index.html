@@ -59,10 +59,16 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
 /* ====== HEADER ====== */
 .hdr{position:sticky;top:0;z-index:100;background:var(--glass);backdrop-filter:blur(16px) saturate(150%);border-bottom:1px solid var(--line)}
 .hdr-in{max-width:var(--maxw);margin:0 auto;padding:14px 24px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
-.brand{display:flex;align-items:center;gap:11px}
-.brand-mark{width:34px;height:34px;border-radius:9px;background:var(--grad-acc);color:var(--acc-ink);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;box-shadow:var(--glow-acc);font-family:'Space Grotesk',sans-serif;letter-spacing:-.02em}
-.brand b{font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:700;letter-spacing:.04em}
-.brand span{display:block;font-size:10px;color:var(--txt-3);font-family:'JetBrains Mono',monospace;letter-spacing:.1em;margin-top:1px}
+.brand{display:flex;align-items:center;gap:12px}
+.brand-logo{height:32px;width:auto;display:block;filter:drop-shadow(0 0 6px rgba(225,131,53,.25))}
+[data-theme="light"] .brand-logo{filter:drop-shadow(0 0 4px rgba(225,131,53,.18))}
+.brand-sub{font-size:10px;color:var(--txt-3);font-family:'JetBrains Mono',monospace;letter-spacing:.12em;border-left:1px solid var(--line);padding-left:12px;text-transform:uppercase}
+.ca-link{display:inline-flex;align-items:center;gap:7px;font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:500;letter-spacing:.04em;text-decoration:none;color:var(--violet);background:color-mix(in srgb,var(--violet) 12%,transparent);border:1px solid color-mix(in srgb,var(--violet) 30%,transparent);border-radius:10px;padding:7px 13px;transition:all .2s var(--ease);flex-shrink:0;white-space:nowrap}
+.ca-link:hover{color:var(--txt);background:color-mix(in srgb,var(--violet) 20%,transparent);border-color:var(--violet);transform:translateY(-1px);box-shadow:0 4px 14px rgba(139,92,255,.22)}
+.ca-link .ix{font-family:'JetBrains Mono',monospace;font-size:11px;opacity:.7;transition:transform .2s var(--ease),opacity .2s}
+.ca-link:hover .ix{transform:translate(1px,-1px);opacity:1}
+[data-theme="light"] .ca-link:hover{box-shadow:0 4px 14px rgba(109,59,255,.18)}
+@media(max-width:760px){.brand-logo{height:26px}.brand-sub{display:none}.ca-link{padding:6px 10px;font-size:11px}}
 .hdr-sp{flex:1;min-width:8px}
 .period-selector{display:inline-flex;background:var(--panel-2);padding:4px;border-radius:11px;border:1px solid var(--line);gap:2px}
 .seg{display:inline-flex;align-items:center;gap:7px;white-space:nowrap;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--txt-2);
@@ -216,7 +222,7 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
 
 @media(max-width:860px){.hero{grid-template-columns:1fr;padding-top:34px}.bal{order:-1}}
 @media(max-width:560px){.hero h1{font-size:29px}.wrap{padding:18px 14px 50px}.hdr-in{padding:12px 14px}}
-@media print{.to-top,.tgl,.bar-prog,.period-selector,.navbar{display:none!important}}
+@media print{.to-top,.tgl,.bar-prog,.period-selector,.navbar,.ca-link{display:none!important}}
 @media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
 </head>
@@ -227,12 +233,12 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
 <header class="hdr">
   <div class="hdr-in">
     <div class="brand">
-      <div class="brand-mark">ТУ</div>
-      <div>
-        <b>Тёплый Угол</b>
-        <span>МАРКЕТИНГ-ДАШБОРД</span>
-      </div>
+      <img class="brand-logo" src="https://sk-tu.ru/local/templates/v1.0/static/img/logo-large.svg" alt="Тёплый Угол · маркетинговый дашборд">
+      <span class="brand-sub">МАРКЕТИНГ-ДАШБОРД</span>
     </div>
+    <a class="ca-link" href="https://htsgladiatis.github.io/sk-tu-ca-analysis/" target="_blank" rel="noopener noreferrer" aria-label="Анализ ЦА — глубокий анализ целевой аудитории, откроется в новой вкладке">
+      <span class="ix">↗</span>Анализ ЦА
+    </a>
     <div class="hdr-sp"></div>
     <div class="period-selector" role="tablist" aria-label="Период">
       <button class="seg" data-w="w1" onclick="showPeriod('w1')"><span class="ix">w1</span>15.06–21.06</button>
