@@ -847,7 +847,7 @@ const weeks = {
   },
   w5: {
     id: "w5", label: "13.07–19.07", from: "13.07.2026", to: "19.07.2026",
-    impressions: 155409, clicks: 9555, spend: 235321.42, leads: 79, target: 31, noteLeads: "leads=79 — всего сделок в CRM за неделю (включая нераспределённые по каналам). target=31 — целевые лиды (status-matched). Из 79 сделок каналы распределены только для 31 ЦЛ; Direct-лиды не атрибутированы (см. ниже).",
+    impressions: 155409, clicks: 9555, spend: 235321.42, leads: 79, target: 31, noteLeads: "Direct-лиды не атрибутированы: CRM не передаёт utm_campaign. Из 79 сделок в каналы распределены только 31 ЦЛ (по source).",
     ctr: 6.15, cpc: 24.63, cpa: 2979, cpl: 7592,
     noteImpressions: "Данные показов — из Яндекс.Вебмастера (агрегировано по обоим кабинетам; в W5 показы по аккаунтам = 0, т.к. выгрузка попала в общий пул).",
     accounts: {
@@ -867,7 +867,7 @@ const weeks = {
       }
     },
     channels: [
-      {name:"Яндекс Директ", leads:null, target:null, spend:235321.42, noteLeads:"CRM за W5 не передаёт utm_campaign → лиды по Директу не распределены по источникам. Метрики кликов/расхода агрегированы по двум кабинетам (9555 кликов / 235 321 ₽)."},
+      {name:"Яндекс Директ", leads:null, target:null, spend:235321.42, noteLeads:"CRM не передаёт utm_campaign → лиды по Директу не атрибутированы. По кликам/расходу: 9 555 кликов / 235 321 ₽."},
       {name:"Выставочный дом", leads:11, target:11, spend:0},
       {name:"Вх. звонок", leads:5, target:5, spend:0},
       {name:"Instagram", leads:3, target:3, spend:0},
@@ -998,7 +998,8 @@ function renderBal(w){
   var cpl = rub(w.cpl);
   var convЦЛ = (w.leads>0 ? (w.target/w.leads*100) : 0);
   document.getElementById("balSub").innerHTML =
-    "Период <b>"+w.from+"–"+w.to+"</b> · CPL <b class=\"num\">"+cpl+"</b> · конверсия в ЦЛ <b class=\"num\">"+convЦЛ.toFixed(1)+"%</b>";
+    "Период <b>"+w.from+"–"+w.to+"</b> · CPL <b class=\"num\">"+cpl+"</b> · конверсия в ЦЛ <b class=\"num\">"+convЦЛ.toFixed(1)+"%</b>"
+    +(w.noteLeads?' · <span class="assump">⚠ Direct-лиды</span>':"");
   var accArr = Object.entries(w.accounts);
   var spb = accArr.find(function(x){return x[0].indexOf("СПБ")>=0;});
   var msk = accArr.find(function(x){return x[0].indexOf("МСК")>=0;});
@@ -1257,8 +1258,8 @@ function renderDetailTable(w){
     h += '<tr class="row-account">'+
       '<td><b>'+accName+'</b></td>'+
       '<td class="r">'+impCell+'</td><td class="r">'+fmt(acc.clicks)+'</td><td class="r">'+pct(accCtr)+'</td><td class="r">'+ (acc.clicks>0?rub(acc.spend/acc.clicks):"—") +'</td>'+
-      '<td class="r">'+fmt(acc.leads)+'</td><td class="r">'+pct(acc.clicks>0?acc.leads/acc.clicks*100:0)+'</td><td class="r">'+((accCpa?rub(accCpa):"—"))+'</td>'+
-      '<td class="r">'+fmt(acc.target)+'</td><td class="r">'+pct(acc.leads>0?acc.target/acc.leads*100:0)+'</td><td class="r">'+((accCpl?rub(accCpl):"—"))+'</td><td class="r">'+rub(acc.spend)+'</td>'+
+      '<td class="r">'+fmt(w.noteLeads && acc.leads===0 && acc.spend>0 ? null : acc.leads)+'</td><td class="r">'+pct((acc.leads!=null && acc.clicks>0)?acc.leads/acc.clicks*100:null)+'</td><td class="r">'+((accCpa?rub(accCpa):"—"))+'</td>'+
+      '<td class="r">'+fmt(w.noteLeads && acc.target===0 && acc.spend>0 ? null : acc.target)+'</td><td class="r">'+pct((acc.target!=null && acc.leads>0)?acc.target/acc.leads*100:null)+'</td><td class="r">'+((accCpl?rub(accCpl):"—"))+'</td><td class="r">'+rub(acc.spend)+'</td>'+
       '</tr>';
 
     acc.campaigns.forEach(function(c){
@@ -1269,8 +1270,8 @@ function renderDetailTable(w){
       h += '<tr class="row-campaign">'+
         '<td style="padding-left:32px">'+esc(c.name)+'</td>'+
         '<td class="r">'+cImpCell+'</td><td class="r">'+fmt(c.clicks)+'</td><td class="r">'+pct(cCtr)+'</td><td class="r">'+ (c.clicks>0?rub(c.spend/c.clicks):"—") +'</td>'+
-        '<td class="r">'+fmt(c.leads)+'</td><td class="r">'+pct(c.clicks>0?c.leads/c.clicks*100:0)+'</td><td class="r">'+((cCpa?rub(cCpa):"—"))+'</td>'+
-        '<td class="r">'+fmt(c.target)+'</td><td class="r">'+pct(c.leads>0?c.target/c.leads*100:0)+'</td><td class="r">'+((cCpl?rub(cCpl):"—"))+'</td><td class="r">'+rub(c.spend)+'</td>'+
+        '<td class="r">'+fmt(w.noteLeads && c.leads===0 && c.spend>0 ? null : c.leads)+'</td><td class="r">'+pct((c.leads!=null && c.clicks>0)?c.leads/c.clicks*100:null)+'</td><td class="r">'+((cCpa?rub(cCpa):"—"))+'</td>'+
+        '<td class="r">'+fmt(w.noteLeads && c.target===0 && c.spend>0 ? null : c.target)+'</td><td class="r">'+pct((c.target!=null && c.leads>0)?c.target/c.leads*100:null)+'</td><td class="r">'+((cCpl?rub(cCpl):"—"))+'</td><td class="r">'+rub(c.spend)+'</td>'+
         '</tr>';
     });
   });
