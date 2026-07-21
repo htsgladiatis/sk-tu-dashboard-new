@@ -847,7 +847,7 @@ const weeks = {
   },
   w5: {
     id: "w5", label: "13.07–19.07", from: "13.07.2026", to: "19.07.2026",
-    impressions: 155409, clicks: 9555, spend: 235321.42, leads: 79, target: 31,
+    impressions: 155409, clicks: 9555, spend: 235321.42, leads: 79, target: 31, noteLeads: "leads=79 — всего сделок в CRM за неделю (включая нераспределённые по каналам). target=31 — целевые лиды (status-matched). Из 79 сделок каналы распределены только для 31 ЦЛ; Direct-лиды не атрибутированы (см. ниже).",
     ctr: 6.15, cpc: 24.63, cpa: 2979, cpl: 7592,
     noteImpressions: "Данные показов — из Яндекс.Вебмастера (агрегировано по обоим кабинетам; в W5 показы по аккаунтам = 0, т.к. выгрузка попала в общий пул).",
     accounts: {
@@ -867,7 +867,7 @@ const weeks = {
       }
     },
     channels: [
-      {name:"Яндекс Директ", leads:0, target:0, spend:235321.42},
+      {name:"Яндекс Директ", leads:null, target:null, spend:235321.42, noteLeads:"CRM за W5 не передаёт utm_campaign → лиды по Директу не распределены по источникам. Метрики кликов/расхода агрегированы по двум кабинетам (9555 кликов / 235 321 ₽)."},
       {name:"Выставочный дом", leads:11, target:11, spend:0},
       {name:"Вх. звонок", leads:5, target:5, spend:0},
       {name:"Instagram", leads:3, target:3, spend:0},
