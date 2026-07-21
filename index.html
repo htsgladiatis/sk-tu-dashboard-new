@@ -1151,7 +1151,7 @@ function initCharts(w){
   var top = all.map(function(c){
     return Object.assign({}, c, {
       ctr:  c.imp>0 ? c.clicks/c.imp*100 : 0,
-      conv: c.clicks>0 ? c.leads/c.clicks*100 : 0
+      conv: c.leads!=null && c.clicks>0 ? c.leads/c.clicks*100 : (c.clicks>0 ? null : 0)
     });
   }).sort(function(a,b){return b.spend-a.spend;}).slice(0,8);
 
@@ -1243,8 +1243,8 @@ function renderDetailTable(w){
   h += '<tr class="row-channel">'+
     '<td><b>Яндекс Директ</b> · 2 кабинета<span class="meta">расход = сумма 2 кабинетов</span></td>'+
     '<td class="r">'+fmt(w.impressions)+'</td><td class="r">'+fmt(w.clicks)+'</td><td class="r">'+pct(avgCtr)+'</td><td class="r">'+rub(w.spend/Math.max(w.clicks,1))+'</td>'+
-    '<td class="r">'+fmt(direct.leads)+'</td><td class="r">'+pct(w.clicks>0?direct.leads/w.clicks*100:0)+'</td><td class="r">'+((direct.leads?rub(direct.spend/direct.leads):"—"))+'</td>'+
-    '<td class="r">'+fmt(direct.target)+'</td><td class="r">'+pct(direct.leads?direct.target/direct.leads*100:0)+'</td><td class="r">'+((direct.target?rub(direct.spend/direct.target):"—"))+'</td><td class="r">'+rub(direct.spend)+'</td>'+
+    '<td class="r">'+fmt(direct.leads)+'</td><td class="r">'+pct(direct.leads!=null && w.clicks>0?direct.leads/w.clicks*100:null)+'</td><td class="r">'+((direct.leads?rub(direct.spend/direct.leads):"—"))+'</td>'+
+    '<td class="r">'+fmt(direct.target)+'</td><td class="r">'+pct(direct.target!=null && direct.leads>0?direct.target/direct.leads*100:null)+'</td><td class="r">'+((direct.target?rub(direct.spend/direct.target):"—"))+'</td><td class="r">'+rub(direct.spend)+'</td>'+
     '</tr>';
 
   // Кабинеты и их кампании
@@ -1469,6 +1469,9 @@ function renderFinal(w){
   // 6) special: w2/w3 data quality note
   if(w.noteImpressions){
     bullets.push("<span class=\"assump\">⚠ допущение</span> "+w.noteImpressions+". Это влияет только на график «Показы и клики по кабинетам» для недели "+w.label+" — все остальные метрики рассчитаны из реальных данных.");
+  }
+  if(w.noteLeads){
+    bullets.push("<span class=\"assump\">⚠ лиды</span> "+w.noteLeads);
   }
 
   document.getElementById("finalBody").innerHTML =
