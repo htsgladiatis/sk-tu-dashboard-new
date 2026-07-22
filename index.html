@@ -328,12 +328,12 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
       </div>
       <div class="chart-card">
         <h3>Эффективность ТОП-8 кампаний</h3>
-        <div class="sub">CTR % vs Конверсия в лид % (по расходу)</div>
+        <div class="sub">CTR % × CPL ₽ — размер пузыря = расход</div>
         <div class="cht"><canvas id="efficiencyChart"></canvas></div>
       </div>
       <div class="chart-card">
         <h3>Стоимость лида (CPA / CPL)</h3>
-        <div class="sub">Цена за лид · Цена за целевой лид</div>
+        <div class="sub">CPL = Расход / Целевые лиды по кабинетам</div>
         <div class="cht"><canvas id="costChart"></canvas></div>
       </div>
       <div class="chart-card">
@@ -1099,9 +1099,9 @@ function initCharts(w){
     data: {
       datasets: [{
         label:"Кампании",
-        data: top8.map(function(c){return {x:safe(c.ctr,0), y:safe(c.cpl,c.spend), r:Math.max(6,Math.min(20,Math.sqrt(c.spend)/10))};}),
-        backgroundColor: top8.map(function(c,i){return hexA(i<4?C.acc:C.violet,.7);}),
-        borderColor: top8.map(function(c,i){return i<4?C.acc:C.violet;}),
+        data: top8.map(function(c){return {x:safe(c.ctr,0), y:c.cpl, r:Math.max(6,Math.min(20,Math.sqrt(c.spend)/10))};}),
+        backgroundColor: top8.map(function(c){return hexA(c.account==="Кабинет МСК"?C.violet:C.acc,.7);}),
+        borderColor: top8.map(function(c){return c.account==="Кабинет МСК"?C.violet:C.acc;}),
         borderWidth:1.5
       }]
     },
