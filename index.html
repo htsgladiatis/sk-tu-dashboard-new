@@ -394,7 +394,7 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
   </div>
   <div class="sec-b">
     <p class="lead">Органический трафик СПБ: визиты, пользователи, глубина и время на сайте по Яндекс.Метрике. Топ-10 страниц и запросов по Яндекс.Вебмастеру. Метрики <b>не суммируются с МСК</b> — каждая компания показана отдельно.</p>
-    <div class="charts-3">
+    <div style="display:flex;flex-direction:column;gap:14px">
       <div class="chart-card">
         <h3>SEO Performance СПБ</h3>
         <div class="sub">Визиты · Пользователи · Глубина · Время</div>
@@ -437,7 +437,7 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
   </div>
   <div class="sec-b">
     <p class="lead">Органический трафик МСК: визиты, пользователи, глубина и время по Яндекс.Метрике. Топ-10 страниц и запросов по Яндекс.Вебмастеру.</p>
-    <div class="charts-3">
+    <div style="display:flex;flex-direction:column;gap:14px">
       <div class="chart-card">
         <h3>SEO Performance МСК</h3>
         <div class="sub">Визиты · Пользователи · Глубина · Время</div>
@@ -791,6 +791,7 @@ const weeks = {
       {name:"Сайт", leads:3, target:3, spend:0},
       {name:"Инстаграм", leads:1, target:1, spend:0},
       {name:"VK", leads:2, target:0, spend:0},
+      {name:"SEO / Органика", leads:0, target:0, spend:0},
       {name:"Без источника", leads:17, target:0, spend:0}
     ],
     seoStats: {
@@ -855,7 +856,7 @@ const weeks = {
       "Кабинет МСК": { imp: 0, clicks: 1320, spend: 113321.35, leads: 0, target: 1, campaigns: [{name:"Каркас кат. Мастер. МСК. OK.",imp:0,clicks:1128,spend:102315.99,leads:0,target:1},{name:"Каркас. Поиск. МСК.",imp:0,clicks:192,spend:11005.36,leads:0,target:0}] },
       "Кабинет СПБ": { imp: 0, clicks: 8235, spend: 122000.07, leads: 0, target: 3, campaigns: [{name:"Каркас. Мастер. СПБ. OK. gl.",imp:0,clicks:7523,spend:100012.83,leads:0,target:2},{name:"Копия Каркас. Ретаргетинг. ФИД. СПБ. OK. 4.",imp:0,clicks:712,spend:21987.24,leads:0,target:1}] }
     },
-    channels: [{name:"Яндекс Директ",leads:14,target:5,spend:235321.42},{name:"Выставочный дом",leads:11,target:11,spend:0},{name:"Вх. звонок",leads:28,target:4,spend:0},{name:"Instagram",leads:3,target:3,spend:0},{name:"Сарафан",leads:2,target:2,spend:0},{name:"Сайт sk-tu.ru",leads:6,target:6,spend:0},{name:"Без источника",leads:18,target:1,spend:0},{name:"Другое (2 источников)",leads:2,target:2,spend:0}],
+    channels: [{name:"Яндекс Директ",leads:14,target:5,spend:235321.42},{name:"Выставочный дом",leads:11,target:11,spend:0},{name:"Вх. звонок",leads:28,target:4,spend:0},{name:"Instagram",leads:3,target:3,spend:0},{name:"Сарафан",leads:2,target:2,spend:0},{name:"Сайт sk-tu.ru",leads:6,target:6,spend:0},{name:"SEO / Органика",leads:0,target:0,spend:0},{name:"Без источника",leads:18,target:1,spend:0},{name:"Другое (2 источников)",leads:2,target:2,spend:0}],
     seoStats: {spb:{visits:5909,users:0,pageDepth:0,avgDuration:0},msk:{visits:4793,users:0,pageDepth:0,avgDuration:0}},
     topPagesSpb: [{url:"/catalog/karkasnye-doma/",impressions:31173,clicks:3396},{url:"/catalog/karkasnye-doma/odnoetazhnye/",impressions:3161,clicks:449},{url:"/catalog/karkasnye-doma/100-150m2/",impressions:1551,clicks:242},{url:"/catalog/karkasnye-doma/dvuhetazhnye/",impressions:1628,clicks:189},{url:"/calculator/",impressions:1472,clicks:172},{url:"/catalog/karkasnye-doma/s-terrasoj/",impressions:628,clicks:143},{url:"/articles/stroitelstvo/pravila-razmeshcheniya-stroeniy-na-zemelnom-uchastke-v-2026-polnoe-rukovodstvo-dlya-izhs-i-snt/",impressions:1950,clicks:116},{url:"/catalog/",impressions:663,clicks:77},{url:"/articles/fundamenty/ustroystvo-uteplennoy-otmostki-polnoe-rukovodstvo-po-montazhu-svoimi-rukami/",impressions:2362,clicks:73},{url:"/catalog/karkasnye-doma/pmzh/",impressions:494,clicks:73}],
     topPagesMsk: [{url:"/catalog/karkasnye-doma/odnoetazhnye/",impressions:30619,clicks:1462},{url:"/catalog/karkasnye-doma/",impressions:23369,clicks:896},{url:"/articles/stroitelstvo/pravila-razmeshcheniya-stroeniy-na-zemelnom-uchastke-v-2026-polnoe-rukovodstvo-dlya-izhs-i-snt/",impressions:11966,clicks:599},{url:"/catalog/karkasnye-doma/100-150m2/",impressions:2061,clicks:282},{url:"/catalog/karkasnye-doma/dvuhetazhnye/",impressions:3690,clicks:218},{url:"/catalog/",impressions:702,clicks:186},{url:"/catalog/karkasnye-doma/3-spalni/",impressions:243,clicks:146},{url:"/",impressions:2817,clicks:142},{url:"/catalog/karkasnye-doma/barnkhaus/",impressions:1307,clicks:135},{url:"/catalog/karkasnye-doma/s-terrasoj/",impressions:836,clicks:100}],
