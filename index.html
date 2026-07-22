@@ -848,87 +848,19 @@ const weeks = {
   },
   w5: {
     id: "w5", label: "13.07–19.07", from: "13.07.2026", to: "19.07.2026",
-    impressions: 155409, clicks: 9555, spend: 235321.42, leads: 79, target: 31, noteLeads: "Direct-лиды не атрибутированы: CRM не передаёт utm_campaign. Из 79 сделок в каналы распределены только 31 ЦЛ (по source).",
-    ctr: 6.15, cpc: 24.63, cpa: 2979, cpl: 7592,
-    noteImpressions: "Данные показов — из Яндекс.Вебмастера (агрегировано по обоим кабинетам; в W5 показы по аккаунтам = 0, т.к. выгрузка попала в общий пул).",
+    impressions: 155409, clicks: 9555, spend: 235321.42, leads: 30, target: 30,
+    ctr: 6.15, cpc: 24.63, cpa: 7844.05, cpl: 7844.05,
+    noteImpressions: null,
     accounts: {
-      "Кабинет МСК": {
-        imp: 0, clicks: 1320, spend: 113321.35, leads: 0, target: 0,
-        campaigns: [
-          {name:"Каркас кат. Мастер. МСК. OK.", imp:0, clicks:1128, spend:102315.99, leads:0, target:0},
-          {name:"Каркас. Поиск. МСК.", imp:0, clicks:192, spend:11005.36, leads:0, target:0}
-        ]
-      },
-      "Кабинет СПБ": {
-        imp: 0, clicks: 8235, spend: 122000.07, leads: 0, target: 0,
-        campaigns: [
-          {name:"Каркас. Мастер. СПБ. OK. gl.", imp:0, clicks:7523, spend:100012.83, leads:0, target:0},
-          {name:"Копия Каркас. Ретаргетинг. ФИД. СПБ. OK. 4.", imp:0, clicks:712, spend:21987.24, leads:0, target:0}
-        ]
-      }
+      "Кабинет МСК": { imp: 0, clicks: 1320, spend: 113321.35, leads: 0, target: 1, campaigns: [{name:"Каркас кат. Мастер. МСК. OK.",imp:0,clicks:1128,spend:102315.99,leads:0,target:1},{name:"Каркас. Поиск. МСК.",imp:0,clicks:192,spend:11005.36,leads:0,target:0}] },
+      "Кабинет СПБ": { imp: 0, clicks: 8235, spend: 122000.07, leads: 0, target: 3, campaigns: [{name:"Каркас. Мастер. СПБ. OK. gl.",imp:0,clicks:7523,spend:100012.83,leads:0,target:2},{name:"Копия Каркас. Ретаргетинг. ФИД. СПБ. OK. 4.",imp:0,clicks:712,spend:21987.24,leads:0,target:1}] }
     },
-    channels: [
-      {name:"Яндекс Директ", leads:null, target:null, spend:235321.42, noteLeads:"CRM не передаёт utm_campaign → лиды по Директу не атрибутированы. По кликам/расходу: 9 555 кликов / 235 321 ₽."},
-      {name:"Выставочный дом", leads:11, target:11, spend:0},
-      {name:"Вх. звонок", leads:5, target:5, spend:0},
-      {name:"Instagram", leads:3, target:3, spend:0},
-      {name:"Сарафан", leads:2, target:2, spend:0},
-      {name:"Сайт sk-tu.ru", leads:6, target:6, spend:0},
-      {name:"Без источника", leads:2, target:2, spend:0},
-      {name:"Другое (2 источников)", leads:2, target:2, spend:0}
-    ],
-    seoStats: {
-      spb:{visits:5909,users:0,pageDepth:0,avgDuration:0},
-      msk:{visits:4793,users:0,pageDepth:0,avgDuration:0}
-    },
-    topPagesSpb:[
-      {url:"/catalog/karkasnye-doma/", impressions:31173, clicks:3396},
-      {url:"/catalog/karkasnye-doma/odnoetazhnye/", impressions:3161, clicks:449},
-      {url:"/catalog/karkasnye-doma/100-150m2/", impressions:1551, clicks:242},
-      {url:"/catalog/karkasnye-doma/dvuhetazhnye/", impressions:1628, clicks:189},
-      {url:"/calculator/", impressions:1472, clicks:172},
-      {url:"/catalog/karkasnye-doma/s-terrasoj/", impressions:628, clicks:143},
-      {url:"/articles/stroitelstvo/pravila-razmeshcheniya-stroeniy-na-zemelnom-uchastke-v-2026-polnoe-rukovodstvo-dlya-izhs-i-snt/", impressions:1950, clicks:116},
-      {url:"/catalog/", impressions:663, clicks:77},
-      {url:"/articles/fundamenty/ustroystvo-uteplennoy-otmostki-polnoe-rukovodstvo-po-montazhu-svoimi-rukami/", impressions:2362, clicks:73},
-      {url:"/catalog/karkasnye-doma/pmzh/", impressions:494, clicks:73}
-    ],
-    topPagesMsk:[
-      {url:"/catalog/karkasnye-doma/odnoetazhnye/", impressions:30619, clicks:1462},
-      {url:"/catalog/karkasnye-doma/", impressions:23369, clicks:896},
-      {url:"/articles/stroitelstvo/pravila-razmeshcheniya-stroeniy-na-zemelnom-uchastke-v-2026-polnoe-rukovodstvo-dlya-izhs-i-snt/", impressions:11966, clicks:599},
-      {url:"/catalog/karkasnye-doma/100-150m2/", impressions:2061, clicks:282},
-      {url:"/catalog/karkasnye-doma/dvuhetazhnye/", impressions:3690, clicks:218},
-      {url:"/catalog/", impressions:702, clicks:186},
-      {url:"/catalog/karkasnye-doma/3-spalni/", impressions:243, clicks:146},
-      {url:"/", impressions:2817, clicks:142},
-      {url:"/catalog/karkasnye-doma/barnkhaus/", impressions:1307, clicks:135},
-      {url:"/catalog/karkasnye-doma/s-terrasoj/", impressions:836, clicks:100}
-    ],
-    topQueriesSpb:[
-      {query:"каркасные дома", visits:373},
-      {query:"каркасные дома под ключ", visits:300},
-      {query:"каркасные дома под ключ в спб", visits:226},
-      {query:"каркасный дом под ключ", visits:212},
-      {query:"строительство каркасных домов", visits:171},
-      {query:"строительство каркасных домов под ключ", visits:156},
-      {query:"строительство каркасных домов в спб", visits:135},
-      {query:"каркасные дома спб", visits:127},
-      {query:"проекты каркасных домов", visits:100},
-      {query:"каркасные дома в спб", visits:99}
-    ],
-    topQueriesMsk:[
-      {query:"каркасные дома", visits:422},
-      {query:"каркасные дома под ключ", visits:277},
-      {query:"каркасные дома теплый угол", visits:99},
-      {query:"каркасный дом барнхаус", visits:95},
-      {query:"одноэтажный каркасный дом", visits:81},
-      {query:"проекты одноэтажных каркасных домов", visits:79},
-      {query:"строительство каркасных домов", visits:72},
-      {query:"каркасный дом под ключ москва", visits:59},
-      {query:"каркасный одноэтажный дом", visits:59},
-      {query:"каркасный дом под ключ цена", visits:51}
-    ]
+    channels: [{name:"Яндекс Директ",leads:4,target:4,spend:235321.41999999993},{name:"Выставочный дом",leads:11,target:11,spend:0},{name:"Вх. звонок",leads:2,target:2,spend:0},{name:"Instagram",leads:3,target:3,spend:0},{name:"Сарафан",leads:2,target:2,spend:0},{name:"Сайт sk-tu.ru",leads:6,target:6,spend:0},{name:"Без источника",leads:0,target:0,spend:0},{name:"Другое (2 источников)",leads:2,target:2,spend:0}],
+    seoStats: {spb:{visits:5909,users:0,pageDepth:0,avgDuration:0},msk:{visits:4793,users:0,pageDepth:0,avgDuration:0}},
+    topPagesSpb: [{url:"/catalog/karkasnye-doma/",impressions:31173,clicks:3396},{url:"/catalog/karkasnye-doma/odnoetazhnye/",impressions:3161,clicks:449},{url:"/catalog/karkasnye-doma/100-150m2/",impressions:1551,clicks:242},{url:"/catalog/karkasnye-doma/dvuhetazhnye/",impressions:1628,clicks:189},{url:"/calculator/",impressions:1472,clicks:172},{url:"/catalog/karkasnye-doma/s-terrasoj/",impressions:628,clicks:143},{url:"/articles/stroitelstvo/pravila-razmeshcheniya-stroeniy-na-zemelnom-uchastke-v-2026-polnoe-rukovodstvo-dlya-izhs-i-snt/",impressions:1950,clicks:116},{url:"/catalog/",impressions:663,clicks:77},{url:"/articles/fundamenty/ustroystvo-uteplennoy-otmostki-polnoe-rukovodstvo-po-montazhu-svoimi-rukami/",impressions:2362,clicks:73},{url:"/catalog/karkasnye-doma/pmzh/",impressions:494,clicks:73}],
+    topPagesMsk: [{url:"/catalog/karkasnye-doma/odnoetazhnye/",impressions:30619,clicks:1462},{url:"/catalog/karkasnye-doma/",impressions:23369,clicks:896},{url:"/articles/stroitelstvo/pravila-razmeshcheniya-stroeniy-na-zemelnom-uchastke-v-2026-polnoe-rukovodstvo-dlya-izhs-i-snt/",impressions:11966,clicks:599},{url:"/catalog/karkasnye-doma/100-150m2/",impressions:2061,clicks:282},{url:"/catalog/karkasnye-doma/dvuhetazhnye/",impressions:3690,clicks:218},{url:"/catalog/",impressions:702,clicks:186},{url:"/catalog/karkasnye-doma/3-spalni/",impressions:243,clicks:146},{url:"/",impressions:2817,clicks:142},{url:"/catalog/karkasnye-doma/barnkhaus/",impressions:1307,clicks:135},{url:"/catalog/karkasnye-doma/s-terrasoj/",impressions:836,clicks:100}],
+    topQueriesSpb: [{query:"каркасные дома",visits:373},{query:"каркасные дома под ключ",visits:300},{query:"каркасные дома под ключ в спб",visits:226},{query:"каркасный дом под ключ",visits:212},{query:"строительство каркасных домов",visits:171},{query:"строительство каркасных домов под ключ",visits:156},{query:"строительство каркасных домов в спб",visits:135},{query:"каркасные дома спб",visits:127},{query:"проекты каркасных домов",visits:100},{query:"каркасные дома в спб",visits:99}],
+    topQueriesMsk: [{query:"каркасные дома",visits:422},{query:"каркасные дома под ключ",visits:277},{query:"каркасные дома теплый угол",visits:99},{query:"каркасный дом барнхаус",visits:95},{query:"одноэтажный каркасный дом",visits:81},{query:"проекты одноэтажных каркасных домов",visits:79},{query:"строительство каркасных домов",visits:72},{query:"каркасный дом под ключ москва",visits:59},{query:"каркасный одноэтажный дом",visits:59},{query:"каркасный дом под ключ цена",visits:51}]
   }
 };
 
