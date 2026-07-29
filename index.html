@@ -223,6 +223,44 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
 @media(max-width:860px){.hero{grid-template-columns:1fr;padding-top:34px}.bal{order:-1}}
 @media(max-width:560px){.hero h1{font-size:29px}.wrap{padding:18px 14px 50px}.hdr-in{padding:12px 14px}}
 @media print{.to-top,.tgl,.bar-prog,.period-selector,.navbar,.ca-link{display:none!important}}
+/* ====== PERIOD POPOVER (TU OS v2) ====== */
+.period-wrap{position:relative;display:inline-block;max-width:100%}
+.period-trigger{display:inline-flex;align-items:center;gap:8px;background:var(--panel-2);border:1px solid var(--line);border-radius:11px;padding:8px 13px;cursor:pointer;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--txt);transition:all .2s var(--ease);white-space:nowrap;min-width:232px;justify-content:flex-start}
+.period-trigger:hover{border-color:var(--line-2);background:var(--panel)}
+.period-trigger[aria-expanded="true"]{border-color:var(--acc);box-shadow:var(--glow-acc);background:var(--panel)}
+.period-trigger .pt-mode{color:var(--txt-3);font-size:10px;letter-spacing:.08em;text-transform:uppercase;padding-right:8px;margin-right:6px;border-right:1px solid var(--line)}
+.period-trigger .pt-ix{color:var(--txt-3);font-size:11px}
+.period-trigger .pt-label{font-weight:500;color:var(--txt)}
+.period-trigger .pt-arrow{color:var(--txt-3);font-size:11px;transition:transform .25s var(--ease);margin-left:auto;padding-left:10px}
+.period-trigger[aria-expanded="true"] .pt-arrow{transform:rotate(180deg);color:var(--acc)}
+.period-popover{position:absolute;top:calc(100% + 8px);right:0;width:340px;background:var(--panel);border:1px solid var(--line-2);border-radius:14px;box-shadow:var(--elev-2);z-index:300;overflow:hidden;animation:popEnter .18s var(--ease);display:flex;flex-direction:column}
+.period-popover[hidden]{display:none}
+@keyframes popEnter{from{opacity:0;transform:translateY(-6px) scale(.98)}to{opacity:1;transform:none}}
+.pop-search-wrap{position:relative;padding:12px 12px 0}
+.pop-search-ix{position:absolute;left:22px;top:21px;font-size:13px;color:var(--txt-3);pointer-events:none}
+.pop-search{width:100%;background:var(--panel-2);border:1px solid var(--line);border-radius:9px;padding:8px 12px 8px 32px;font-family:'Inter',sans-serif;font-size:13px;color:var(--txt);outline:none;transition:border-color .2s}
+.pop-search:focus{border-color:var(--acc)}
+.pop-search::placeholder{color:var(--txt-3)}
+.pop-mode-toggle{display:flex;gap:4px;padding:10px 12px;border-bottom:1px solid var(--line)}
+.pop-mode{flex:1;padding:7px 0;background:none;border:1px solid transparent;border-radius:8px;cursor:pointer;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.04em;color:var(--txt-2);transition:all .15s var(--ease)}
+.pop-mode:hover{color:var(--txt);background:var(--panel-2)}
+.pop-mode.active{color:var(--acc);background:color-mix(in srgb,var(--acc) 12%,transparent);border-color:color-mix(in srgb,var(--acc) 35%,transparent)}
+.pop-list{max-height:300px;overflow-y:auto;padding:6px 6px 6px}
+.pop-year{padding:10px 8px 4px;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--txt-3);letter-spacing:.1em;text-transform:uppercase;position:sticky;top:0;background:var(--panel);z-index:2;border-bottom:1px solid var(--line)}
+.pop-item{display:flex;align-items:center;gap:10px;width:100%;padding:8px 10px;border:none;background:none;text-align:left;cursor:pointer;border-radius:8px;transition:background .12s,color .12s;font-family:'JetBrains Mono',monospace;color:var(--txt-2);font-size:12px}
+.pop-item:hover{background:var(--panel-2);color:var(--txt)}
+.pop-item.active{background:color-mix(in srgb,var(--acc) 12%,transparent);color:var(--acc)}
+.pop-item .pi-num{font-size:11px;color:var(--txt-3);min-width:30px;font-weight:500}
+.pop-item.active .pi-num{color:var(--acc);opacity:.85}
+.pop-item .pi-dates{font-size:12px;font-weight:500;flex:1}
+.pop-item .pi-meta{font-size:10px;color:var(--txt-3);background:var(--panel-2);padding:2px 7px;border-radius:6px;font-weight:500}
+.pop-item.active .pi-meta{background:color-mix(in srgb,var(--acc) 14%,transparent);color:var(--acc)}
+.pop-empty{padding:24px 16px;text-align:center;color:var(--txt-3);font-size:12px}
+.pop-presets{display:flex;align-items:center;gap:6px;flex-wrap:wrap;padding:10px 12px;border-top:1px solid var(--line);background:var(--panel-2)}
+.pop-pre-label{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--txt-3);letter-spacing:.06em;text-transform:uppercase;margin-right:2px}
+.pop-pre{padding:5px 10px;background:none;border:1px solid var(--line);border-radius:7px;cursor:pointer;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--txt-2);transition:all .15s var(--ease)}
+.pop-pre:hover{color:var(--acc);border-color:var(--acc);background:color-mix(in srgb,var(--acc) 8%,transparent)}
+@media(max-width:560px){.period-popover{position:fixed;left:12px;right:12px;bottom:max(12px,env(safe-area-inset-bottom));top:auto;width:auto;max-height:65vh;border-radius:16px;padding-bottom:env(safe-area-inset-bottom,12px)}.period-trigger{min-width:0;max-width:100%}}
 @media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
 </head>
@@ -241,13 +279,30 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
       <span class="ix">↗</span>Анализ ЦА
     </a>
     <div class="hdr-sp"></div>
-    <div class="period-selector" role="tablist" aria-label="Период">
-      <button class="seg" data-w="w1" onclick="showPeriod('w1')"><span class="ix">w1</span>15.06–21.06</button>
-      <button class="seg" data-w="w2" onclick="showPeriod('w2')"><span class="ix">w2</span>22.06–28.06</button>
-      <button class="seg" data-w="w3" onclick="showPeriod('w3')"><span class="ix">w3</span>29.06–05.07</button>
-      <button class="seg" data-w="w4" onclick="showPeriod('w4')"><span class="ix">w4</span>06.07–12.07</button>
-      <button class="seg" data-w="w5" onclick="showPeriod('w5')"><span class="ix">w5</span>13.07–19.07</button>
-      <button class="seg active" data-w="w6" onclick="showPeriod('w6')"><span class="ix">w6</span>20.07–26.07</button>
+    <div class="period-wrap">
+      <button id="periodTrigger" class="period-trigger" type="button" aria-haspopup="dialog" aria-expanded="false" aria-label="Выбрать период">
+        <span class="pt-mode" id="ptMode">Неделя</span>
+        <span class="pt-ix" id="ptIx">w6</span>
+        <span class="pt-label" id="ptLabel">20.07–26.07</span>
+        <span class="pt-arrow" id="ptArrow">▾</span>
+      </button>
+      <div id="periodPopover" class="period-popover" role="dialog" aria-label="Выбор периода" hidden>
+        <div class="pop-search-wrap">
+          <span class="pop-search-ix">⌕</span>
+          <input id="popSearch" class="pop-search" type="text" placeholder="Поиск недели…" autocomplete="off">
+        </div>
+        <div class="pop-mode-toggle" role="tablist" aria-label="Режим периода">
+          <button class="pop-mode active" data-mode="week" type="button" role="tab" aria-selected="true">Недели</button>
+          <button class="pop-mode" data-mode="month" type="button" role="tab" aria-selected="false">Месяцы</button>
+        </div>
+        <div class="pop-list" id="popList" role="listbox" aria-label="Список периодов"></div>
+        <div class="pop-presets">
+          <span class="pop-pre-label">Быстрый:</span>
+          <button class="pop-pre" data-preset="last4" type="button">Последние 4</button>
+          <button class="pop-pre" data-preset="quarter" type="button">Квартал</button>
+          <button class="pop-pre" data-preset="all" type="button">Все</button>
+        </div>
+      </div>
     </div>
     <button class="tgl" id="tgl" role="switch" aria-checked="false" aria-label="Тема"><span class="tgl-k" id="tglK">☀️</span></button>
   </div>
@@ -1610,6 +1665,151 @@ function  showPeriod(id){
   // First render
   showPeriod("w6");
   updateSpy();
+})();
+
+/* ====== PERIOD POPOVER (TU OS v2) — state machine, dynamic from weeks{} ====== */
+(function(){
+  if (typeof weeks === 'undefined') return;
+  var trigger = document.getElementById('periodTrigger');
+  var popover = document.getElementById('periodPopover');
+  var list = document.getElementById('popList');
+  var search = document.getElementById('popSearch');
+  var ftIx = document.getElementById('ptIx');
+  var ftLabel = document.getElementById('ptLabel');
+  var ftMode = document.getElementById('ptMode');
+  if (!trigger || !popover || !list) return;
+
+  // Natural sort by trailing digits (handles w1..w20)
+  function sortByNum(a, b){
+    var na = parseInt((a.match(/\d+/) || [0])[0], 10);
+    var nb = parseInt((b.match(/\d+/) || [0])[0], 10);
+    return na - nb;
+  }
+  var weekKeys = Object.keys(weeks).sort(sortByNum);
+  var state = { mode: 'week', currentId: weekKeys[weekKeys.length - 1] || 'w6', query: '' };
+
+  function getItems(){
+    if (state.mode === 'week'){
+      return weekKeys.map(function(k, i){
+        var w = weeks[k] || {};
+        var year = (w.from || '').slice(6,10) || '\u2014';
+        return {
+          id: k,
+          num: 'w' + (i + 1),
+          dates: (w.from || '').slice(0,5) + ' \u2013 ' + (w.to || '').slice(8,10),
+          text: 'w' + (i + 1) + ' ' + (w.label || '') + ' ' + (w.from || ''),
+          year: year,
+          leads: typeof w.leads === 'number' ? w.leads : null,
+          target: typeof w.target === 'number' ? w.target : null
+        };
+      }).reverse(); // newest first
+    }
+    return []; // months stub \u2014 no months{} dataset yet
+  }
+
+  function renderList(){
+    var items = getItems();
+    var q = state.query.toLowerCase().trim();
+    var filtered = q ? items.filter(function(it){ return it.text.toLowerCase().indexOf(q) >= 0; }) : items;
+    var groups = {};
+    filtered.forEach(function(it){ (groups[it.year] = groups[it.year] || []).push(it); });
+    var html = '';
+    if (filtered.length === 0){
+      html = '<div class="pop-empty">\u041D\u0438\u0447\u0435\u0433\u043E \u043D\u0435 \u043D\u0430\u0439\u0434\u0435\u043D\u043E</div>';
+    } else {
+      Object.keys(groups).sort().reverse().forEach(function(y){
+        html += '<div class="pop-year">' + y + '</div>';
+        groups[y].forEach(function(it){
+          var active = it.id === state.currentId;
+          var meta = (it.target != null ? '\u0426\u041B ' + it.target + ' / ' : '') + '\u043B\u0438\u0434\u043E\u0432 ' + (it.leads != null ? it.leads : '\u2014');
+          html += '<button type="button" class="pop-item' + (active ? ' active' : '') + '" data-id="' + it.id + '" role="option" aria-selected="' + (active ? 'true' : 'false') + '">'
+                + '<span class="pi-num">' + it.num + '</span>'
+                + '<span class="pi-dates">' + it.dates + '</span>'
+                + '<span class="pi-meta">' + meta + '</span>'
+                + '</button>';
+        });
+      });
+    }
+    list.innerHTML = html;
+    Array.prototype.forEach.call(list.querySelectorAll('.pop-item'), function(btn){
+      btn.addEventListener('click', function(e){ e.stopPropagation(); selectItem(btn.dataset.id); });
+    });
+  }
+
+  function updateChip(){
+    var w = weeks[state.currentId];
+    if (!w) return;
+    var idx = weekKeys.indexOf(state.currentId);
+    if (idx < 0) idx = weekKeys.length - 1;
+    if (ftIx) ftIx.textContent = 'w' + (idx + 1);
+    if (ftLabel) ftLabel.textContent = w.label || '';
+  }
+
+  function openPopover(){
+    popover.hidden = false;
+    trigger.setAttribute('aria-expanded', 'true');
+    renderList();
+    if (search) setTimeout(function(){ search.focus(); search.select(); }, 40);
+  }
+  function closePopover(){
+    popover.hidden = true;
+    trigger.setAttribute('aria-expanded', 'false');
+    if (search) { search.value = ''; state.query = ''; }
+  }
+  function togglePopover(){ popover.hidden ? openPopover() : closePopover(); }
+
+  function selectItem(id){
+    if (!id || !weeks[id]) return;
+    // Critical: render BEFORE commit so failed renders don't leave inconsistent UI
+    var fn = (typeof window.showPeriod === 'function') ? window.showPeriod
+           : (typeof showPeriod === 'function' ? showPeriod : null);
+    if (fn){
+      try { fn(id); }
+      catch(e){
+        console.error('showPeriod failed', e);
+        return; // bail: leave state unchanged so user sees match chip ↔ dashboard
+      }
+    }
+    state.currentId = id;
+    updateChip();
+    closePopover();
+  }
+
+  function applyPreset(preset){
+    var n = weekKeys.length;
+    if (n === 0) return;
+    var target = n - 1; // 'all' = latest
+    if (preset === 'last4' && n >= 4) target = n - 4;
+    else if (preset === 'quarter' && n >= 13) target = n - 13;
+    if (target < 0) target = 0;
+    selectItem(weekKeys[target]);
+  }
+
+  trigger.addEventListener('click', function(e){ e.stopPropagation(); togglePopover(); });
+  document.addEventListener('click', function(e){
+    if (popover.hidden) return;
+    if (!popover.contains(e.target) && !trigger.contains(e.target)) closePopover();
+  });
+  document.addEventListener('keydown', function(e){
+    if (e.key === 'Escape' && !popover.hidden) { closePopover(); trigger.focus(); }
+  });
+  if (search) search.addEventListener('input', function(){ state.query = search.value; renderList(); });
+  Array.prototype.forEach.call(document.querySelectorAll('.pop-mode'), function(b){
+    b.addEventListener('click', function(e){
+      e.stopPropagation();
+      Array.prototype.forEach.call(document.querySelectorAll('.pop-mode'), function(x){ x.classList.remove('active'); x.setAttribute('aria-selected','false'); });
+      b.classList.add('active');
+      b.setAttribute('aria-selected','true');
+      state.mode = b.dataset.mode;
+      if (ftMode) ftMode.textContent = state.mode === 'week' ? '\u041D\u0435\u0434\u0435\u043B\u044F' : '\u041C\u0435\u0441\u044F\u0446';
+      renderList();
+    });
+  });
+  Array.prototype.forEach.call(document.querySelectorAll('.pop-pre'), function(b){
+    b.addEventListener('click', function(e){ e.stopPropagation(); applyPreset(b.dataset.preset); });
+  });
+
+  updateChip();
 })();
 </script>
 </body>
