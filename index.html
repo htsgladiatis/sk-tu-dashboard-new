@@ -245,7 +245,7 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
       <button class="seg" data-w="w2" onclick="showPeriod('w2')"><span class="ix">w2</span>22.06–28.06</button>
       <button class="seg" data-w="w3" onclick="showPeriod('w3')"><span class="ix">w3</span>29.06–05.07</button>
       <button class="seg" data-w="w4" onclick="showPeriod('w4')"><span class="ix">w4</span>06.07–12.07</button>
-      <button class="seg" data-w="w5" onclick="showPeriod('w5')"><span class="ix">w5</span>13.07–19.07</button>
+      <button class="seg" data-w="w5" onclick="showPeriod('w5')"><span class="ix">w5</span>13.07–19.07</button>
       <button class="seg active" data-w="w6" onclick="showPeriod('w6')"><span class="ix">w6</span>20.07–26.07</button>
     </div>
     <button class="tgl" id="tgl" role="switch" aria-checked="false" aria-label="Тема"><span class="tgl-k" id="tglK">☀️</span></button>
@@ -864,15 +864,15 @@ const weeks = {
     topQueriesSpb: [{query:"каркасные дома",visits:373},{query:"каркасные дома под ключ",visits:300},{query:"каркасные дома под ключ в спб",visits:226},{query:"каркасный дом под ключ",visits:212},{query:"строительство каркасных домов",visits:171},{query:"строительство каркасных домов под ключ",visits:156},{query:"строительство каркасных домов в спб",visits:135},{query:"каркасные дома спб",visits:127},{query:"проекты каркасных домов",visits:100},{query:"каркасные дома в спб",visits:99}],
     topQueriesMsk: [{query:"каркасные дома",visits:422},{query:"каркасные дома под ключ",visits:277},{query:"каркасные дома теплый угол",visits:99},{query:"каркасный дом барнхаус",visits:95},{query:"одноэтажный каркасный дом",visits:81},{query:"проекты одноэтажных каркасных домов",visits:79},{query:"строительство каркасных домов",visits:72},{query:"каркасный дом под ключ москва",visits:59},{query:"каркасный одноэтажный дом",visits:59},{query:"каркасный дом под ключ цена",visits:51}]
   }
-,
+,
     w6: {
       id: "w6", label: "20.07–26.07", from: "20.07.2026", to: "26.07.2026",
-      impressions: 768118, clicks: 13078, spend: 231987.37, leads: 113, target: 27,
-      ctr: 1.70, cpc: 17.74, cpa: 2053, cpl: 8592.12,
+      impressions: 768118, clicks: 13078, spend: 231987.37, leads: 113, target: 29,
+      ctr: 1.70, cpc: 17.74, cpa: 2053, cpl: 7999.56,
       noteImpressions: null,
       accounts: {
-        "Кабинет МСК": { imp: 77170, clicks: 1929, spend: 109987.37, leads: 0, target: 0, campaigns: [
-          {name:"Каркас кат. Мастер. МСК. OK.", imp:71392, clicks:1814, spend:109987.29, leads:0, target:0},
+        "Кабинет МСК": { imp: 77170, clicks: 1929, spend: 109987.37, leads: 0, target: 1, campaigns: [
+          {name:"Каркас кат. Мастер. МСК. OK.", imp:71392, clicks:1814, spend:109987.29, leads:0, target:1},
           {name:"Каркас. Поиск. МСК.", imp:5778, clicks:115, spend:0.0, leads:0, target:0}
         ]},
         "Кабинет СПБ": { imp: 690948, clicks: 11149, spend: 122000.00, leads: 0, target: 2, campaigns: [
@@ -881,11 +881,11 @@ const weeks = {
         ]}
       },
       channels: [
-        {name:"Яндекс Директ",leads:2,target:2,spend:231987.37},
-        {name:"Выставочный дом",leads:10,target:10,spend:0},
-        {name:"Инстаграм",leads:7,target:7,spend:0},
+        {name:"Яндекс Директ",leads:3,target:3,spend:231987.37},
+        {name:"Выставочный дом",leads:9,target:9,spend:0},
+        {name:"Инстаграм",leads:8,target:8,spend:0},
         {name:"Вх. звонок",leads:7,target:7,spend:0},
-        {name:"Сайт sk-tu.ru",leads:1,target:1,spend:0}
+        {name:"SEO",leads:2,target:2,spend:0}
       ],
       seoStats: {spb:{visits:5765,users:0,pageDepth:0,avgDuration:0},msk:{visits:4961,users:0,pageDepth:0,avgDuration:0}},
       topPagesSpb: [
@@ -936,7 +936,7 @@ const weeks = {
         {query:"каркасный дом цена под ключ московская область",visits:12},
         {query:"каркасный дом под ключ",visits:3}
       ]
-    }
+    }
   };
 
 let currentWeek = "w6";
