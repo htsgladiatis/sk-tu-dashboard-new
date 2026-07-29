@@ -871,13 +871,15 @@ const weeks = {
       ctr: 1.70, cpc: 17.74, cpa: 2053, cpl: 7999.56,
       noteImpressions: null,
       accounts: {
-        "Кабинет МСК": { imp: 77170, clicks: 1929, spend: 109987.37, leads: 0, target: 1, campaigns: [
-          {name:"Каркас кат. Мастер. МСК. OK.", imp:71392, clicks:1814, spend:109987.29, leads:0, target:1},
-          {name:"Каркас. Поиск. МСК.", imp:5778, clicks:115, spend:0.0, leads:0, target:0}
+        "Кабинет МСК": { imp: 77170, clicks: 1929, spend: 109987.37, leads: 8, target: 1, campaigns: [
+          {name:"Каркас кат. Мастер. МСК. OK.", imp:71392, clicks:1814, spend:109987.29, leads:7, target:1},
+          {name:"Каркас. Поиск. МСК.", imp:5778, clicks:115, spend:0.0, leads:0, target:0},
+          {name:"Karkas-Polsk МСК ОК (нет в Direct W6)", imp:0, clicks:0, spend:0.0, leads:1, target:0}
         ]},
-        "Кабинет СПБ": { imp: 690948, clicks: 11149, spend: 122000.00, leads: 0, target: 2, campaigns: [
-          {name:"Каркас. Мастер. СПБ. OK. gl.", imp:582898, clicks:10468, spend:100478.73, leads:2, target:2},
-          {name:"Копия Каркас. Ретаргетинг. ФИД. СПБ. OK. 4.", imp:108050, clicks:681, spend:21521.26, leads:0, target:0}
+        "Кабинет СПБ": { imp: 690948, clicks: 11149, spend: 122000.00, leads: 8, target: 2, campaigns: [
+          {name:"Каркас. Мастер. СПБ. OK. gl.", imp:582898, clicks:10468, spend:100478.73, leads:6, target:2},
+          {name:"Копия Каркас. Ретаргетинг. ФИД. СПБ. OK. 4.", imp:108050, clicks:681, spend:21521.26, leads:1, target:0},
+          {name:"Karkas-Polsk СПБ (нет в Direct W6)", imp:0, clicks:0, spend:0.0, leads:1, target:0}
         ]}
       },
       channels: [
@@ -885,8 +887,7 @@ const weeks = {
         {name:"Выставочный дом",leads:11,target:9,spend:0},
         {name:"Инстаграм",leads:8,target:8,spend:0},
         {name:"Вх. звонок",leads:33,target:7,spend:0},
-        {name:"SEO",leads:34,target:2,spend:0},
-        {name:"Прямой заход",leads:8,target:0,spend:0},
+        {name:"SEO (вкл. Прямой заход)",leads:42,target:2,spend:0},
         {name:"Прочее (VK, прочие)",leads:3,target:0,spend:0}
       ],
       seoStats: {spb:{visits:5765,users:0,pageDepth:0,avgDuration:0},msk:{visits:4961,users:0,pageDepth:0,avgDuration:0}},
