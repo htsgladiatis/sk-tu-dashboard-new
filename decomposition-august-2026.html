@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>СК «Тёплый угол» · Декомпозиция Август 2026 · TU OS v2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+<style>
+/* ====== TU OS v2 TOKENS ====== */
+:root{
+  --bg:#06080d; --bg-2:#0a0d15; --panel:#0f131d; --panel-2:#141a27; --panel-3:#1a2230;
+  --line:#1c2433; --line-2:#2a3447; --glass:rgba(20,26,39,.6);
+  --txt:#eaf0fa; --txt-2:#94a2bb; --txt-3:#5a6880;
+  --acc:#E18335; --acc-ink:#140a03;
+  --mint:#00e5a0; --violet:#8b5cff; --blue:#3d7dff; --cyan:#22d3ee; --amber:#ffb020;
+  --up:#26d07c; --down:#ff5a6e; --up-soft:rgba(38,208,124,.14); --down-soft:rgba(255,90,110,.14);
+  --grad-acc:linear-gradient(135deg,#f29c52,#d8721f);
+  --grad-text:linear-gradient(100deg,#eaf0fa 0%,#E18335 55%,#8b5cff 100%);
+  --grad-balance:radial-gradient(120% 140% at 0% 0%,#2a2014 0%,#0f131d 42%),linear-gradient(135deg,rgba(225,131,53,.16),rgba(139,92,255,.14));
+  --glow-acc:0 0 0 1px rgba(225,131,53,.4),0 8px 30px rgba(225,131,53,.22);
+  --elev-1:0 1px 0 rgba(255,255,255,.03) inset,0 6px 18px rgba(0,0,0,.5);
+  --elev-2:0 1px 0 rgba(255,255,255,.04) inset,0 16px 44px rgba(0,0,0,.6);
+  --r:14px; --r-sm:10px; --r-xs:7px; --maxw:1240px;
+  --ease:cubic-bezier(.22,1,.36,1); --ease-out:cubic-bezier(.16,1,.3,1);
+}
+[data-theme="light"]{
+  --bg:#f4f6fb; --bg-2:#eef1f8; --panel:#ffffff; --panel-2:#f7f9fd; --panel-3:#eef2f8;
+  --line:#e4e9f2; --line-2:#d2dae8; --glass:rgba(255,255,255,.7);
+  --txt:#0b1220; --txt-2:#48566e; --txt-3:#8493ab;
+  --acc:#E18335; --acc-ink:#ffffff; --mint:#00a877; --violet:#6d3bff; --blue:#2563eb; --cyan:#0891b2; --amber:#b8730a;
+  --up:#0c9d63; --down:#e23048; --up-soft:rgba(12,157,99,.12); --down-soft:rgba(226,48,72,.12);
+  --grad-text:linear-gradient(100deg,#0b1220 0%,#E18335 55%,#6d3bff 100%);
+  --grad-balance:radial-gradient(120% 140% at 0% 0%,#ffedd9 0%,#ffffff 46%),linear-gradient(135deg,rgba(225,131,53,.12),rgba(109,59,255,.10));
+  --glow-acc:0 0 0 1px rgba(225,131,53,.35),0 10px 30px rgba(225,131,53,.18);
+  --elev-1:0 2px 10px rgba(15,23,42,.07); --elev-2:0 16px 40px rgba(15,23,42,.12);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--txt);line-height:1.55;overflow-x:hidden;
+  transition:background .5s var(--ease),color .5s var(--ease);-webkit-font-smoothing:antialiased}
+body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
+  background-image:radial-gradient(var(--line) .6px,transparent .6px);background-size:26px 26px;opacity:.55;
+  -webkit-mask:radial-gradient(ellipse 70% 55% at 50% 0%,#000,transparent 80%);mask:radial-gradient(ellipse 70% 55% at 50% 0%,#000,transparent 80%)}
+.num{font-family:'JetBrains Mono',monospace;font-variant-numeric:tabular-nums;letter-spacing:-.02em;white-space:nowrap}
+::-webkit-scrollbar{width:10px;height:10px}::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--line-2);border-radius:6px;border:2px solid var(--bg)}
+::-webkit-scrollbar-thumb:hover{background:var(--acc)}
+
+/* ====== HEADER ====== */
+.hdr{position:sticky;top:0;z-index:100;background:var(--glass);backdrop-filter:blur(16px) saturate(150%);border-bottom:1px solid var(--line)}
+.hdr-in{max-width:var(--maxw);margin:0 auto;padding:14px 24px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:12px}
+.brand-logo{height:32px;width:auto;display:block;filter:drop-shadow(0 0 6px rgba(225,131,53,.25))}
+[data-theme="light"] .brand-logo{filter:drop-shadow(0 0 4px rgba(225,131,53,.18))}
+.brand-sub{font-size:10px;color:var(--txt-3);font-family:'JetBrains Mono',monospace;letter-spacing:.12em;border-left:1px solid var(--line);padding-left:12px;text-transform:uppercase;white-space:nowrap}
+.hdr-sp{flex:1;min-width:8px}
+.plan-chip{display:inline-flex;align-items:center;gap:8px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--txt);
+  background:var(--panel-2);border:1px solid var(--line);border-radius:11px;padding:8px 13px;white-space:nowrap}
+.plan-chip .pc-mode{color:var(--txt-3);font-size:10px;letter-spacing:.08em;text-transform:uppercase;padding-right:8px;margin-right:6px;border-right:1px solid var(--line)}
+.plan-chip b{color:var(--acc);font-weight:600}
+.dc-back{display:inline-flex;align-items:center;gap:7px;font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:500;letter-spacing:.04em;text-decoration:none;color:var(--acc);background:rgba(225,131,53,.12);border:1px solid rgba(225,131,53,.3);border-radius:10px;padding:7px 13px;transition:all .2s var(--ease);flex-shrink:0;white-space:nowrap}
+.dc-back:hover{color:var(--txt);background:rgba(225,131,53,.2);border-color:var(--acc);transform:translateY(-1px);box-shadow:0 4px 14px rgba(225,131,53,.2)}
+.dc-back .ix{font-size:11px;opacity:.7}
+@media(max-width:760px){.dc-back{padding:6px 10px;font-size:11px}}
+.tgl{width:54px;height:28px;border-radius:16px;border:1px solid var(--line-2);background:var(--panel-2);position:relative;cursor:pointer;flex-shrink:0;padding:0;border:none}
+.tgl-k{position:absolute;top:2px;left:2px;width:22px;height:22px;border-radius:50%;background:var(--panel);box-shadow:var(--elev-1);display:flex;align-items:center;justify-content:center;font-size:12px;transition:transform .4s var(--ease)}
+[data-theme="light"] .tgl-k{transform:translateX(26px)}
+
+/* ====== HERO ====== */
+.hero{position:relative;z-index:1;max-width:var(--maxw);margin:0 auto;padding:48px 24px 22px;display:grid;grid-template-columns:minmax(0,1fr) 400px;gap:36px;align-items:center}
+.hero-tag{display:inline-flex;align-items:center;gap:8px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--acc);padding:6px 13px;border:1px solid var(--line-2);border-radius:20px;background:var(--panel);margin-bottom:18px;white-space:nowrap}
+.hero h1{font-family:'Space Grotesk',sans-serif;font-size:clamp(28px,4.4vw,46px);font-weight:700;line-height:1.06;letter-spacing:-.02em;
+  background:var(--grad-text);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:14px}
+.hero p{font-size:14px;color:var(--txt-2);max-width:520px;margin-bottom:16px;line-height:1.6}
+.hero p b{color:var(--txt);font-weight:600}
+.hero-note{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--txt-3);line-height:1.85;display:flex;flex-wrap:wrap;gap:8px}
+.hero-note .pill{display:inline-flex;align-items:center;gap:6px;padding:3px 9px;border:1px solid var(--line);border-radius:7px;background:var(--panel-2);white-space:nowrap}
+.hero-note b{color:var(--acc);font-weight:600}
+.bal{position:relative;border:1px solid var(--line-2);border-radius:18px;padding:22px;background:var(--grad-balance);overflow:hidden;box-shadow:var(--elev-2);min-height:208px}
+.bal::after{content:'';position:absolute;inset:0;background:radial-gradient(80% 60% at 100% 0%,rgba(139,92,255,.14),transparent 60%);pointer-events:none}
+.bal-top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px;position:relative}
+.bal-label{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--txt-2);letter-spacing:.08em;text-transform:uppercase}
+.bal-chip{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--up);background:var(--up-soft);border:1px solid rgba(38,208,124,.35);padding:3px 9px;border-radius:8px;white-space:nowrap;flex-shrink:0}
+.bal-amt{font-family:'JetBrains Mono',monospace;font-size:36px;font-weight:700;letter-spacing:-.03em;margin:2px 0 4px;line-height:1.05;position:relative;white-space:nowrap}
+.bal-amt .cur{color:var(--txt-3);font-size:15px;font-weight:500;margin-left:6px;white-space:nowrap}
+.bal-sub{font-size:12.5px;color:var(--txt-2);margin-bottom:14px;position:relative;line-height:1.55}
+.bal-sub b{color:var(--txt);font-weight:600}
+.bal-foot{display:flex;justify-content:space-between;gap:10px;margin-top:10px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--txt-3);position:relative}
+.bal-foot span{white-space:nowrap}
+.bal-foot span b{color:var(--acc);font-weight:600}
+
+/* ====== SECTION SHELL ====== */
+.wrap{position:relative;z-index:1;max-width:var(--maxw);margin:0 auto;padding:24px 24px 70px;display:flex;flex-direction:column;gap:22px}
+.sec{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;box-shadow:var(--elev-1)}
+.sec-h{display:flex;align-items:center;gap:13px;padding:18px 22px;border-bottom:1px solid var(--line);background:var(--panel-2)}
+.sec-ix{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;border:1px solid var(--line-2);background:var(--panel-3)}
+.sec-h .ix-hd{min-width:0;flex:0 1 auto}
+.sec-h .ix-n{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--txt-3);letter-spacing:.1em;white-space:nowrap}
+.sec-h .ix-t{font-family:'Space Grotesk',sans-serif;font-size:18px;font-weight:600;letter-spacing:-.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sec-h .ix-extra{margin-left:auto;flex-shrink:0;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--txt-3);letter-spacing:.05em;white-space:nowrap}
+@media(max-width:760px){.sec-h .ix-extra{display:none}.sec-h .ix-t{white-space:normal;font-size:16px}.sec-h .ix-n{font-size:10px}}
+.sec-b{padding:22px}
+.lead{font-size:14px;color:var(--txt-2);margin-bottom:18px;max-width:820px;line-height:1.6}
+.lead b{color:var(--txt)}
+.eyebrow{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--txt-3);margin:22px 0 12px;display:flex;align-items:center;gap:10px;white-space:nowrap}
+.eyebrow::after{content:'';flex:1;height:1px;background:var(--line)}
+.eyebrow:first-child{margin-top:0}
+
+/* ====== TABLES ====== */
+.tbl-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:var(--r-sm);margin:6px 0}
+.tbl{width:100%;border-collapse:collapse;font-size:12.5px;font-variant-numeric:tabular-nums;font-feature-settings:"tnum" 1,"lnum" 1}
+.tbl th{text-align:left;font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--txt-3);
+  background:var(--panel-2);padding:10px 9px;border-bottom:1px solid var(--line);white-space:nowrap}
+.tbl td{padding:9px 9px;color:var(--txt-2);border-bottom:1px solid var(--line);vertical-align:middle;line-height:1.35}
+/* compact wide decomposition table — fit without horizontal scroll */
+.tbl.compact{font-size:11px}
+.tbl.compact th{font-size:8.5px;letter-spacing:.03em;padding:8px 5px}
+.tbl.compact td{padding:7px 5px}
+.tbl.compact td:first-child{max-width:150px;overflow:hidden;text-overflow:ellipsis}
+.tbl.compact .meta{display:block;margin:2px 0 0;width:fit-content}
+.tbl tr:last-child td{border-bottom:none}
+.tbl tbody tr{transition:background .15s}.tbl tbody tr:hover{background:var(--panel-2)}
+.tbl td:first-child{color:var(--txt);font-weight:500;white-space:nowrap}
+.tbl th.r,.tbl td.r{text-align:right;font-family:'JetBrains Mono',monospace;font-feature-settings:"tnum" 1,"lnum" 1;font-variant-numeric:tabular-nums;white-space:nowrap}
+.row-total td{font-weight:700;font-size:13px;border-top:2px solid var(--acc);color:var(--txt)!important;background:rgba(225,131,53,.06)}
+[data-theme="light"] .row-total td{background:rgba(225,131,53,.07)}
+.row-seo td{background:rgba(139,92,255,.05)}
+.row-off td{background:rgba(34,211,238,.04)}
+.row-off td:first-child{color:var(--txt-2)}
+.tbl .meta{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--txt-3);font-weight:500;margin-left:6px;padding:1px 6px;border:1px solid var(--line);border-radius:5px;background:var(--panel-2);letter-spacing:.02em;white-space:nowrap}
+.tbl .d-up{color:var(--up);font-weight:600}
+
+/* ====== KPI ====== */
+.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:13px}
+@media(max-width:1100px){.kpi-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:520px){.kpi-grid{grid-template-columns:1fr}}
+.kpi{position:relative;border:1px solid var(--line);border-radius:13px;padding:17px;background:var(--panel-2);overflow:hidden;transition:transform .3s var(--ease),border-color .3s;display:flex;flex-direction:column;gap:6px;min-height:118px}
+.kpi:hover{transform:translateY(-3px);border-color:var(--acc)}
+.kpi .lab{font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--txt-3);letter-spacing:.06em;text-transform:uppercase;white-space:nowrap}
+.kpi .val{font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:700;letter-spacing:-.02em;line-height:1.1;color:var(--txt);white-space:nowrap}
+.kpi .val.acc{color:var(--acc)}
+.kpi .val.up{color:var(--up)}
+.kpi .val.violet{color:var(--violet)}
+.kpi .dl{display:inline-flex;align-items:center;gap:5px;font-family:'JetBrains Mono',monospace;font-size:11px;padding:3px 9px;border-radius:7px;width:fit-content;margin-top:auto;white-space:nowrap}
+.kpi .dl.up{color:var(--up);background:var(--up-soft)}
+.kpi .dl.down{color:var(--down);background:var(--down-soft)}
+.kpi .dl.flat{color:var(--txt-3);background:var(--panel)}
+.kpi .dl.acc{color:var(--acc);background:rgba(225,131,53,.14)}
+
+/* ====== FUNNEL ====== */
+.funnel{display:flex;flex-direction:column;gap:8px;margin-top:6px}
+.fstep{display:grid;grid-template-columns:190px 1fr 130px;align-items:center;gap:14px}
+.fstep .fl{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--txt-2);letter-spacing:.04em;text-transform:uppercase;text-align:right;white-space:nowrap}
+.fstep .fbar{height:34px;border-radius:8px;background:var(--grad-acc);display:flex;align-items:center;padding:0 12px;font-family:'JetBrains Mono',monospace;font-weight:700;font-size:13px;color:#fff;min-width:56px;box-shadow:0 4px 14px rgba(225,131,53,.18);white-space:nowrap}
+.fstep.v .fbar{background:linear-gradient(135deg,#a07bff,#7a3bff);box-shadow:0 4px 14px rgba(139,92,255,.18)}
+.fstep.m .fbar{background:linear-gradient(135deg,#3ee6b0,#00a877);box-shadow:0 4px 14px rgba(38,208,124,.18)}
+.fstep .fconv{font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--txt-3);white-space:nowrap}
+.fstep .fconv b{color:var(--amber);font-weight:600}
+@media(max-width:640px){.fstep{grid-template-columns:110px 1fr 90px}.fstep .fl{font-size:9.5px}}
+
+/* ====== CHART ====== */
+.charts-3{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:14px}
+@media(max-width:760px){.charts-3{grid-template-columns:1fr}}
+.chart-card{background:var(--panel);border:1px solid var(--line);border-radius:var(--r-sm);padding:18px;box-shadow:var(--elev-1);position:relative}
+.chart-card h3{font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:600;margin-bottom:4px;color:var(--txt);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.chart-card .sub{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--txt-3);letter-spacing:.04em;margin-bottom:14px}
+.chart-card .cht{position:relative;height:250px}
+.chart-card .cht canvas{width:100%!important;height:100%!important}
+
+/* ====== ASSUMPTIONS ====== */
+.assump-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:13px}
+.acard{background:var(--panel-2);border:1px solid var(--line);border-radius:13px;padding:16px;border-left:3px solid var(--amber)}
+.acard .an{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--amber);letter-spacing:.1em;text-transform:uppercase;margin-bottom:7px;white-space:nowrap}
+.acard p{font-size:13px;color:var(--txt-2);line-height:1.55}
+.acard p b{color:var(--txt)}
+
+/* ====== FINAL CALLOUT ====== */
+.final{border:1px solid rgba(225,131,53,.45);border-radius:18px;padding:24px 26px;background:var(--grad-balance);box-shadow:var(--elev-2)}
+.final .ft{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--acc);margin-bottom:10px;display:flex;align-items:center;gap:8px;white-space:nowrap}
+.final p{font-size:14.5px;color:var(--txt-2);max-width:900px;line-height:1.65}
+.final p b{color:var(--txt)}
+.chain{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;align-items:center}
+.chain .cstep{font-family:'JetBrains Mono',monospace;font-size:11.5px;color:var(--acc);background:rgba(225,131,53,.12);border:1px solid rgba(225,131,53,.3);border-radius:8px;padding:5px 11px;white-space:nowrap}
+.chain .carr{color:var(--txt-3);font-size:12px}
+
+/* ====== FOOTER ====== */
+.footer{position:relative;z-index:1;border-top:1px solid var(--line);background:var(--bg-2);margin-top:30px}
+.footer-in{max-width:var(--maxw);margin:0 auto;padding:30px 24px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--txt-3);line-height:1.9;display:flex;flex-wrap:wrap;gap:18px;justify-content:space-between;align-items:flex-start}
+.footer-in b{color:var(--txt-2);font-weight:600}
+.footer-in .r{text-align:right;font-size:10.5px;line-height:1.7}
+.footer-in .r b{color:var(--txt-2);font-weight:600;display:block;font-size:11.5px}
+
+@media(max-width:860px){.hero{grid-template-columns:1fr;padding-top:34px}.bal{order:-1}}
+@media(max-width:560px){.hero h1{font-size:29px}.wrap{padding:18px 14px 50px}.hdr-in{padding:12px 14px}.bal-amt{font-size:28px}.bal-amt .cur{font-size:12px}}
+@media print{.tgl,.plan-chip{display:none!important}}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="hdr">
+  <div class="hdr-in">
+    <div class="brand">
+      <img class="brand-logo" src="https://sk-tu.ru/local/templates/v1.0/static/img/logo-large.svg" alt="Тёплый Угол">
+      <span class="brand-sub">ДЕКОМПОЗИЦИЯ · ПЛАН</span>
+    </div>
+    <a class="dc-back" href="./index.html" aria-label="Вернуться к маркетинговому дашборду">
+      <span class="ix">←</span>Дашборд
+    </a>
+    <div class="hdr-sp"></div>
+    <span class="plan-chip"><span class="pc-mode">Месяц</span>Август 2026 · <b>ПЛАН</b></span>
+    <button class="tgl" id="tgl" type="button" role="switch" aria-checked="false" aria-label="Тема"><span class="tgl-k" id="tglK">☀️</span></button>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div>
+    <span class="hero-tag">◈ TU OS v2 · декомпозиция маркетинга</span>
+    <h1>Декомпозиция · Август 2026</h1>
+    <p>План по воронке <b>трафик → заявки → квалы → продажи → выручка</b> с <b>честной атрибуцией</b>: Директ считается только по utm-привязанным ЦЛ, офлайн-каналы — отдельными строками. Задача месяца — <b>выправить хаос атрибуции</b>, а не разогнать цифры.</p>
+    <div class="hero-note">
+      <span class="pill">▸ Июль факт: Директ 14 ЦЛ на 969&nbsp;141₽</span>
+      <span class="pill">▸ CPL Директа: 69&nbsp;224₽ → цель 32&nbsp;333₽</span>
+      <span class="pill">▸ Средний чек: <b>5&nbsp;700&nbsp;000₽</b></span>
+    </div>
+  </div>
+  <div class="bal">
+    <div class="bal-top">
+      <span class="bal-label">Главный KPI · ЦЛ с Директа</span>
+      <span class="bal-chip">▲ +114% к июлю</span>
+    </div>
+    <div class="bal-amt"><span>30</span><span class="cur">ЦЛ с Яндекс.Директа</span></div>
+    <div class="bal-sub">Июль факт <b>14 ЦЛ</b> → август план <b>30 ЦЛ</b> при плоском бюджете <b>970&nbsp;000₽</b>. Рычаги: фикс utm-атрибуции, отключение 0-ЦЛ кампаний, CTA→запись на выставку.</div>
+    <div class="bal-foot"><span>Июль: <b>14 ЦЛ</b></span><span>Август: <b>30 ЦЛ</b></span></div>
+  </div>
+</section>
+
+<div class="wrap">
+
+  <!-- SECTION 01 · KPI -->
+  <section class="sec" id="sec-kpi">
+    <div class="sec-h">
+      <div class="sec-ix">◈</div>
+      <div class="ix-hd">
+        <div class="ix-n">SECTION 01 · SUMMARY</div>
+        <div class="ix-t">Сводные показатели плана</div>
+      </div>
+      <div class="ix-extra">АВГУСТ 2026 · ВСЕ КАНАЛЫ</div>
+    </div>
+    <div class="sec-b">
+      <div class="kpi-grid">
+        <div class="kpi"><span class="lab">Бюджет Директ</span><span class="val acc">970 000₽</span><span class="dl flat">▸ плоско, как июль</span></div>
+        <div class="kpi"><span class="lab">ЦЛ с Директа</span><span class="val up">30</span><span class="dl up">▲ +114% к июлю (14)</span></div>
+        <div class="kpi"><span class="lab">CPL Директа</span><span class="val">32 333₽</span><span class="dl up">▼ с 69 224₽</span></div>
+        <div class="kpi"><span class="lab">ЦЛ всего</span><span class="val">127</span><span class="dl flat">▸ июль 120</span></div>
+        <div class="kpi"><span class="lab">Продаж</span><span class="val up">5</span><span class="dl up">▲ ×5 к июлю (1)</span></div>
+        <div class="kpi"><span class="lab">CPS blended</span><span class="val">194 000₽</span><span class="dl flat">▸ цена продажи</span></div>
+        <div class="kpi"><span class="lab">Выручка</span><span class="val up">28,5 млн₽</span><span class="dl up">▲ чек 5,7 млн</span></div>
+        <div class="kpi"><span class="lab">ДРР</span><span class="val violet">3,4%</span><span class="dl acc">▸ бюджет / выручка</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 02 · ДЕКОМПОЗИЦИЯ -->
+  <section class="sec" id="sec-decomp">
+    <div class="sec-h">
+      <div class="sec-ix">▦</div>
+      <div class="ix-hd">
+        <div class="ix-n">SECTION 02 · PLAN</div>
+        <div class="ix-t">Декомпозиция по каналам · честная атрибуция</div>
+      </div>
+      <div class="ix-extra">ДИРЕКТ + SEO + ОФЛАЙН</div>
+    </div>
+    <div class="sec-b">
+      <p class="lead">Директ считаем <b>только по utm-привязанным ЦЛ</b> — как в июле (14 ЦЛ). Офлайн-каналы (выставка, звонки, инста) — отдельными строками с нулевым бюджетом: это данность, на которую мы почти не влияем. Цель по Директу: <b>14 → 30 ЦЛ</b> за счёт гигиены атрибуции и отключения 0-ЦЛ кампаний.</p>
+      <div class="tbl-wrap">
+        <table class="tbl compact">
+          <thead>
+            <tr>
+              <th>Канал</th><th class="r">Бюджет</th><th class="r">Трафик</th><th class="r">CPC</th>
+              <th class="r">CR%заяв</th><th class="r">Заявок</th><th class="r">CPL</th>
+              <th class="r">CR%квал</th><th class="r">Квалов</th><th class="r">CPQL</th>
+              <th class="r">CR%прод</th><th class="r">Продаж</th><th class="r">CPS</th>
+              <th class="r">Ср.чек</th><th class="r">Выручка</th><th class="r">Прибыль</th><th class="r">ДРР%</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Яндекс МСК<span class="meta">июль 6 ЦЛ</span></td>
+              <td class="r">450к₽</td><td class="r">9&nbsp;000</td><td class="r">50₽</td>
+              <td class="r">0,44%</td><td class="r">40</td><td class="r">11,3к₽</td>
+              <td class="r">30%</td><td class="r">12</td><td class="r">37,5к₽</td>
+              <td class="r">8,3%</td><td class="r">1</td><td class="r">450к₽</td>
+              <td class="r">5,7М₽</td><td class="r">5,7М₽</td><td class="r">5,25М₽</td><td class="r">7,9%</td>
+            </tr>
+            <tr>
+              <td>Яндекс СПб<span class="meta d-up">июль 7 ЦЛ</span></td>
+              <td class="r">520к₽</td><td class="r">40&nbsp;000</td><td class="r">13₽</td>
+              <td class="r">0,20%</td><td class="r">80</td><td class="r">6,5к₽</td>
+              <td class="r">22,5%</td><td class="r">18</td><td class="r">28,9к₽</td>
+              <td class="r">5,6%</td><td class="r">1</td><td class="r">520к₽</td>
+              <td class="r">5,7М₽</td><td class="r">5,7М₽</td><td class="r">5,18М₽</td><td class="r">9,1%</td>
+            </tr>
+            <tr class="row-seo">
+              <td>SEO (органика)<span class="meta">0₽</span></td>
+              <td class="r">0₽</td><td class="r">13&nbsp;500</td><td class="r">—</td>
+              <td class="r">0,33%</td><td class="r">45</td><td class="r">—</td>
+              <td class="r">44%</td><td class="r">20</td><td class="r">—</td>
+              <td class="r">5,0%</td><td class="r">1</td><td class="r">0₽</td>
+              <td class="r">5,7М₽</td><td class="r">5,7М₽</td><td class="r">5,7М₽</td><td class="r">0%</td>
+            </tr>
+            <tr class="row-off">
+              <td>Выставочный дом<span class="meta">офлайн</span></td>
+              <td class="r">0₽</td><td class="r">—</td><td class="r">—</td>
+              <td class="r">—</td><td class="r">60</td><td class="r">—</td>
+              <td class="r">75%</td><td class="r">45</td><td class="r">—</td>
+              <td class="r">4,4%</td><td class="r">2</td><td class="r">0₽</td>
+              <td class="r">5,7М₽</td><td class="r">11,4М₽</td><td class="r">11,4М₽</td><td class="r">0%</td>
+            </tr>
+            <tr class="row-off">
+              <td>Вх. звонок<span class="meta">офлайн</span></td>
+              <td class="r">0₽</td><td class="r">—</td><td class="r">—</td>
+              <td class="r">—</td><td class="r">130</td><td class="r">—</td>
+              <td class="r">11,5%</td><td class="r">15</td><td class="r">—</td>
+              <td class="r">0%</td><td class="r">0</td><td class="r">—</td>
+              <td class="r">—</td><td class="r">0₽</td><td class="r">0₽</td><td class="r">0%</td>
+            </tr>
+            <tr class="row-off">
+              <td>Инстаграм<span class="meta">офлайн</span></td>
+              <td class="r">0₽</td><td class="r">—</td><td class="r">—</td>
+              <td class="r">—</td><td class="r">18</td><td class="r">—</td>
+              <td class="r">66,7%</td><td class="r">12</td><td class="r">—</td>
+              <td class="r">0%</td><td class="r">0</td><td class="r">—</td>
+              <td class="r">—</td><td class="r">0₽</td><td class="r">0₽</td><td class="r">0%</td>
+            </tr>
+            <tr class="row-off">
+              <td>Прочее<span class="meta">офлайн</span></td>
+              <td class="r">0₽</td><td class="r">—</td><td class="r">—</td>
+              <td class="r">—</td><td class="r">100</td><td class="r">—</td>
+              <td class="r">5%</td><td class="r">5</td><td class="r">—</td>
+              <td class="r">0%</td><td class="r">0</td><td class="r">—</td>
+              <td class="r">—</td><td class="r">0₽</td><td class="r">0₽</td><td class="r">0%</td>
+            </tr>
+            <tr class="row-total">
+              <td>ИТОГО · Август</td>
+              <td class="r">970к₽</td><td class="r">62&nbsp;500</td><td class="r">15,5₽</td>
+              <td class="r">0,76%</td><td class="r">473</td><td class="r">2,1к₽</td>
+              <td class="r">26,8%</td><td class="r">127</td><td class="r">7,6к₽</td>
+              <td class="r">3,9%</td><td class="r">5</td><td class="r">194к₽</td>
+              <td class="r">5,7М₽</td><td class="r">28,5М₽</td><td class="r">27,5М₽</td><td class="r">3,4%</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 03 · ВОРОНКА -->
+  <section class="sec" id="sec-funnel">
+    <div class="sec-h">
+      <div class="sec-ix">▽</div>
+      <div class="ix-hd">
+        <div class="ix-n">SECTION 03 · FUNNEL</div>
+        <div class="ix-t">Воронка августа · blended</div>
+      </div>
+      <div class="ix-extra">ВСЕ КАНАЛЫ</div>
+    </div>
+    <div class="sec-b">
+      <div class="funnel">
+        <div class="fstep"><span class="fl">Трафик</span><div class="fbar" style="width:100%">62 500</div><span class="fconv">—</span></div>
+        <div class="fstep"><span class="fl">Заявки</span><div class="fbar" style="width:52%">473</div><span class="fconv">CR <b>0,76%</b></span></div>
+        <div class="fstep"><span class="fl">Квалы (ЦЛ)</span><div class="fbar v" style="width:24%">127</div><span class="fconv">CR <b>26,8%</b></span></div>
+        <div class="fstep"><span class="fl">Продажи</span><div class="fbar m" style="width:10%">5</div><span class="fconv">CR <b>3,9%</b></span></div>
+        <div class="fstep"><span class="fl">Выручка</span><div class="fbar m" style="width:64%">28,5 млн₽</div><span class="fconv">ДРР <b>3,4%</b></span></div>
+      </div>
+
+      <div class="eyebrow">Выправление хаоса · план vs факт</div>
+      <div class="charts-3">
+        <div class="chart-card">
+          <h3>ЦЛ с Директа · июль vs август</h3>
+          <div class="sub">Ключевая метрика выправления: 14 → 30 (+114%)</div>
+          <div class="cht"><canvas id="chDirect"></canvas></div>
+        </div>
+        <div class="chart-card">
+          <h3>CPL Директа · динамика</h3>
+          <div class="sub">69 224₽ (июль хаос) → 32 333₽ (август план)</div>
+          <div class="cht"><canvas id="chCpl"></canvas></div>
+        </div>
+        <div class="chart-card">
+          <h3>Бюджет vs Выручка</h3>
+          <div class="sub">ДРР 3,4% · чек 5,7 млн₽</div>
+          <div class="cht"><canvas id="chMoney"></canvas></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 04 · ДОПУЩЕНИЯ -->
+  <section class="sec" id="sec-assump">
+    <div class="sec-h">
+      <div class="sec-ix">⚠</div>
+      <div class="ix-hd">
+        <div class="ix-n">SECTION 04 · ASSUMPTIONS</div>
+        <div class="ix-t">Допущения CMO — от них зависит план</div>
+      </div>
+      <div class="ix-extra">ПРОВЕРИТЬ ПЕРЕД СОГЛАСОВАНИЕМ</div>
+    </div>
+    <div class="sec-b">
+      <div class="assump-grid">
+        <div class="acard">
+          <div class="an">A1 · 30 ЦЛ с Директа = цель выправления</div>
+          <p>Июль: 14 utm-ЦЛ на 969к₽ (CPL 69к₽) — это хаос. Август: <b>МСК 12 + СПб 18 = 30</b> за счёт фикса utm-опечатки (разблокирует МСК-лиды), отключения 0-ЦЛ кампаний (РСЯ/ретаргетинг МСК, ~45к₽) и CTA→запись на выставку.</p>
+        </div>
+        <div class="acard">
+          <div class="an">A2 · Честная атрибуция — новая норма</div>
+          <p>Директ = только utm-привязанные ЦЛ. Офлайн (выставка, звонки, инста) — отдельные строки, <b>не приписываем их Директу</b>. Это делает CPL Директа честным и показывает реальную цену канала.</p>
+        </div>
+        <div class="acard">
+          <div class="an">A3 · CR квал→продажа 4–8%</div>
+          <p>Директ: 30 ЦЛ → 2 продажи (МСК 8,3% · СПб 5,6%). Выставка: 45 ЦЛ → 2 продажи (4,4%). SEO: 20 ЦЛ → 1 продажа. Итого <b>5 продаж</b>. Без работы отдела продаж над дожимом КП — реалистичнее 3.</p>
+        </div>
+        <div class="acard">
+          <div class="an">A4 · Средний чек 5 700 000₽</div>
+          <p>Консервативный низ диапазона CA-анализа (6–12 млн). Если реальный чек 8 млн — выручка 40 млн, ДРР падает к 2,4%.</p>
+        </div>
+        <div class="acard">
+          <div class="an">A5 · Офлайн — данность, не цель</div>
+          <p>Выставочный дом (июль 51 ЦЛ) — главный канал, но мы на него почти не влияем. План 45 ЦЛ = «не уронить». Целей по росту офлайна не ставим — фокус на управляемом Директе.</p>
+        </div>
+        <div class="acard">
+          <div class="an">A6 · Бюджет плоский 970 000₽</div>
+          <p>Не растим: август — хвост сезона решений (пик зима–весна). Перераспределяем ~43к₽ из МСК в СПб (CPC 13₽ vs 55₽). Рост — через эффективность, не через деньги.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 05 · РЫЧАГИ -->
+  <section class="sec" id="sec-levers">
+    <div class="sec-h">
+      <div class="sec-ix">⚙</div>
+      <div class="ix-hd">
+        <div class="ix-n">SECTION 05 · LEVERS</div>
+        <div class="ix-t">Что делаем, чтобы выполнить план</div>
+      </div>
+      <div class="ix-extra">ДЕЙСТВИЯ · ПРИОРИТЕТ</div>
+    </div>
+    <div class="sec-b">
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <thead><tr><th>№</th><th>Рычаг</th><th>Канал</th><th>Действие</th><th class="r">Эффект</th><th>Зона</th></tr></thead>
+          <tbody>
+            <tr><td class="num">1</td><td>utm-гигиена</td><td>МСК</td><td>Исправить опечатку utm_campaign в amoCRM (70885468→708854686), ввести регламент разметки лидов</td><td class="r d-up">+2–3 ЦЛ МСК</td><td>Собственник</td></tr>
+            <tr><td class="num">2</td><td>Отключение 0-ЦЛ кампаний</td><td>МСК</td><td>Стоп РСЯ.МСК (37,7к₽) + ретаргетинг МСК (7,8к₽) — 0 ЦЛ в июле</td><td class="r d-up">−45к₽ впустую</td><td>Маркетинг</td></tr>
+            <tr><td class="num">3</td><td>Перераспределение</td><td>МСК→СПб</td><td>+43к₽ в СПб Мастер (CPC 13₽ vs 55₽)</td><td class="r d-up">+дешёвый трафик</td><td>Маркетинг</td></tr>
+            <tr><td class="num">4</td><td>CTA-сдвиг</td><td>Директ</td><td>Основная конверсия = запись на выставку/экскурсию, не заявка (выставка дала 43% ЦЛ июля)</td><td class="r d-up">↑ CR в ЦЛ</td><td>Маркетинг</td></tr>
+            <tr><td class="num">5</td><td>Дожим КП</td><td>Все</td><td>Регламент дожима, SLA отдела продаж, переработка КП (CA: CV2 СПб=4% — узкое место)</td><td class="r d-up">CR продажа →5%+</td><td>Собственник + Маркетинг</td></tr>
+            <tr><td class="num">6</td><td>Сезонный оффер</td><td>Все</td><td>«Успей заехать до зимы» + дедлайн по договору</td><td class="r d-up">↑ CR продажа</td><td>Собственник</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- FINAL -->
+  <div class="final">
+    <div class="ft">◈ Итог CMO · Август 2026</div>
+    <p>План <b>5 продаж при бюджете 970&nbsp;000₽ и ДРР 3,4%</b>. Но главная метрика месяца — не продажи, а <b>ЦЛ с Директа: 14 → 30</b>. Это первый шаг выправления хаоса атрибуции, который был до нас: честный CPL Директа 69к₽ → 32к₽, отключение мёртвых кампаний, регламент utm-разметки. Офлайн-каналы держим как данность. Если дожим КП не сработает — план сжимается до <b>3 продаж</b> при той же верхней воронке.</p>
+    <div class="chain">
+      <span class="cstep">970&nbsp;000₽ бюджет</span><span class="carr">→</span>
+      <span class="cstep">62&nbsp;500 трафик</span><span class="carr">→</span>
+      <span class="cstep">473 заявки</span><span class="carr">→</span>
+      <span class="cstep">127 квалов</span><span class="carr">→</span>
+      <span class="cstep">30 ЦЛ с Директа</span><span class="carr">→</span>
+      <span class="cstep">5 продаж</span><span class="carr">→</span>
+      <span class="cstep">28,5 млн₽</span>
+    </div>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-in">
+    <div>
+      <b>СК «Тёплый угол» · Декомпозиция маркетинга</b><br>
+      Яндекс.Директ МСК + СПб + SEO + офлайн · Август 2026 · TU OS v2
+    </div>
+    <div class="r">
+      <b>Методология</b>
+      Честная атрибуция: Директ = только utm-ЦЛ<br>
+      База: июль 2026 факт (14 ЦЛ Директа · 120 ЦЛ всего · 1 договор)<br>
+      Средний чек 5&nbsp;700&nbsp;000₽ (assumption A4) · роль CMO L99
+    </div>
+  </div>
+</footer>
+
+<script>
+// theme toggle
+const tgl=document.getElementById('tgl'),tglK=document.getElementById('tglK'),root=document.documentElement;
+function setTheme(t){root.setAttribute('data-theme',t);tgl.setAttribute('aria-checked',t==='light');tglK.textContent=t==='light'?'☀️':'🌙'}
+tgl.addEventListener('click',()=>setTheme(root.getAttribute('data-theme')==='light'?'dark':'light'));
+setTheme('light');
+
+// charts
+const mono={family:"'JetBrains Mono',monospace"};
+const acc='#E18335',violet='#8b5cff',up='#26d07c',line='#d2dae8';
+Chart.defaults.font.family="'Inter',sans-serif";Chart.defaults.color='#48566e';
+
+new Chart(chDirect,{type:'bar',data:{labels:['Июль (факт)','Август (план)'],
+  datasets:[{data:[14,30],backgroundColor:[line,up],borderRadius:8,borderSkipped:false,barThickness:56}]},
+  options:{plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,ticks:{font:mono},grid:{color:'rgba(0,0,0,.05)'}},x:{grid:{display:false},ticks:{font:mono}}}}});
+
+new Chart(chCpl,{type:'bar',data:{labels:['Июль (хаос)','Август (план)'],
+  datasets:[{data:[69224,32333],backgroundColor:['#e23048',up],borderRadius:8,borderSkipped:false,barThickness:56}]},
+  options:{plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.parsed.y.toLocaleString('ru-RU')+'₽'}}},
+  scales:{y:{beginAtZero:true,ticks:{callback:v=>(v/1000)+'к₽',font:mono},grid:{color:'rgba(0,0,0,.05)'}},x:{grid:{display:false},ticks:{font:mono}}}}});
+
+new Chart(chMoney,{type:'bar',data:{labels:['Бюджет','Выручка'],
+  datasets:[{data:[0.97,28.5],backgroundColor:[acc,up],borderRadius:10,borderSkipped:false,barThickness:70}]},
+  options:{plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.parsed.y+' млн₽'}}},
+  scales:{y:{beginAtZero:true,ticks:{callback:v=>v+' млн',font:mono},grid:{color:'rgba(0,0,0,.05)'}},x:{grid:{display:false},ticks:{font:mono}}}}});
+</script>
+</body>
+</html>
