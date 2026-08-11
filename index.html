@@ -459,11 +459,12 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
     <div class="ix-extra" id="seoSpbPeriod">—</div>
   </div>
   <div class="sec-b">
-    <p class="lead">Органический трафик СПБ: визиты, пользователи, глубина и время на сайте по Яндекс.Метрике. Топ-10 страниц и запросов по Яндекс.Вебмастеру. Метрики <b>не суммируются с МСК</b> — каждая компания показана отдельно.</p>
+    <p class="lead">Трафик сайта СПБ: визиты, пользователи, отказы, глубина и время по сводке источников Яндекс.Метрики. Топ-10 страниц и запросов — по органическому поиску Яндекс.Вебмастера. Метрики <b>не суммируются с МСК</b> — каждая компания показана отдельно.</p>
     <div style="display:flex;flex-direction:column;gap:14px">
       <div class="chart-card">
         <h3>SEO Performance СПБ</h3>
         <div class="sub">Визиты · Пользователи · Глубина · Время</div>
+        <div class="sub" id="seoSpbMeta">Отказы · цели —</div>
         <div class="badge" id="spbMetricBadge">—</div>
         <div class="cht"><canvas id="seoPerformanceChartSpb"></canvas></div>
       </div>
@@ -502,11 +503,12 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
     <div class="ix-extra" id="seoMskPeriod">—</div>
   </div>
   <div class="sec-b">
-    <p class="lead">Органический трафик МСК: визиты, пользователи, глубина и время по Яндекс.Метрике. Топ-10 страниц и запросов по Яндекс.Вебмастеру.</p>
+    <p class="lead">Трафик сайта МСК: визиты, пользователи, отказы, глубина и время по сводке источников Яндекс.Метрики. Топ-10 страниц и запросов — по органическому поиску Яндекс.Вебмастера.</p>
     <div style="display:flex;flex-direction:column;gap:14px">
       <div class="chart-card">
         <h3>SEO Performance МСК</h3>
         <div class="sub">Визиты · Пользователи · Глубина · Время</div>
+        <div class="sub" id="seoMskMeta">Отказы · цели —</div>
         <div class="badge" id="mskMetricBadge">—</div>
         <div class="cht"><canvas id="seoPerformanceChartMsk"></canvas></div>
       </div>
@@ -1116,7 +1118,10 @@ const weeks = {
         {name:"SEO (вкл. Прямой заход)",leads:20,target:5,spend:0},
         {name:"Прочее (VK, прочие)",leads:26,target:3,spend:0}
       ],
-      seoStats: {spb:{visits:6279,users:0,pageDepth:0,avgDuration:0},msk:{visits:8485,users:0,pageDepth:0,avgDuration:0}},
+      seoStats: {
+        spb:{visits:11728,users:9349,bounceRate:0.3841234652,pageDepth:2.3101125512,avgDuration:104,goals:null,goalConversion:null,goalRevenue:null},
+        msk:{visits:3262,users:2553,bounceRate:0.2247087676,pageDepth:3.0383200490,avgDuration:167,goals:26,goalConversion:0.0090090090,goalRevenue:0}
+      },
       topPagesSpb: [
         {url:"/catalog/karkasnye-doma/",impressions:24583,clicks:2255},
         {url:"/catalog/karkasnye-doma/100-150m2/",impressions:3163,clicks:936},
@@ -1698,6 +1703,15 @@ function renderSeoCharts(w){
     var prevData = prev ? prev.seoStats[s.toLowerCase()] : null;
     var periodEl = document.getElementById(s==="Spb"?"seoSpbPeriod":"seoMskPeriod");
     if(periodEl) periodEl.textContent = w.label+" · "+w.from+"–"+w.to;
+    var metaEl = document.getElementById(s==="Spb"?"seoSpbMeta":"seoMskMeta");
+    if(metaEl){
+      var metaParts = [];
+      if(data.bounceRate!=null) metaParts.push("Отказы "+(data.bounceRate*100).toFixed(1)+"%");
+      if(data.goals!=null) metaParts.push("Цели "+fmt(data.goals));
+      if(data.goalConversion!=null) metaParts.push("Конв. целей "+(data.goalConversion*100).toFixed(2)+"%");
+      if(data.goalRevenue!=null) metaParts.push("Доход целей "+rub(data.goalRevenue));
+      metaEl.textContent = metaParts.length ? metaParts.join(" · ") : "Отказы и цели: нет данных";
+    }
 
     if(charts["seo"+s]) charts["seo"+s].destroy();
     var baseFont = "JetBrains Mono";
