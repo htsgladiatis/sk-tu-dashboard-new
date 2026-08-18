@@ -268,7 +268,7 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
 </style>
 </head>
 <body>
-<script>('serviceWorker'in navigator)&&navigator.serviceWorker.register('./sw.js?v=2')</script>
+<script>('serviceWorker'in navigator)&&navigator.serviceWorker.register('./sw.js?v=3')</script>
 <div class="bar-prog" id="barProg"></div>
 
 <!-- HEADER -->
@@ -1170,6 +1170,79 @@ const weeks = {
         {query:"одноэтажный каркасный дом",visits:194},
         {query:"каркасные дома недорого",visits:184}
       ]
+    },
+    w9: {
+      id: "w9", label: "10.08–16.08", from: "10.08.2026", to: "16.08.2026",
+      impressions: 483906, clicks: 6439, spend: 201908.73, leads: 93, target: 41,
+      ctr: 1.33, cpc: 31.36, cpa: 2171.06, cpl: 4924.60,
+      noteImpressions: null,
+      accounts: {
+        "Кабинет МСК": { imp: 71478, clicks: 1561, spend: 103578.37, leads: 8, target: 4, campaigns: [
+          {name:"Каркас кат. Мастер. МСК. OK.", imp:70902, clicks:1504, spend:87718.33, leads:6, target:3},
+          {name:"Каркас. Поиск. МСК.", imp:576, clicks:57, spend:15860.00, leads:2, target:1}
+        ]},
+        "Кабинет СПБ": { imp: 412428, clicks: 4878, spend: 98330.36, leads: 1, target: 0, campaigns: [
+          {name:"Каркас. Мастер. СПБ. OK. gl.", imp:287180, clicks:3987, spend:69543.78, leads:1, target:0},
+          {name:"Копия Каркас. Ретаргетинг. ФИД. СПБ. OK. 4.", imp:125248, clicks:891, spend:28786.58, leads:0, target:0}
+        ]}
+      },
+      channels: [
+        {name:"Яндекс Директ",leads:9,target:4,spend:201908.73},
+        {name:"Выставочный дом",leads:14,target:12,spend:0},
+        {name:"Инстаграм",leads:14,target:8,spend:0},
+        {name:"Вх. звонок",leads:19,target:5,spend:0},
+        {name:"SEO (вкл. Прямой заход)",leads:20,target:11,spend:0},
+        {name:"Прочее (VK, прочие)",leads:17,target:1,spend:0}
+      ],
+      seoStats: {spb:{visits:7843,users:0,pageDepth:0,avgDuration:0},msk:{visits:6456,users:0,pageDepth:0,avgDuration:0}},
+      topPagesSpb: [
+        {url:"/catalog/karkasnye-doma/",impressions:32643,clicks:3120},
+        {url:"/catalog/karkasnye-doma/100-150m2/",impressions:4533,clicks:1292},
+        {url:"/catalog/karkasnye-doma/odnoetazhnye/",impressions:3929,clicks:1112},
+        {url:"/catalog/karkasnye-doma/dvuhetazhnye/",impressions:3276,clicks:372},
+        {url:"/catalog/karkasnye-doma/pmzh/",impressions:1351,clicks:275},
+        {url:"/",impressions:4615,clicks:207},
+        {url:"/articles/stroitelstvo/pravila-razmeshcheniya-stroeniy-na-zemelnom-uchastke-v-2026-polnoe-rukovodstvo-dlya-izhs-i-snt/",impressions:4335,clicks:178},
+        {url:"/designer/constructor/",impressions:462,clicks:152},
+        {url:"/calculator/",impressions:1411,clicks:130},
+        {url:"/catalog/karkasnye-doma/s-terrasoj/",impressions:875,clicks:93}
+      ],
+      topPagesMsk: [
+        {url:"/catalog/karkasnye-doma/",impressions:55991,clicks:2396},
+        {url:"/catalog/karkasnye-doma/odnoetazhnye/",impressions:14393,clicks:1446},
+        {url:"/catalog/karkasnye-doma/dvuhetazhnye/",impressions:3018,clicks:346},
+        {url:"/calculator/",impressions:1739,clicks:242},
+        {url:"/catalog/karkasnye-doma/100-150m2/",impressions:1634,clicks:212},
+        {url:"/catalog/karkasnye-doma/s-terrasoj/",impressions:1000,clicks:209},
+        {url:"/",impressions:6702,clicks:197},
+        {url:"/articles/stroitelstvo/pravila-razmeshcheniya-stroeniy-na-zemelnom-uchastke-v-2026-polnoe-rukovodstvo-dlya-izhs-i-snt/",impressions:3349,clicks:177},
+        {url:"/catalog/karkasnye-doma/barnkhaus/",impressions:1006,clicks:155},
+        {url:"/design/",impressions:1140,clicks:130}
+      ],
+      topQueriesSpb: [
+        {query:"каркасные дома",visits:590},
+        {query:"одноэтажные каркасные дома под ключ",visits:536},
+        {query:"каркасный дом под ключ в спб",visits:284},
+        {query:"каркасный дом цена",visits:275},
+        {query:"каркасные дома под ключ",visits:241},
+        {query:"каркасный дом под ключ цена",visits:238},
+        {query:"каркасные дома под ключ в спб",visits:225},
+        {query:"каркасный дом под ключ",visits:219},
+        {query:"строительство каркасных домов",visits:172},
+        {query:"каркасные дома санкт петербург",visits:166}
+      ],
+      topQueriesMsk: [
+        {query:"каркасные дома",visits:440},
+        {query:"каркасные дома под ключ",visits:423},
+        {query:"каркасный дом под ключ москва",visits:215},
+        {query:"строительство каркасных домов",visits:177},
+        {query:"купить каркасный дом под ключ",visits:171},
+        {query:"одноэтажный каркасный дом",visits:159},
+        {query:"проекты каркасных домов",visits:158},
+        {query:"строительство каркасных домов под ключ",visits:156},
+        {query:"каркасный дом цена",visits:147},
+        {query:"купить каркасный дом",visits:134}
+      ]
     }
     };
 
@@ -1262,8 +1335,8 @@ const weeks = {
     }
     };
 
-    let currentWeek = "w8";
-    const weekOrder = ["w1","w2","w3","w4","w5","w6","w7","w8"];
+    let currentWeek = "w9";
+    const weekOrder = ["w1","w2","w3","w4","w5","w6","w7","w8","w9"];
 
 /* ===========================================================
    HELPERS
@@ -1927,7 +2000,7 @@ function  showPeriod(id){
   if(tglBtn) tglBtn.addEventListener("click", toggleTheme);
 
   // First render
-  showPeriod("w8");
+  showPeriod("w9");
   updateSpy();
 })();
 
