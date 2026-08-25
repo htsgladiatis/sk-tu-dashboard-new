@@ -422,12 +422,12 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
     <div class="sec-ix">∿</div>
     <div>
       <div class="ix-n">03 · COMPARISON</div>
-      <div class="ix-t">Сравнение 7 недель</div>
+      <div class="ix-t" id="compareTitle">Сравнение недель</div>
     </div>
-    <div class="ix-extra">15.06 → 02.08</div>
+    <div class="ix-extra" id="comparePeriod">—</div>
   </div>
   <div class="sec-b">
-    <p class="lead">Динамика по 7 ключевым метрикам за весь доступный период. На каждой карточке — значение недели и дельта относительно предыдущей. Серый — без изменений или &lt;0.5%.</p>
+    <p class="lead" id="compareLead">Динамика по ключевым метрикам за весь доступный период. На каждой карточке — значение недели и дельта относительно предыдущей. Серый — без изменений или &lt;0.5%.</p>
     <div class="comp-grid" id="compareGrid"></div>
   </div>
 </section>
@@ -1253,8 +1253,8 @@ const weeks = {
       ctr: 1.62, cpc: 35.35, cpa: 2969.17, cpl: 8190.81,
       noteImpressions: null,
       accounts: {
-        "Кабинет МСК": { imp: 130849, clicks: 2589, spend: 115533.48, leads: 13, target: 5, campaigns: [
-          {name:"Каркас кат. Мастер. МСК. OK.", imp:130849, clicks:2589, spend:115533.49, leads:12, target:5},
+        "Кабинет МСК": { imp: 132963, clicks: 2655, spend: 115533.48, leads: 13, target: 5, campaigns: [
+          {name:"Каркас кат. Мастер. МСК. OK.", imp:130849, clicks:2589, spend:115533.48, leads:12, target:5},
           {name:"Каркас. Поиск. МСК.", imp:2114, clicks:66, spend:0.00, leads:1, target:0}
         ]},
         "Кабинет СПБ": { imp: 282240, clicks: 4065, spend: 122000.00, leads: 2, target: 2, campaigns: [
@@ -1415,7 +1415,7 @@ const weeks = {
     };
 
     let currentWeek = "w9";
-    const weekOrder = ["w1","w2","w3","w4","w5","w6","w7","w8","w9"];
+    const weekOrder = ["w1","w2","w3","w4","w5","w6","w7","w8","w9","w10"];
 
 /* ===========================================================
    HELPERS
@@ -1775,7 +1775,7 @@ function renderDetailTable(w){
 }
 
 /* ===========================================================
-   3-WEEK COMPARISON GRID
+   WEEK COMPARISON GRID
    =========================================================== */
 function renderCompare(){
   var metrics = [
@@ -1787,8 +1787,14 @@ function renderCompare(){
     {key:"cpl",    label:"CPL",      fmtFn: function(v){return rub(v);}, invert:true},
     {key:"impressions", label:"ПОКАЗЫ", fmtFn: function(v){return fmt(v);} }
   ];
+  var firstWeek = weeks[weekOrder[0]];
+  var lastWeek = weeks[weekOrder[weekOrder.length - 1]];
+  document.getElementById("compareTitle").textContent = "Сравнение " + weekOrder.length + " недель";
+  document.getElementById("comparePeriod").textContent = firstWeek.from.slice(0, 5) + " → " + lastWeek.to.slice(0, 5);
+  document.getElementById("compareLead").innerHTML = "Динамика по 7 ключевым метрикам за весь доступный период (" + firstWeek.label + " → " + lastWeek.label + "). На каждой карточке — значение недели и дельта относительно предыдущей. Серый — без изменений или &lt;0.5%.";
   document.getElementById("compareGrid").innerHTML = metrics.map(function(m){
-    var vals = weekOrder.map(function(id){return weeks[id][m.key];});      var bars = weekOrder.map(function(id, i){
+    var vals = weekOrder.map(function(id){return weeks[id][m.key];});
+    var bars = weekOrder.map(function(id, i){
       var v = vals[i];
       var prev = i>0 ? vals[i-1] : null;
       var dTxt = "";
@@ -1803,13 +1809,13 @@ function renderCompare(){
       var cls = "comp-bar";
       var bigCls = m.acc ? "big acc" : "big";
       return '<div class="'+cls+'">'+
-        '<span class="lbl">'+weeks[id].label.split("–")[0]+mixedChip+'</span>'+
+        '<span class="lbl">'+weeks[id].label.split("–")[0]+'</span>'+
         '<span class="'+bigCls+'">'+m.fmtFn(v)+'</span>'+
         dTxt+
       '</div>';
     }).join("");
     return '<div class="comp-card">'+
-      '<div class="hd"><b>'+m.label+'</b><span>3 недели · 3 периода</span></div>'+
+      '<div class="hd"><b>'+m.label+'</b><span>'+weekOrder.length+' недель · '+weekOrder.length+' периодов</span></div>'+
       '<div class="comp-bars">'+bars+'</div>'+
     '</div>';
   }).join("");
@@ -2026,7 +2032,9 @@ function  showPeriod(id){
   renderDetailTable(w);
   renderTopPages(w);
   renderTopQueries(w);
-  renderSeoCharts(w);  renderFinal(w);
+  renderSeoCharts(w);
+  renderCompare();
+  renderFinal(w);
 }
 /* ===========================================================
    SCROLLSPY · REVEAL · TO-TOP · INIT
