@@ -189,23 +189,6 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
 .chart-card .badge{position:absolute;top:14px;right:14px;font-family:'JetBrains Mono',monospace;font-size:10.5px;padding:3px 9px;border-radius:7px;letter-spacing:.04em}
 .chart-card .scroll{height:240px;overflow:auto}
 
-/* ====== COMPARISON (3-week) ====== */
-.comp-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px}
-@media(max-width:760px){.comp-grid{grid-template-columns:1fr}}
-.comp-card{background:var(--panel-2);border:1px solid var(--line);border-radius:13px;padding:18px;display:flex;flex-direction:column;gap:10px;transition:transform .3s var(--ease),border-color .3s}
-.comp-card:hover{transform:translateY(-2px);border-color:var(--line-2)}
-.comp-card .hd{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
-.comp-card .hd b{font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:600}
-.comp-card .hd span{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--txt-3);letter-spacing:.04em;text-align:right}
-.comp-bars{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:6px}
-.comp-bar{display:flex;flex-direction:column;gap:5px}
-.comp-bar .lbl{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--txt-3);letter-spacing:.06em;text-transform:uppercase}
-.comp-bar .big{font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:700;color:var(--txt);letter-spacing:-.01em;line-height:1.05}
-.comp-bar .big.acc{color:var(--acc)}
-.comp-bar .delta{font-family:'JetBrains Mono',monospace;font-size:10.5px}
-.comp-bar .delta.up{color:var(--up)}
-.comp-bar .delta.down{color:var(--down)}
-.comp-bar .delta.flat{color:var(--txt-3)}
 
 /* ====== FINAL CALLOUT ====== */
 .final{border:1px solid color-mix(in srgb,var(--acc) 45%,transparent);border-radius:18px;padding:24px 26px;background:var(--grad-balance);box-shadow:var(--elev-2)}
@@ -345,11 +328,10 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
 <nav class="navbar"><div class="navbar-in" id="topNav">
   <a class="nav-seg active" href="#sec-kpi"><span class="ix">01</span> KPI</a>
   <a class="nav-seg" href="#sec-charts"><span class="ix">02</span> Графики</a>
-  <a class="nav-seg" href="#sec-compare"><span class="ix">03</span> 3 недели</a>
-  <a class="nav-seg" href="#sec-drilldown"><span class="ix">04</span> Детали</a>
-  <a class="nav-seg" href="#sec-seo-spb"><span class="ix">05</span> SEO · СПБ</a>
-  <a class="nav-seg" href="#sec-seo-msk"><span class="ix">06</span> SEO · МСК</a>
-  <a class="nav-seg" href="#sec-final"><span class="ix">07</span> Выводы</a>
+  <a class="nav-seg" href="#sec-drilldown"><span class="ix">03</span> Детали</a>
+  <a class="nav-seg" href="#sec-seo-spb"><span class="ix">04</span> SEO · СПБ</a>
+  <a class="nav-seg" href="#sec-seo-msk"><span class="ix">05</span> SEO · МСК</a>
+  <a class="nav-seg" href="#sec-final"><span class="ix">06</span> Выводы</a>
 </div></nav>
 
 <main class="wrap">
@@ -416,28 +398,12 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
   </div>
 </section>
 
-<!-- 03 COMPARE -->
-<section class="sec" id="sec-compare">
-  <div class="sec-h">
-    <div class="sec-ix">∿</div>
-    <div>
-      <div class="ix-n">03 · COMPARISON</div>
-      <div class="ix-t" id="compareTitle">Сравнение недель</div>
-    </div>
-    <div class="ix-extra" id="comparePeriod">—</div>
-  </div>
-  <div class="sec-b">
-    <p class="lead" id="compareLead">Динамика по ключевым метрикам за весь доступный период. На каждой карточке — значение недели и дельта относительно предыдущей. Серый — без изменений или &lt;0.5%.</p>
-    <div class="comp-grid" id="compareGrid"></div>
-  </div>
-</section>
-
-<!-- 04 DRILLDOWN -->
+<!-- 03 DRILLDOWN -->
 <section class="sec" id="sec-drilldown">
   <div class="sec-h">
     <div class="sec-ix">📋</div>
     <div>
-      <div class="ix-n">04 · DRILLDOWN</div>
+      <div class="ix-n">03 · DRILLDOWN</div>
       <div class="ix-t" id="drillTitle">Детализация по кабинетам и кампаниям</div>
     </div>
     <div class="ix-extra">числа · без оценок</div>
@@ -448,12 +414,12 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
   </div>
 </section>
 
-<!-- 05 SEO SPB -->
+<!-- 04 SEO SPB -->
 <section class="sec" id="sec-seo-spb">
   <div class="sec-h">
     <div class="sec-ix">🔍</div>
     <div>
-      <div class="ix-n">05 · SEO</div>
+      <div class="ix-n">04 · SEO</div>
       <div class="ix-t">sk-tu.ru · Санкт-Петербург <span class="assump">Вебмастер + Метрика</span></div>
     </div>
     <div class="ix-extra" id="seoSpbPeriod">—</div>
@@ -492,12 +458,12 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
   </div>
 </section>
 
-<!-- 06 SEO MSK -->
+<!-- 05 SEO MSK -->
 <section class="sec" id="sec-seo-msk">
   <div class="sec-h">
     <div class="sec-ix">🔍</div>
     <div>
-      <div class="ix-n">06 · SEO</div>
+      <div class="ix-n">05 · SEO</div>
       <div class="ix-t">msk.sk-tu.ru · Москва <span class="assump">Вебмастер + Метрика</span></div>
     </div>
     <div class="ix-extra" id="seoMskPeriod">—</div>
@@ -536,12 +502,12 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
   </div>
 </section>
 
-<!-- 07 FINAL -->
+<!-- 06 FINAL -->
 <section class="sec" id="sec-final">
   <div class="sec-h">
     <div class="sec-ix">🏁</div>
     <div>
-      <div class="ix-n">07 · OUTCOMES</div>
+      <div class="ix-n">06 · OUTCOMES</div>
       <div class="ix-t" id="finalTitle">Главные выводы по периоду</div>
     </div>
     <div class="ix-extra">insights · next steps</div>
@@ -572,7 +538,7 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
 "use strict";
 
 /* ===========================================================
-   DATA — все 3 недели
+   DATA — недельные периоды
    Источники:
      w1: sk-tu-dashboard-deploy (15.06–21.06 из исходных парсеров)
      w2: sk-tu-dashboard-deploy (22.06–28.06 с верхнеуровневыми имп.)
@@ -1775,53 +1741,6 @@ function renderDetailTable(w){
 }
 
 /* ===========================================================
-   WEEK COMPARISON GRID
-   =========================================================== */
-function renderCompare(){
-  var metrics = [
-    {key:"spend",  label:"РАСХОД",   fmtFn: function(v){return rub(v);} },
-    {key:"leads",  label:"ЛИДЫ",     fmtFn: function(v){return fmt(v);} },
-    {key:"target", label:"ЦЕЛЕВЫЕ",  fmtFn: function(v){return fmt(v);}, acc:true},
-    {key:"clicks", label:"КЛИКИ",    fmtFn: function(v){return fmt(v);} },
-    {key:"ctr",    label:"CTR",      fmtFn: function(v){return v?v.toFixed(2)+"%":"—";} },
-    {key:"cpl",    label:"CPL",      fmtFn: function(v){return rub(v);}, invert:true},
-    {key:"impressions", label:"ПОКАЗЫ", fmtFn: function(v){return fmt(v);} }
-  ];
-  var firstWeek = weeks[weekOrder[0]];
-  var lastWeek = weeks[weekOrder[weekOrder.length - 1]];
-  document.getElementById("compareTitle").textContent = "Сравнение " + weekOrder.length + " недель";
-  document.getElementById("comparePeriod").textContent = firstWeek.from.slice(0, 5) + " → " + lastWeek.to.slice(0, 5);
-  document.getElementById("compareLead").innerHTML = "Динамика по 7 ключевым метрикам за весь доступный период (" + firstWeek.label + " → " + lastWeek.label + "). На каждой карточке — значение недели и дельта относительно предыдущей. Серый — без изменений или &lt;0.5%.";
-  document.getElementById("compareGrid").innerHTML = metrics.map(function(m){
-    var vals = weekOrder.map(function(id){return weeks[id][m.key];});
-    var bars = weekOrder.map(function(id, i){
-      var v = vals[i];
-      var prev = i>0 ? vals[i-1] : null;
-      var dTxt = "";
-      if(prev!=null && prev!==0){
-        var d = (v-prev)/prev*100;
-        if(Math.abs(d)<0.5) dTxt = '<span class="delta flat">· стабильно</span>';
-        else if(d>0) dTxt = '<span class="delta up">▲ +'+d.toFixed(1)+'%</span>';
-        else dTxt = '<span class="delta down">▼ '+d.toFixed(1)+'%</span>';
-      } else {
-        dTxt = '<span class="delta flat">— baseline</span>';
-      }
-      var cls = "comp-bar";
-      var bigCls = m.acc ? "big acc" : "big";
-      return '<div class="'+cls+'">'+
-        '<span class="lbl">'+weeks[id].label.split("–")[0]+'</span>'+
-        '<span class="'+bigCls+'">'+m.fmtFn(v)+'</span>'+
-        dTxt+
-      '</div>';
-    }).join("");
-    return '<div class="comp-card">'+
-      '<div class="hd"><b>'+m.label+'</b><span>'+weekOrder.length+' недель · '+weekOrder.length+' периодов</span></div>'+
-      '<div class="comp-bars">'+bars+'</div>'+
-    '</div>';
-  }).join("");
-}
-
-/* ===========================================================
    SEO TABLES
    =========================================================== */
 function renderTopPages(w){
@@ -2033,7 +1952,6 @@ function  showPeriod(id){
   renderTopPages(w);
   renderTopQueries(w);
   renderSeoCharts(w);
-  renderCompare();
   renderFinal(w);
 }
 /* ===========================================================
