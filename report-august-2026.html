@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>СК «Тёплый угол» · Отчёт Август 2026 · CMO L99</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+<style>
+:root{
+  --bg:#06080d; --bg-2:#0a0d15; --panel:#0f131d; --panel-2:#141a27; --panel-3:#1a2230;
+  --line:#1c2433; --line-2:#2a3447; --glass:rgba(20,26,39,.6);
+  --txt:#eaf0fa; --txt-2:#94a2bb; --txt-3:#5a6880;
+  --acc:#E18335; --acc-ink:#140a03;
+  --mint:#00e5a0; --violet:#8b5cff; --blue:#3d7dff; --cyan:#22d3ee; --amber:#ffb020;
+  --up:#26d07c; --down:#ff5a6e; --up-soft:rgba(38,208,124,.14); --down-soft:rgba(255,90,110,.14);
+  --grad-acc:linear-gradient(135deg,#f29c52,#d8721f);
+  --grad-text:linear-gradient(100deg,#eaf0fa 0%,#E18335 55%,#8b5cff 100%);
+  --grad-balance:radial-gradient(120% 140% at 0% 0%,#2a2014 0%,#0f131d 42%),linear-gradient(135deg,rgba(225,131,53,.16),rgba(139,92,255,.14));
+  --glow-acc:0 0 0 1px rgba(225,131,53,.4),0 8px 30px rgba(225,131,53,.22);
+  --elev-1:0 1px 0 rgba(255,255,255,.03) inset,0 6px 18px rgba(0,0,0,.5);
+  --elev-2:0 1px 0 rgba(255,255,255,.04) inset,0 16px 44px rgba(0,0,0,.6);
+  --r:14px; --r-sm:10px; --r-xs:7px; --maxw:1240px;
+  --ease:cubic-bezier(.22,1,.36,1);
+}
+[data-theme="light"]{
+  --bg:#f4f6fb; --bg-2:#eef1f8; --panel:#ffffff; --panel-2:#f7f9fd; --panel-3:#eef2f8;
+  --line:#e4e9f2; --line-2:#d2dae8; --glass:rgba(255,255,255,.7);
+  --txt:#0b1220; --txt-2:#48566e; --txt-3:#8493ab;
+  --acc:#E18335; --acc-ink:#ffffff; --mint:#00a877; --violet:#6d3bff; --blue:#2563eb; --cyan:#0891b2; --amber:#b8730a;
+  --up:#0c9d63; --down:#e23048; --up-soft:rgba(12,157,99,.12); --down-soft:rgba(226,48,72,.12);
+  --grad-text:linear-gradient(100deg,#0b1220 0%,#E18335 55%,#6d3bff 100%);
+  --grad-balance:radial-gradient(120% 140% at 0% 0%,#ffedd9 0%,#ffffff 46%),linear-gradient(135deg,rgba(225,131,53,.12),rgba(109,59,255,.10));
+  --glow-acc:0 0 0 1px rgba(225,131,53,.35),0 10px 30px rgba(225,131,53,.18);
+  --elev-1:0 2px 10px rgba(15,23,42,.07); --elev-2:0 16px 40px rgba(15,23,42,.12);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--txt);line-height:1.55;overflow-x:hidden;
+  transition:background .5s var(--ease),color .5s var(--ease);-webkit-font-smoothing:antialiased}
+body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
+  background-image:radial-gradient(var(--line) .6px,transparent .6px);background-size:26px 26px;opacity:.55;
+  -webkit-mask:radial-gradient(ellipse 70% 55% at 50% 0%,#000,transparent 80%);mask:radial-gradient(ellipse 70% 55% at 50% 0%,#000,transparent 80%)}
+.num{font-family:'JetBrains Mono',monospace;font-variant-numeric:tabular-nums;letter-spacing:-.02em;white-space:nowrap}
+::-webkit-scrollbar{width:10px;height:10px}::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--line-2);border-radius:6px;border:2px solid var(--bg)}
+::-webkit-scrollbar-thumb:hover{background:var(--acc)}
+.hdr{position:sticky;top:0;z-index:100;background:var(--glass);backdrop-filter:blur(16px) saturate(150%);border-bottom:1px solid var(--line)}
+.hdr-in{max-width:var(--maxw);margin:0 auto;padding:14px 24px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:12px}
+.brand-logo{height:32px;width:auto;display:block;filter:drop-shadow(0 0 6px rgba(225,131,53,.25))}
+[data-theme="light"] .brand-logo{filter:drop-shadow(0 0 4px rgba(225,131,53,.18))}
+.brand-sub{font-size:10px;color:var(--txt-3);font-family:'JetBrains Mono',monospace;letter-spacing:.12em;border-left:1px solid var(--line);padding-left:12px;text-transform:uppercase;white-space:nowrap}
+.hdr-sp{flex:1;min-width:8px}
+.dc-back{display:inline-flex;align-items:center;gap:7px;font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:500;letter-spacing:.04em;text-decoration:none;color:var(--acc);background:rgba(225,131,53,.12);border:1px solid rgba(225,131,53,.3);border-radius:10px;padding:7px 13px;transition:all .2s var(--ease);flex-shrink:0;white-space:nowrap}
+.dc-back:hover{color:var(--txt);background:rgba(225,131,53,.2);border-color:var(--acc);transform:translateY(-1px);box-shadow:0 4px 14px rgba(225,131,53,.2)}
+.dc-back .ix{font-size:11px;opacity:.7}
+.plan-chip{display:inline-flex;align-items:center;gap:8px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--txt);
+  background:var(--panel-2);border:1px solid var(--line);border-radius:11px;padding:8px 13px;white-space:nowrap}
+.plan-chip .pc-mode{color:var(--txt-3);font-size:10px;letter-spacing:.08em;text-transform:uppercase;padding-right:8px;margin-right:6px;border-right:1px solid var(--line)}
+.plan-chip b{color:var(--acc);font-weight:600}
+.tgl{width:54px;height:28px;border-radius:16px;border:1px solid var(--line-2);background:var(--panel-2);position:relative;cursor:pointer;flex-shrink:0;padding:0;border:none}
+.tgl-k{position:absolute;top:2px;left:2px;width:22px;height:22px;border-radius:50%;background:var(--panel);box-shadow:var(--elev-1);display:flex;align-items:center;justify-content:center;font-size:12px;transition:transform .4s var(--ease)}
+[data-theme="light"] .tgl-k{transform:translateX(26px)}
+@media(max-width:760px){.dc-back{padding:6px 10px;font-size:11px}.brand-sub{display:none}}
+.hero{position:relative;z-index:1;max-width:var(--maxw);margin:0 auto;padding:48px 24px 22px;display:grid;grid-template-columns:minmax(0,1fr) 400px;gap:36px;align-items:center}
+.hero-tag{display:inline-flex;align-items:center;gap:8px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--acc);padding:6px 13px;border:1px solid var(--line-2);border-radius:20px;background:var(--panel);margin-bottom:18px;white-space:nowrap}
+.hero h1{font-family:'Space Grotesk',sans-serif;font-size:clamp(28px,4.4vw,46px);font-weight:700;line-height:1.06;letter-spacing:-.02em;
+  background:var(--grad-text);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:14px}
+.hero p{font-size:14px;color:var(--txt-2);max-width:520px;margin-bottom:16px;line-height:1.6}
+.hero p b{color:var(--txt);font-weight:600}
+.hero-note{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--txt-3);line-height:1.85;display:flex;flex-wrap:wrap;gap:8px}
+.hero-note .pill{display:inline-flex;align-items:center;gap:6px;padding:3px 9px;border:1px solid var(--line);border-radius:7px;background:var(--panel-2);white-space:nowrap}
+.hero-note b{color:var(--acc);font-weight:600}
+.bal{position:relative;border:1px solid var(--line-2);border-radius:18px;padding:22px;background:var(--grad-balance);overflow:hidden;box-shadow:var(--elev-2);min-height:208px}
+.bal::after{content:'';position:absolute;inset:0;background:radial-gradient(80% 60% at 100% 0%,rgba(139,92,255,.14),transparent 60%);pointer-events:none}
+.bal-top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px;position:relative}
+.bal-label{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--txt-2);letter-spacing:.08em;text-transform:uppercase}
+.bal-chip{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--down);background:var(--down-soft);border:1px solid rgba(255,90,110,.35);padding:3px 9px;border-radius:8px;white-space:nowrap;flex-shrink:0}
+.bal-amt{font-family:'JetBrains Mono',monospace;font-size:34px;font-weight:700;letter-spacing:-.03em;margin:2px 0 4px;line-height:1.05;position:relative;white-space:nowrap}
+.bal-amt .cur{color:var(--txt-3);font-size:15px;font-weight:500;margin-left:6px;white-space:nowrap}
+.bal-sub{font-size:12.5px;color:var(--txt-2);margin-bottom:14px;position:relative;line-height:1.55}
+.bal-sub b{color:var(--txt);font-weight:600}
+.bal-foot{display:flex;justify-content:space-between;gap:10px;margin-top:10px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--txt-3);position:relative}
+.bal-foot span{white-space:nowrap}
+.bal-foot span b{color:var(--acc);font-weight:600}
+.wrap{position:relative;z-index:1;max-width:var(--maxw);margin:0 auto;padding:24px 24px 70px;display:flex;flex-direction:column;gap:22px}
+.sec{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;box-shadow:var(--elev-1)}
+.sec-h{display:flex;align-items:center;gap:13px;padding:18px 22px;border-bottom:1px solid var(--line);background:var(--panel-2)}
+.sec-ix{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;border:1px solid var(--line-2);background:var(--panel-3)}
+.sec-h .ix-hd{min-width:0;flex:0 1 auto}
+.sec-h .ix-n{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--txt-3);letter-spacing:.1em;white-space:nowrap}
+.sec-h .ix-t{font-family:'Space Grotesk',sans-serif;font-size:18px;font-weight:600;letter-spacing:-.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sec-h .ix-extra{margin-left:auto;flex-shrink:0;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--txt-3);letter-spacing:.05em;white-space:nowrap}
+@media(max-width:760px){.sec-h .ix-extra{display:none}.sec-h .ix-t{white-space:normal;font-size:16px}.sec-h .ix-n{font-size:10px}}
+.sec-b{padding:22px}
+.lead{font-size:14px;color:var(--txt-2);margin-bottom:18px;max-width:860px;line-height:1.6}
+.lead b{color:var(--txt)}
+.eyebrow{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--txt-3);margin:22px 0 12px;display:flex;align-items:center;gap:10px;white-space:nowrap}
+.eyebrow::after{content:'';flex:1;height:1px;background:var(--line)}
+.eyebrow:first-child{margin-top:0}
+.tbl-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:var(--r-sm);margin:6px 0}
+.tbl{width:100%;border-collapse:collapse;font-size:12.5px;font-variant-numeric:tabular-nums;font-feature-settings:"tnum" 1,"lnum" 1}
+.tbl th{text-align:left;font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--txt-3);
+  background:var(--panel-2);padding:10px 9px;border-bottom:1px solid var(--line);white-space:nowrap}
+.tbl td{padding:9px 9px;color:var(--txt-2);border-bottom:1px solid var(--line);vertical-align:middle;line-height:1.35}
+.tbl tr:last-child td{border-bottom:none}
+.tbl tbody tr{transition:background .15s}.tbl tbody tr:hover{background:var(--panel-2)}
+.tbl td:first-child{color:var(--txt);font-weight:500;white-space:nowrap}
+.tbl th.r,.tbl td.r{text-align:right;font-family:'JetBrains Mono',monospace;font-feature-settings:"tnum" 1,"lnum" 1;font-variant-numeric:tabular-nums;white-space:nowrap}
+.row-total td{font-weight:700;font-size:13px;border-top:2px solid var(--acc);color:var(--txt)!important;background:rgba(225,131,53,.06)}
+.row-off td{background:rgba(34,211,238,.04)}
+.row-off td:first-child{color:var(--txt-2)}
+.tbl .meta{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--txt-3);font-weight:500;margin-left:6px;padding:1px 6px;border:1px solid var(--line);border-radius:5px;background:var(--panel-2);letter-spacing:.02em;white-space:nowrap}
+.tbl .d-up{color:var(--up);font-weight:600}
+.tbl .d-down{color:var(--down);font-weight:600}
+.tbl .zero{color:var(--down);font-weight:700}
+.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:13px}
+@media(max-width:1100px){.kpi-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:520px){.kpi-grid{grid-template-columns:1fr}}
+.kpi{position:relative;border:1px solid var(--line);border-radius:13px;padding:17px;background:var(--panel-2);overflow:hidden;transition:transform .3s var(--ease),border-color .3s;display:flex;flex-direction:column;gap:6px;min-height:118px}
+.kpi:hover{transform:translateY(-3px);border-color:var(--acc)}
+.kpi .lab{font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--txt-3);letter-spacing:.06em;text-transform:uppercase;white-space:nowrap}
+.kpi .val{font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:700;letter-spacing:-.02em;line-height:1.1;color:var(--txt);white-space:nowrap}
+.kpi .val.acc{color:var(--acc)}
+.kpi .val.up{color:var(--up)}
+.kpi .val.down{color:var(--down)}
+.kpi .val.violet{color:var(--violet)}
+.kpi .dl{display:inline-flex;align-items:center;gap:5px;font-family:'JetBrains Mono',monospace;font-size:11px;padding:3px 9px;border-radius:7px;width:fit-content;margin-top:auto;white-space:nowrap}
+.kpi .dl.up{color:var(--up);background:var(--up-soft)}
+.kpi .dl.down{color:var(--down);background:var(--down-soft)}
+.kpi .dl.flat{color:var(--txt-3);background:var(--panel)}
+.kpi .dl.acc{color:var(--acc);background:rgba(225,131,53,.14)}
+.charts-3{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:14px}
+@media(max-width:760px){.charts-3{grid-template-columns:1fr}}
+.chart-card{background:var(--panel);border:1px solid var(--line);border-radius:var(--r-sm);padding:18px;box-shadow:var(--elev-1);position:relative}
+.chart-card h3{font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:600;margin-bottom:4px;color:var(--txt);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.chart-card .sub{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--txt-3);letter-spacing:.04em;margin-bottom:14px}
+.chart-card .cht{position:relative;height:250px}
+.chart-card .cht canvas{width:100%!important;height:100%!important}
+.verdict{border:1px solid rgba(225,131,53,.45);border-radius:18px;padding:24px 26px;background:var(--grad-balance);box-shadow:var(--elev-2)}
+.verdict .ft{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--acc);margin-bottom:10px;display:flex;align-items:center;gap:8px;white-space:nowrap}
+.verdict p{font-size:14.5px;color:var(--txt-2);max-width:900px;line-height:1.65;margin-bottom:12px}
+.verdict p b{color:var(--txt)}
+.verdict ul{margin:8px 0 0;padding-left:0;list-style:none;display:flex;flex-direction:column;gap:9px;max-width:920px}
+.verdict li{font-size:13.5px;color:var(--txt-2);line-height:1.55;padding-left:26px;position:relative}
+.verdict li::before{content:'▸';position:absolute;left:4px;color:var(--acc);font-weight:700}
+.verdict li b{color:var(--txt)}
+.chain{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;align-items:center}
+.chain .cstep{font-family:'JetBrains Mono',monospace;font-size:11.5px;color:var(--acc);background:rgba(225,131,53,.12);border:1px solid rgba(225,131,53,.3);border-radius:8px;padding:5px 11px;white-space:nowrap}
+.chain .carr{color:var(--txt-3);font-size:12px}
+.footer{position:relative;z-index:1;border-top:1px solid var(--line);background:var(--bg-2);margin-top:30px}
+.footer-in{max-width:var(--maxw);margin:0 auto;padding:30px 24px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--txt-3);line-height:1.9;display:flex;flex-wrap:wrap;gap:18px;justify-content:space-between;align-items:flex-start}
+.footer-in b{color:var(--txt-2);font-weight:600}
+.footer-in .r{text-align:right;font-size:10.5px;line-height:1.7}
+.footer-in .r b{color:var(--txt-2);font-weight:600;display:block;font-size:11.5px}
+@media(max-width:860px){.hero{grid-template-columns:1fr;padding-top:34px}.bal{order:-1}}
+@media(max-width:560px){.hero h1{font-size:29px}.wrap{padding:18px 14px 50px}.hdr-in{padding:12px 14px}.bal-amt{font-size:27px}.bal-amt .cur{font-size:12px}}
+@media print{.tgl,.plan-chip,.dc-back{display:none!important}}
+</style>
+</head>
+<body>
+
+<header class="hdr">
+  <div class="hdr-in">
+    <div class="brand">
+      <img class="brand-logo" src="https://sk-tu.ru/local/templates/v1.0/static/img/logo-large.svg" alt="Тёплый Угол">
+      <span class="brand-sub">ОТЧЁТ · АВГУСТ</span>
+    </div>
+    <a class="dc-back" href="./index.html" aria-label="Вернуться к маркетинговому дашборду"><span class="ix">←</span>Дашборд</a>
+    <div class="hdr-sp"></div>
+    <span class="plan-chip"><span class="pc-mode">Месяц</span>Август 2026 · <b>ФАКТ</b> (01–27.08)</span>
+    <button class="tgl" id="tgl" type="button" role="switch" aria-checked="false" aria-label="Тема"><span class="tgl-k" id="tglK">☀️</span></button>
+  </div>
+</header>
+
+<section class="hero">
+  <div>
+    <span class="hero-tag">◈ Отчёт CMO L99 · Яндекс.Директ + SEO + все каналы</span>
+    <h1>Август 2026 · разбор эффективности (предварительный)</h1>
+    <p>Предварительный отчёт перед собственником по платному каналу <b>Яндекс.Директ</b> (2 кабинета) и всем каналам привлечения по данным amoCRM. Честная атрибуция: Директ = только utm-ЦЛ. Период <b>01.08–27.08.2026</b> (месяц не закрыт, данные по 27.08 включительно). Главный вывод — <b>расход Директа вырос в 1,7× против июля</b>: 1,66М₽ дали 22 ЦЛ с Директа при CPL 75,3к₽.</p>
+    <div class="hero-note">
+      <span class="pill">▸ Период: 01.08–27.08.2026</span>
+      <span class="pill">▸ Расход Директ: <b>1&nbsp;657&nbsp;613₽</b></span>
+      <span class="pill">▸ ЦЛ с Директа: <b>22</b> · CPL <b>75&nbsp;346₽</b></span>
+    </div>
+  </div>
+  <div class="bal">
+    <div class="bal-top">
+      <span class="bal-label">Главная проблема · CPL Директа</span>
+      <span class="bal-chip">▲ вырос</span>
+    </div>
+    <div class="bal-amt"><span>75&nbsp;346₽</span><span class="cur">за целевой лид</span></div>
+    <div class="bal-sub">1&nbsp;657&nbsp;613₽ расхода ÷ <b>22 utm-ЦЛ</b> (канал Яндекс Директ по amoCRM). Для сравнения: выставочный дом дал <b>51 ЦЛ</b> бесплатно, а Июль CPL Директа был 69,2к₽. Август дороже июля при том же объёме целевых лидов с платного.</div>
+    <div class="bal-foot"><span>Кликов: <b>56&nbsp;042</b></span><span>Конверсия в ЦЛ: <b>0,04%</b></span></div>
+  </div>
+</section>
+
+<div class="wrap">
+
+  <!-- SECTION 01 · KPI -->
+  <section class="sec" id="sec-kpi">
+    <div class="sec-h">
+      <div class="sec-ix">◈</div>
+      <div class="ix-hd">
+        <div class="ix-n">SECTION 01 · SUMMARY</div>
+        <div class="ix-t">Ключевые цифры месяца</div>
+      </div>
+      <div class="ix-extra">01.08–27.08 · ВСЕ КАНАЛЫ</div>
+    </div>
+    <div class="sec-b">
+      <div class="kpi-grid">
+        <div class="kpi"><span class="lab">Расход Директ</span><span class="val acc">1&nbsp;657&nbsp;613₽</span><span class="dl flat">▸ МСК 803к + СПб 854к</span></div>
+        <div class="kpi"><span class="lab">Клики</span><span class="val">56&nbsp;042</span><span class="dl flat">▸ CPC 29,58₽</span></div>
+        <div class="kpi"><span class="lab">CTR</span><span class="val">2,75%</span><span class="dl flat">▸ 5,23М показов</span></div>
+        <div class="kpi"><span class="lab">ЦЛ с Директа</span><span class="val down">22</span><span class="dl down">▼ utm-атрибуция</span></div>
+        <div class="kpi"><span class="lab">CPL Директа</span><span class="val down">75&nbsp;346₽</span><span class="dl down">▲ было 69,2к₽ в июле</span></div>
+        <div class="kpi"><span class="lab">CPA (все лиды)</span><span class="val">4&nbsp;736₽</span><span class="dl flat">▸ 350 лидов</span></div>
+        <div class="kpi"><span class="lab">ЦЛ всего (все каналы)</span><span class="val">136</span><span class="dl flat">▸ blended CPL 12&nbsp;188₽</span></div>
+        <div class="kpi"><span class="lab">Договоров (август)</span><span class="val flat">—</span><span class="dl flat">▸ данные закрытия позже</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 02 · ДИРЕКТ ПО КАБИНЕТАМ -->
+  <section class="sec" id="sec-direct">
+    <div class="sec-h">
+      <div class="sec-ix">▦</div>
+      <div class="ix-hd">
+        <div class="ix-n">SECTION 02 · DIRECT</div>
+        <div class="ix-t">Яндекс.Директ · разбор по кабинетам</div>
+      </div>
+      <div class="ix-extra">МСК + СПб</div>
+    </div>
+    <div class="sec-b">
+      <p class="lead">Два кабинета. <b>СПб опять дешевле</b>: клик 21,1₽ против 51,2₽ в МСК (в 2,4 раза дороже). При этом МСК дал 13 ЦЛ, СПб — 9 при почти равном бюджете. Экономика хуже, чем в июле, — расход вырос, отдача по ЦЛ с Директа сопоставима.</p>
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <thead>
+            <tr><th>Кабинет</th><th class="r">Расход</th><th class="r">Клики</th><th class="r">Показы</th><th class="r">CTR</th><th class="r">CPC</th><th class="r">Лидов</th><th class="r">ЦЛ</th><th class="r">CPL</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Яндекс Директ МСК</td>
+              <td class="r">803&nbsp;422₽</td><td class="r">15&nbsp;678</td><td class="r">808&nbsp;526</td><td class="r">1,94%</td><td class="r d-down">51,23₽</td><td class="r">38</td><td class="r">13</td><td class="r d-down">61&nbsp;801₽</td>
+            </tr>
+            <tr>
+              <td>Яндекс Директ СПб</td>
+              <td class="r">854&nbsp;190₽</td><td class="r">40&nbsp;364</td><td class="r">3&nbsp;310&nbsp;276</td><td class="r">1,22%</td><td class="r d-up">21,16₽</td><td class="r">24</td><td class="r">9</td><td class="r">94&nbsp;910₽</td>
+            </tr>
+            <tr class="row-total">
+              <td>ИТОГО</td>
+              <td class="r">1&nbsp;657&nbsp;613₽</td><td class="r">56&nbsp;042</td><td class="r">4&nbsp;118&nbsp;802</td><td class="r">1,36%</td><td class="r">29,58₽</td><td class="r">62</td><td class="r">22</td><td class="r">75&nbsp;346₽</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="lead" style="margin-top:14px;margin-bottom:0">⚠️ <b>1,66М₽ (×1,71 к июлю)</b> потрачено за 27 дней при 22 ЦЛ с Директа. Темп расхода опережает июль, а конверсия в целевые лиды не растёт — основной резерв августа в пересборке кампаний и utm-гигиене.</p>
+    </div>
+  </section>
+
+  <!-- SECTION 03 · КАНАЛЫ -->
+  <section class="sec" id="sec-channels">
+    <div class="sec-h">
+      <div class="sec-ix">▽</div>
+      <div class="ix-hd">
+        <div class="ix-n">SECTION 03 · CHANNELS</div>
+        <div class="ix-t">Откуда реально пришли целевые лиды</div>
+      </div>
+      <div class="ix-extra">136 ЦЛ · ВСЕ КАНАЛЫ</div>
+    </div>
+    <div class="sec-b">
+      <p class="lead">Как и в июле — <b>100% платного бюджета в Директе, но лишь 16% целевых лидов оттуда</b> (22 из 136). Выставочный дом и офлайн-каналы (Вх. звонок, Wazzap, Сарафан) закрывают воронку, которую Директ лишь подогревает.</p>
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <thead><tr><th>Канал</th><th class="r">Лидов</th><th class="r">ЦЛ</th><th class="r">Доля ЦЛ</th><th class="r">Расход</th><th class="r">CPL</th></tr></thead>
+          <tbody>
+            <tr><td>Яндекс Директ<span class="meta">платный</span></td><td class="r">62</td><td class="r">22</td><td class="r">16%</td><td class="r">1&nbsp;657&nbsp;613₽</td><td class="r d-down">75&nbsp;346₽</td></tr>
+            <tr class="row-off"><td>Выставочный дом</td><td class="r">54</td><td class="r d-up">51</td><td class="r d-up">38%</td><td class="r">0₽</td><td class="r">0₽</td></tr>
+            <tr class="row-off"><td>Вх. звонок</td><td class="r">93</td><td class="r">19</td><td class="r">14%</td><td class="r">0₽</td><td class="r">0₽</td></tr>
+            <tr class="row-off"><td>Wazzap</td><td class="r">45</td><td class="r">7</td><td class="r">5%</td><td class="r">0₽</td><td class="r">0₽</td></tr>
+            <tr class="row-off"><td>Инстаграм</td><td class="r">24</td><td class="r">22</td><td class="r">16%</td><td class="r">0₽</td><td class="r">0₽</td></tr>
+            <tr class="row-off"><td>Сайт https://sk-tu.ru/</td><td class="r">9</td><td class="r">9</td><td class="r">7%</td><td class="r">0₽</td><td class="r">0₽</td></tr>
+            <tr class="row-off"><td>Сарафан</td><td class="r">3</td><td class="r">3</td><td class="r">2%</td><td class="r">0₽</td><td class="r">0₽</td></tr>
+            <tr class="row-off"><td>Прочее</td><td class="r">54</td><td class="r">0</td><td class="r">0%</td><td class="r">0₽</td><td class="r">—</td></tr>
+            <tr class="row-off"><td>VK</td><td class="r">3</td><td class="r">0</td><td class="r">0%</td><td class="r">0₽</td><td class="r">—</td></tr>
+            <tr class="row-off"><td>Почта</td><td class="r">1</td><td class="r">1</td><td class="r">1%</td><td class="r">0₽</td><td class="r">0₽</td></tr>
+            <tr class="row-total"><td>ИТОГО</td><td class="r">350</td><td class="r">136</td><td class="r">100%</td><td class="r">1&nbsp;657&nbsp;613₽</td><td class="r">12&nbsp;188₽</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="eyebrow">Динамика и структура</div>
+      <div class="charts-3">
+        <div class="chart-card">
+          <h3>ЦЛ по каналам</h3>
+          <div class="sub">Выставка 51 · Вх.звонок 19 · Директ 22</div>
+          <div class="cht"><canvas id="chChan"></canvas></div>
+        </div>
+        <div class="chart-card">
+          <h3>Расход vs ЦЛ (Директ)</h3>
+          <div class="sub">1,66М₽ против 22 целевых лидов</div>
+          <div class="cht"><canvas id="chEff"></canvas></div>
+        </div>
+        <div class="chart-card">
+          <h3>CPL по каналам</h3>
+          <div class="sub">Директ 75,3к₽ против 0₽ органики</div>
+          <div class="cht"><canvas id="chCpl"></canvas></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 04 · VERDICT CMO -->
+  <section class="sec" id="sec-verdict" style="border:none;background:none;box-shadow:none;overflow:visible">
+    <div class="verdict">
+      <div class="ft">◈ Вердикт CMO L99 · Август 2026 (предв.)</div>
+      <p>За 27 дней августа потрачено <b>1&nbsp;657&nbsp;613₽</b> платного бюджета (×1,71 к июлю) при <b>22 ЦЛ с Директа</b> и CPL <b>75,3к₽</b> — дороже июльского (69,2к₽). Всего по всем каналам amoCRM: <b>350 лидов, 136 целевых</b>. Средний чек августа (факт, 2 договора в июле-базе для сравнения) — <b>12&nbsp;845&nbsp;000₽</b>; сделки августа в выгрузке ещё не помечены «Договор подписан» массово, считаем по факту закрытия месяца.</p>
+      <ul>
+        <li><b>Директ дорожает.</b> Расход +71% к июлю, ЦЛ с Директа те же (~22). Точка роста CPL — в отключении мёртвых кампаний и пересборке РСЯ/ретаргетинга (особенно МСК, где клик 51₽).</li>
+        <li><b>Дисбаланс МСК/СПб сохраняется.</b> МСК платит за клик в 2,4 раза дороже при сопоставимой отдаче (13 vs 9 ЦЛ). Бюджет смещаем в СПб.</li>
+        <li><b>Офлайн доминирует.</b> Выставочный дом — 51 ЦЛ (38% всех целевых) бесплатно. Задача Директа — не «заявка», а <b>привести на экскурсию</b>. Меняем CTA.</li>
+        <li><b>Новые каналы видны.</b> Wazzap (45 лидов / 7 ЦЛ) и Сарафан (3/3) — реальные офлайн-источники, ранее слитые в «Прочее». Учитываем отдельно в атрибуции.</li>
+        <li><b>Дожим — узкое место.</b> 136 ЦЛ → договоры ещё в стадии. Работа отдела продаж + utm-гигиена — ключ к конверсии в продажи к концу месяца.</li>
+      </ul>
+      <p style="margin-top:14px;margin-bottom:0"><b>Финал месяца (после 31.08):</b> обновить блок фактом по договорам и среднему чеку, пересчитать CPA/выручку. Сейчас — предварительный срез по 27.08.</p>
+      <div class="chain">
+        <span class="cstep">1,66М₽ расход</span><span class="carr">→</span>
+        <span class="cstep">56 042 клика</span><span class="carr">→</span>
+        <span class="cstep">350 лидов</span><span class="carr">→</span>
+        <span class="cstep">22 ЦЛ Директа</span><span class="carr">→</span>
+        <span class="cstep">136 ЦЛ всего</span><span class="carr">→</span>
+        <span class="cstep">договоры (ждём)</span>
+      </div>
+      <div style="margin-top:18px">
+        <a class="dc-back" href="./decomposition-august-2026.html" aria-label="Перейти к декомпозиции августа"><span class="ix">▦</span>Декомпозиция Августа →</a>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<footer class="footer">
+  <div class="footer-in">
+    <div>
+      <b>СК «Тёплый угол» · Отчёт для собственника</b><br>
+      Яндекс.Директ + все каналы · Август 2026 · роль CMO L99
+    </div>
+    <div class="r">
+      <b>Методология</b>
+      Честная атрибуция: Директ = только utm-ЦЛ<br>
+      Источники: Директ API · amoCRM · Вебмастер · Метрика<br>
+      Период 01.08–27.08.2026 · данные по 27.08 включительно (предв.)
+    </div>
+  </div>
+</footer>
+
+<script>
+const tgl=document.getElementById('tgl'),tglK=document.getElementById('tglK'),root=document.documentElement;
+function setTheme(t){root.setAttribute('data-theme',t);tgl.setAttribute('aria-checked',t==='light');tglK.textContent=t==='light'?'☀️':'🌙'}
+tgl.addEventListener('click',()=>setTheme(root.getAttribute('data-theme')==='light'?'dark':'light'));
+setTheme('light');
+
+const mono={family:"'JetBrains Mono',monospace"};
+const acc='#E18335',violet='#8b5cff',up='#26d07c',down='#e23048',cyan='#0891b2',line='#d2dae8';
+Chart.defaults.font.family="'Inter',sans-serif";Chart.defaults.color='#48566e';
+
+new Chart(chChan,{type:'bar',data:{labels:['Выставка','Вх.звонок','Директ','Инста','Wazzap','Сайт'],
+  datasets:[{data:[51,19,22,22,7,9],backgroundColor:[cyan,violet,acc,'#ffb020',up,line],borderRadius:7,borderSkipped:false}]},
+  options:{indexAxis:'y',plugins:{legend:{display:false}},scales:{x:{beginAtZero:true,ticks:{font:mono},grid:{color:'rgba(0,0,0,.05)'}},y:{grid:{display:false},ticks:{font:mono}}}}});
+
+new Chart(chEff,{type:'bar',data:{labels:['Расход (к₽)','ЦЛ (шт)'],
+  datasets:[{data:[1658,22],backgroundColor:[acc,down],borderRadius:10,borderSkipped:false,barThickness:80}]},
+  options:{plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.dataIndex===0?c.parsed.y+' к₽':c.parsed.y+' ЦЛ'}}},
+  scales:{y:{beginAtZero:true,ticks:{font:mono},grid:{color:'rgba(0,0,0,.05)'}},x:{grid:{display:false},ticks:{font:mono}}}}});
+
+new Chart(chCpl,{type:'bar',data:{labels:['Директ','Blended','Органика'],
+  datasets:[{data:[75346,12188,0],backgroundColor:[down,acc,up],borderRadius:10,borderSkipped:false,barThickness:60}]},
+  options:{plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.parsed.y+' ₽'}},
+  scales:{y:{beginAtZero:true,ticks:{callback:v=>v+'₽',font:mono},grid:{color:'rgba(0,0,0,.05)'}},x:{grid:{display:false},ticks:{font:mono}}}}});
+</script>
+</body>
+</html>
