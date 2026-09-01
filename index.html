@@ -1304,7 +1304,7 @@ const weeks = {
     },
     w11: {
       id: "w11", label: "24.08–31.08", from: "24.08.2026", to: "31.08.2026",
-      avito: {impressions:2709, views:626, contacts:12, favorites:43, items:4, spend:15141.70, viewCost:24.20, contactCost:1261.80},
+      avito: {impressions:2709, views:626, contacts:12, target:1, favorites:43, items:4, spend:15141.70, viewCost:24.20, contactCost:1261.80},
       impressions: 617822, clicks: 7231, spend: 189376.64, leads: 98, target: 32,
       ctr: 1.17, cpc: 26.19, cpa: 5918.02, cpl: 1932.41,
       noteImpressions: null,
@@ -1547,7 +1547,7 @@ m2026_08: {
         {name: "Выставочный дом", leads: 64, target: 62, spend: 0},
         {name: "Инстаграм", leads: 25, target: 23, spend: 0},
         {name: "SEO (Сайт + Органика)", leads: 91, target: 33, spend: 0},
-        {name: "Avito", leads: 12, target: 0, spend: 15141.70}
+        {name: "Avito", leads: 12, target: 1, spend: 15141.70}
       ],
       seoStats: {
         spb: {
@@ -1821,8 +1821,10 @@ function initCharts(w){
   var paidSpend = totals.spend + (w.avito && w.avito.spend || 0);
   var paidViews = totals.imp + (w.avito && w.avito.impressions || 0);
   var paidContacts = w.avito && w.avito.contacts || 0;
+  var combinedLeads = totals.leads + paidContacts;
+  var combinedTarget = totals.target + (w.avito && w.avito.target || 0);
 
-  document.getElementById("spendLeadsTotals").textContent = "Директ: " + rub(totals.spend) + " · Avito: " + rub(w.avito && w.avito.spend || 0) + " · CRM-лиды: " + fmt(totals.leads) + " · Avito-контакты: " + fmt(paidContacts);
+  document.getElementById("spendLeadsTotals").textContent = "Директ: " + rub(totals.spend) + " · Avito: " + rub(w.avito && w.avito.spend || 0) + " · Все лиды: " + fmt(combinedLeads) + " · ЦЛ: " + fmt(combinedTarget);
   document.getElementById("impClicksTotals").textContent  = "Директ: " + fmt(totals.imp) + " показов · Avito: " + fmt(w.avito && w.avito.impressions || 0) + " показов · Директ-клики: " + fmt(totals.clicks);
 
   var baseFont = "JetBrains Mono";
@@ -2016,7 +2018,7 @@ function renderDetailTable(w){
       '<td><b>Avito</b><span class="meta">w11 · API + XLSX</span></td>'+
       '<td class="r">'+fmt(w.avito.impressions)+'</td><td class="r">'+fmt(w.avito.views)+'</td><td class="r">'+pct(w.avito.impressions>0?w.avito.views/w.avito.impressions*100:null)+'</td><td class="r">'+rub(w.avito.spend/w.avito.views)+'</td>'+
       '<td class="r">'+fmt(w.avito.contacts)+'</td><td class="r">'+pct(w.avito.views>0?w.avito.contacts/w.avito.views*100:null)+'</td><td class="r">'+rub(w.avito.spend/w.avito.contacts)+'</td>'+
-      '<td class="r">—</td><td class="r">—</td><td class="r">—</td><td class="r">'+rub(w.avito.spend)+'</td>'+
+      '<td class="r">'+fmt(w.avito.target)+'</td><td class="r">'+pct(w.avito.contacts>0?w.avito.target/w.avito.contacts*100:null)+'</td><td class="r">'+rub(w.avito.spend/w.avito.target)+'</td><td class="r">'+rub(w.avito.spend)+'</td>'+
       '</tr>';
   }
 
