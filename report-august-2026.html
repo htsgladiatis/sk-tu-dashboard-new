@@ -364,7 +364,7 @@ Chart.defaults.font.family="'Inter',sans-serif";Chart.defaults.color='#48566e';
 
 new Chart(chChan,{type:'bar',data:{labels:['Выставка','Вх.звонок','Директ','Инста','SEO'],
   datasets:[{label:'Целевые лиды',data:[62,17,24,23,33],backgroundColor:[cyan,violet,acc,'#ffb020',line],borderRadius:7,borderSkipped:false}]},
-  options:{indexAxis:'y',plugins:{legend:{display:false}},scales:{x:{beginAtZero:true,ticks:{font:mono},grid:{color:'rgba(0,0,0,.05)'}},y:{grid:{display:false},ticks:{font:mono}}}}})
+  options:{indexAxis:'y',interaction:{mode:'nearest',axis:'y',intersect:true},plugins:{legend:{display:false},tooltip:{mode:'nearest',axis:'y',intersect:true,callbacks:{label:c=>c.label+': '+c.parsed.x+' ЦЛ'}}},scales:{x:{beginAtZero:true,ticks:{font:mono},grid:{color:'rgba(0,0,0,.05)'}},y:{grid:{display:false},ticks:{font:mono}}}}})
 ;
 
 new Chart(chEff,{type:'bar',data:{labels:['Расход (к₽)','ЦЛ (шт)'],
