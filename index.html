@@ -238,15 +238,15 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
 .pop-item.active{background:color-mix(in srgb,var(--acc) 12%,transparent);color:var(--acc)}
 .pop-item .pi-num{font-size:11px;color:var(--txt-3);min-width:30px;font-weight:500}
 .pop-item.active .pi-num{color:var(--acc);opacity:.85}
-.pop-item .pi-dates{font-size:12px;font-weight:500;flex:1}
-.pop-item .pi-meta{font-size:10px;color:var(--txt-3);background:var(--panel-2);padding:2px 7px;border-radius:6px;font-weight:500}
+.pop-item .pi-dates{font-size:12px;font-weight:500;flex:1;min-width:0;white-space:nowrap;line-height:1.2}
+.pop-item .pi-meta{font-size:10px;color:var(--txt-3);background:var(--panel-2);padding:2px 7px;border-radius:6px;font-weight:500;white-space:nowrap;flex-shrink:0}
 .pop-item.active .pi-meta{background:color-mix(in srgb,var(--acc) 14%,transparent);color:var(--acc)}
 .pop-empty{padding:24px 16px;text-align:center;color:var(--txt-3);font-size:12px}
 .pop-presets{display:flex;align-items:center;gap:6px;flex-wrap:wrap;padding:10px 12px;border-top:1px solid var(--line);background:var(--panel-2)}
 .pop-pre-label{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--txt-3);letter-spacing:.06em;text-transform:uppercase;margin-right:2px}
 .pop-pre{padding:5px 10px;background:none;border:1px solid var(--line);border-radius:7px;cursor:pointer;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--txt-2);transition:all .15s var(--ease)}
 .pop-pre:hover{color:var(--acc);border-color:var(--acc);background:color-mix(in srgb,var(--acc) 8%,transparent)}
-@media(max-width:560px){.period-popover{position:fixed;left:12px;right:12px;bottom:max(12px,env(safe-area-inset-bottom));top:auto;width:auto;max-height:65vh;border-radius:16px;padding-bottom:env(safe-area-inset-bottom,12px)}.period-trigger{min-width:0;max-width:100%}}
+@media(max-width:560px){.period-popover{position:fixed;left:12px;right:12px;bottom:max(12px,env(safe-area-inset-bottom));top:auto;width:auto;max-height:65vh;border-radius:16px;padding-bottom:env(safe-area-inset-bottom,12px)}.period-trigger{min-width:0;max-width:100%}.pop-item{gap:7px;padding-left:8px;padding-right:8px}.pop-item .pi-num{min-width:24px;font-size:10px}.pop-item .pi-dates{font-size:11px}.pop-item .pi-meta{font-size:9px;padding-left:5px;padding-right:5px}}
 @media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
 </head>
