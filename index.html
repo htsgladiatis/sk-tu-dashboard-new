@@ -1305,8 +1305,8 @@ const weeks = {
     w11: {
       id: "w11", label: "24.08–31.08", from: "24.08.2026", to: "31.08.2026",
       avito: {impressions:2709, views:626, contacts:12, target:1, favorites:43, items:4, spend:15141.70, viewCost:24.20, contactCost:1261.80},
-      impressions: 617822, clicks: 7231, spend: 189376.64, leads: 98, target: 32,
-      ctr: 1.17, cpc: 26.19, cpa: 5918.02, cpl: 1932.41,
+      impressions: 620531, clicks: 7857, spend: 204518.34, leads: 110, target: 33,
+      ctr: 1.26, cpc: 26.03, cpa: 1859.26, cpl: 6197.53,
       noteImpressions: null,
       accounts: {
         "Кабинет МСК": { imp: 142324, clicks: 2236, spend: 86401.58, leads: 2, target: 0, campaigns: [
@@ -1964,11 +1964,11 @@ function renderDetailTable(w){
     '</tr></thead><tbody>';
 
   var av = w.avito || {};
-  var totalImp = w.impressions + (av.impressions||0);
-  var totalClicks = w.clicks + (av.views||0);
-  var totalSpend = w.spend + (av.spend||0);
-  var totalLeads = w.leads + (av.contacts||0);
-  var totalTarget = w.target + (av.target||0);
+  var totalImp = w.impressions;
+  var totalClicks = w.clicks;
+  var totalSpend = w.spend;
+  var totalLeads = w.leads;
+  var totalTarget = w.target;
   var avgCtr = totalImp>0 ? totalClicks/totalImp*100 : 0;
   var avgCpa = totalLeads>0 ? totalSpend/totalLeads : null;
   var avgCpl = totalTarget>0 ? totalSpend/totalTarget : null;
