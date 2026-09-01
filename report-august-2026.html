@@ -363,18 +363,18 @@ const acc='#E18335',violet='#8b5cff',up='#26d07c',down='#e23048',cyan='#0891b2',
 Chart.defaults.font.family="'Inter',sans-serif";Chart.defaults.color='#48566e';
 
 new Chart(chChan,{type:'bar',data:{labels:['Выставка','Вх.звонок','Директ','Инста','SEO'],
-  datasets:[{data:[62,17,24,23,33],backgroundColor:[cyan,violet,acc,'#ffb020',line],borderRadius:7,borderSkipped:false}]},
+  datasets:[{label:'Целевые лиды',data:[62,17,24,23,33],backgroundColor:[cyan,violet,acc,'#ffb020',line],borderRadius:7,borderSkipped:false}]},
   options:{indexAxis:'y',plugins:{legend:{display:false}},scales:{x:{beginAtZero:true,ticks:{font:mono},grid:{color:'rgba(0,0,0,.05)'}},y:{grid:{display:false},ticks:{font:mono}}}}})
 ;
 
 new Chart(chEff,{type:'bar',data:{labels:['Расход (к₽)','ЦЛ (шт)'],
-  datasets:[{data:[908,24],backgroundColor:[acc,down],borderRadius:10,borderSkipped:false,barThickness:80}]},
+  datasets:[{label:'Значение',data:[908,24],backgroundColor:[acc,down],borderRadius:10,borderSkipped:false,barThickness:80}]},
   options:{plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.dataIndex===0?c.parsed.y+' к₽':c.parsed.y+' ЦЛ'}}},
   scales:{y:{beginAtZero:true,ticks:{font:mono},grid:{color:'rgba(0,0,0,.05)'}},x:{grid:{display:false},ticks:{font:mono}}}}})
 ;
 
 new Chart(chCpl,{type:'bar',data:{labels:['Директ','Blended','Органика'],
-  datasets:[{data:[37834,5218,0],backgroundColor:[up,acc,up],borderRadius:10,borderSkipped:false,barThickness:60}]},
+  datasets:[{label:'CPL',data:[37834,5218,0],backgroundColor:[up,acc,up],borderRadius:10,borderSkipped:false,barThickness:60}]},
   options:{plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.parsed.y+' ₽'}},
   scales:{y:{beginAtZero:true,ticks:{callback:v=>v+'₽',font:mono},grid:{color:'rgba(0,0,0,.05)'}},x:{grid:{display:false},ticks:{font:mono}}}}}})
 ;
