@@ -404,9 +404,9 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
 
 <!-- 04 AVITO -->
 <section class="sec" id="sec-avito">
-  <div class="sec-h"><div class="sec-ix">◉</div><div><div class="ix-n">04 · AVITO</div><div class="ix-t">Avito · отдельный рекламный канал</div></div><div class="ix-extra">динамика выбранного периода · API</div></div>
+  <div class="sec-h"><div class="sec-ix">◉</div><div><div class="ix-n">04 · AVITO</div><div class="ix-t">Avito · отдельный рекламный канал</div></div><div class="ix-extra">w11 · 24.08–31.08 · API</div></div>
   <div class="sec-b">
-    <p class="lead">Показатели Avito за выбранный период. Данные подставляются из Avito API отдельно от Директа и CRM.</p>
+    <p class="lead">Данные Avito за выбранный период.</p>
     <div class="kpi-grid" id="avitoKpiGrid"></div>
   </div>
 </section>
@@ -1304,7 +1304,7 @@ const weeks = {
     },
     w11: {
       id: "w11", label: "24.08–31.08", from: "24.08.2026", to: "31.08.2026",
-      avito: {views:626, contacts:12, favorites:43, items:4},
+      avito: {impressions:2709, views:626, contacts:12, favorites:43, items:4, spend:15141.70, viewCost:24.20, contactCost:1261.80},
       impressions: 617822, clicks: 7231, spend: 189376.64, leads: 98, target: 32,
       ctr: 1.17, cpc: 26.19, cpa: 5918.02, cpl: 1932.41,
       noteImpressions: null,
@@ -1753,10 +1753,10 @@ function renderAvito(w){
     ["Контакты",a.contacts,"API · выбранный период"],
     ["Избранное",a.favorites,"API · выбранный период"],
     ["Объявления с данными",a.items,"API · выбранный период"],
-    ["Показы",a.impressions,"нет данных за период"],
-    ["Расходы",a.spend,"нет данных за период"],
-    ["Цена просмотра",a.viewCost,"расход не получен"],
-    ["Цена контакта",a.contactCost,"расход не получен"]
+    ["Показы",a.impressions,"XLSX Avito · w11"],
+    ["Расходы",a.spend==null?null:(Number(a.spend).toLocaleString('ru-RU',{minimumFractionDigits:2,maximumFractionDigits:2})+'₽'),"XLSX Avito · w11"],
+    ["Цена просмотра",a.viewCost==null?null:(Number(a.viewCost).toLocaleString('ru-RU',{minimumFractionDigits:2,maximumFractionDigits:2})+'₽'),"расходы / просмотры"],
+    ["Цена контакта",a.contactCost==null?null:(Number(a.contactCost).toLocaleString('ru-RU',{minimumFractionDigits:2,maximumFractionDigits:2})+'₽'),"расходы / контакты"]
   ];
   box.innerHTML=items.map(function(x){var v=x[1]==null?"—":x[1];return '<div class="kpi"><span class="lab">'+x[0]+'</span><span class="val">'+v+'</span><span class="dl flat">▸ '+x[2]+'</span></div>';}).join("");
 }
