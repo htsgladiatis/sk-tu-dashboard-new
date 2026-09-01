@@ -1963,16 +1963,22 @@ function renderDetailTable(w){
     '<th class="r">Ц.Лиды</th><th class="r">Конв.ЦЛ</th><th class="r">CPL</th><th class="r">Расход</th>'+
     '</tr></thead><tbody>';
 
-  var avgCtr = w.impressions>0 ? w.clicks/w.impressions*100 : 0;
-  var avgCpa = w.leads>0 ? w.spend/w.leads : null;
-  var avgCpl = w.target>0 ? w.spend/w.target : null;
+  var av = w.avito || {};
+  var totalImp = w.impressions + (av.impressions||0);
+  var totalClicks = w.clicks + (av.views||0);
+  var totalSpend = w.spend + (av.spend||0);
+  var totalLeads = w.leads + (av.contacts||0);
+  var totalTarget = w.target + (av.target||0);
+  var avgCtr = totalImp>0 ? totalClicks/totalImp*100 : 0;
+  var avgCpa = totalLeads>0 ? totalSpend/totalLeads : null;
+  var avgCpl = totalTarget>0 ? totalSpend/totalTarget : null;
 
   // ИТОГО — blended по всем источникам
   h += '<tr class="row-total">'+
     '<td><b>ИТОГО</b> · все источники<span class="meta">blended CPL</span></td>'+
-    '<td class="r">'+fmt(w.impressions)+'</td><td class="r">'+fmt(w.clicks)+'</td><td class="r">'+pct(avgCtr)+'</td><td class="r">'+rub(w.spend/Math.max(w.clicks,1))+'</td>'+
-    '<td class="r">'+fmt(w.leads)+'</td><td class="r">'+pct(w.clicks>0?w.leads/w.clicks*100:0)+'</td><td class="r">'+((avgCpa?rub(avgCpa):"—"))+'</td>'+
-    '<td class="r">'+fmt(w.target)+'</td><td class="r">'+pct(w.leads>0?w.target/w.leads*100:0)+'</td><td class="r">'+((avgCpl?rub(avgCpl):"—"))+'</td><td class="r">'+rub(w.spend)+'</td>'+
+    '<td class="r">'+fmt(totalImp)+'</td><td class="r">'+fmt(totalClicks)+'</td><td class="r">'+pct(avgCtr)+'</td><td class="r">'+rub(totalSpend/Math.max(totalClicks,1))+'</td>'+
+    '<td class="r">'+fmt(totalLeads)+'</td><td class="r">'+pct(w.clicks>0?w.leads/w.clicks*100:0)+'</td><td class="r">'+((avgCpa?rub(avgCpa):"—"))+'</td>'+
+    '<td class="r">'+fmt(totalTarget)+'</td><td class="r">'+pct(totalLeads>0?totalTarget/totalLeads*100:0)+'</td><td class="r">'+((avgCpl?rub(avgCpl):"—"))+'</td><td class="r">'+rub(w.spend)+'</td>'+
     '</tr>';
 
   // Яндекс Директ (2 кабинета суммарно)
