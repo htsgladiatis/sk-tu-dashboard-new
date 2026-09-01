@@ -2006,6 +2006,16 @@ function renderDetailTable(w){
     });
   });
 
+  // Avito — отдельный источник статистики, не CRM-лид
+  if(w.avito){
+    h += '<tr class="row-channel">'+
+      '<td><b>Avito</b><span class="meta">статистика API/XLSX</span></td>'+
+      '<td class="r">'+fmt(w.avito.impressions)+'</td><td class="r">'+fmt(w.avito.views)+'</td><td class="r">'+pct(w.avito.impressions>0?w.avito.views/w.avito.impressions*100:null)+'</td><td class="r">'+rub(w.avito.spend/w.avito.views)+'</td>'+
+      '<td class="r">'+fmt(w.avito.contacts)+'</td><td class="r">'+pct(w.avito.views>0?w.avito.contacts/w.avito.views*100:null)+'</td><td class="r">'+rub(w.avito.spend/w.avito.contacts)+'</td>'+
+      '<td class="r">—</td><td class="r">—</td><td class="r">—</td><td class="r">'+rub(w.avito.spend)+'</td>'+
+      '</tr>';
+  }
+
   // Прочие каналы
   w.channels.filter(function(c){return c.name!=="Яндекс Директ";}).forEach(function(c){
     var chCpl = c.leads>0 ? c.target/c.leads*100 : 0;
