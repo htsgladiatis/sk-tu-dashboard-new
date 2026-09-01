@@ -404,19 +404,10 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
 
 <!-- 04 AVITO -->
 <section class="sec" id="sec-avito">
-  <div class="sec-h"><div class="sec-ix">◉</div><div><div class="ix-n">04 · AVITO</div><div class="ix-t">Avito · отдельный рекламный канал</div></div><div class="ix-extra">w11 · 24.08–31.08 · Avito API</div></div>
+  <div class="sec-h"><div class="sec-ix">◉</div><div><div class="ix-n">04 · AVITO</div><div class="ix-t">Avito · отдельный рекламный канал</div></div><div class="ix-extra">динамика выбранного периода · API</div></div>
   <div class="sec-b">
-    <p class="lead">Avito вынесен в общий отчёт отдельным каналом. Значения за w11 (24.08–31.08) получены напрямую из Avito API; в итогах дашборда они не смешиваются с Яндекс.Директом.</p>
-    <div class="kpi-grid">
-      <div class="kpi"><span class="lab">Показы</span><span class="val up">—</span><span class="dl flat">▸ API не отдаёт эту метрику</span></div>
-      <div class="kpi"><span class="lab">Просмотры</span><span class="val up">626</span><span class="dl flat">▸ API · w11</span></div>
-      <div class="kpi"><span class="lab">Контакты</span><span class="val up">12</span><span class="dl flat">▸ API · w11</span></div>
-      <div class="kpi"><span class="lab">Избранное</span><span class="val">43</span><span class="dl flat">▸ API · w11</span></div>
-      <div class="kpi"><span class="lab">Расходы</span><span class="val acc">—</span><span class="dl flat">▸ API не отдаёт эту метрику</span></div>
-      <div class="kpi"><span class="lab">Цена просмотра</span><span class="val">—</span><span class="dl flat">▸ нет расхода за w11</span></div>
-      <div class="kpi"><span class="lab">Цена контакта</span><span class="val">—</span><span class="dl flat">▸ нет расхода за w11</span></div>
-      <div class="kpi"><span class="lab">Объявления с данными</span><span class="val">4</span><span class="dl flat">▸ API · w11</span></div>
-    </div>
+    <p class="lead">Показатели Avito за выбранный период. Данные подставляются из Avito API отдельно от Директа и CRM.</p>
+    <div class="kpi-grid" id="avitoKpiGrid"></div>
   </div>
 </section>
 
@@ -1313,6 +1304,7 @@ const weeks = {
     },
     w11: {
       id: "w11", label: "24.08–31.08", from: "24.08.2026", to: "31.08.2026",
+      avito: {views:626, contacts:12, favorites:43, items:4},
       impressions: 617822, clicks: 7231, spend: 189376.64, leads: 98, target: 32,
       ctr: 1.17, cpc: 26.19, cpa: 5918.02, cpl: 1932.41,
       noteImpressions: null,
@@ -1753,6 +1745,22 @@ function esc(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").rep
 /* ===========================================================
    KPI GRID
    =========================================================== */
+function renderAvito(w){
+  var box=document.getElementById("avitoKpiGrid"); if(!box) return;
+  var a=w.avito||{};
+  var items=[
+    ["Просмотры",a.views,"API · выбранный период"],
+    ["Контакты",a.contacts,"API · выбранный период"],
+    ["Избранное",a.favorites,"API · выбранный период"],
+    ["Объявления с данными",a.items,"API · выбранный период"],
+    ["Показы",a.impressions,"нет данных за период"],
+    ["Расходы",a.spend,"нет данных за период"],
+    ["Цена просмотра",a.viewCost,"расход не получен"],
+    ["Цена контакта",a.contactCost,"расход не получен"]
+  ];
+  box.innerHTML=items.map(function(x){var v=x[1]==null?"—":x[1];return '<div class="kpi"><span class="lab">'+x[0]+'</span><span class="val">'+v+'</span><span class="dl flat">▸ '+x[2]+'</span></div>';}).join("");
+}
+
 function renderKPI(w){
   var prev = prevPeriod(w);
   var isMonth = !!months[w.id];
@@ -2219,6 +2227,7 @@ function  showPeriod(id){
   document.getElementById("kpiPeriod").textContent = w.from+" — "+w.to;
   document.getElementById("drillTitle").textContent = "Детализация по кабинетам и кампаниям · "+w.from+"–"+w.to;
   renderBal(w);
+  renderAvito(w);
   renderKPI(w);
   initCharts(w);
   renderDetailTable(w);
