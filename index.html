@@ -1634,6 +1634,14 @@ function deltaBadge(curr, prev){
 function trunc(s, n){ if(!s) return ""; return s.length>n ? s.substring(0,n-1)+"…" : s; }
 function safe(n, fallback){ return (n==null||n===undefined||isNaN(n)) ? fallback : n; }
 function prevWeek(id){ var i=weekOrder.indexOf(id); return i>0 ? weeks[weekOrder[i-1]] : null; }
+function prevPeriod(w){
+  if(w && w.id && w.id.indexOf('m2026_')===0){
+    var y=Number(w.id.slice(1,5)), m=Number(w.id.slice(6,8));
+    var prevId='m'+(m===1?y-1:y)+'_'+String(m===1?12:m-1).padStart(2,'0');
+    return months[prevId] || null;
+  }
+  return prevWeek(w && w.id);
+}
 function nextWeek(id){ var i=weekOrder.indexOf(id); return i<weekOrder.length-1 ? weeks[weekOrder[i+1]] : null; }
 
 /* ===========================================================
@@ -1659,7 +1667,7 @@ function getChartColors(){
    BALANCE CARD
    =========================================================== */
 function renderBal(w){
-  var prev = prevWeek(w.id);
+  var prev = prevPeriod(w);
   var chip = document.getElementById("balChip");
   if(prev){
     var dn = w.target - prev.target;
@@ -1730,7 +1738,7 @@ function esc(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").rep
    KPI GRID
    =========================================================== */
 function renderKPI(w){
-  var prev = prevWeek(w.id);
+  var prev = prevPeriod(w);
   var items = [
     {label:"Показы",    value:fmt(w.impressions), prev:prev?fmt(prev.impressions):null, delta:deltaBadge(w.impressions, prev?prev.impressions:null)},
     {label:"Клики",     value:fmt(w.clicks),      prev:prev?fmt(prev.clicks):null,      delta:deltaBadge(w.clicks,      prev?prev.clicks:null)},
@@ -2011,8 +2019,8 @@ function renderSeoCharts(w){
     var canvasId = "seoPerformanceChart"+s;
     var badgeId = (s==="Spb"?"spbMetricBadge":"mskMetricBadge");
     var data = w.seoStats[s.toLowerCase()];
-    var prev = prevWeek(w.id);
-    var prevData = prev ? prev.seoStats[s.toLowerCase()] : null;
+  var prev = prevPeriod(w);
+  var prevData = prev ? prev.seoStats[s.toLowerCase()] : null;
     var periodEl = document.getElementById(s==="Spb"?"seoSpbPeriod":"seoMskPeriod");
     if(periodEl) periodEl.textContent = w.label+" · "+w.from+"–"+w.to;
     var metaEl = document.getElementById(s==="Spb"?"seoSpbMeta":"seoMskMeta");
@@ -2070,7 +2078,7 @@ function updateSeoBadge(id, curr, prev){
    FINAL INSIGHTS — programmatic per-week
    =========================================================== */
 function renderFinal(w){
-  var prev = prevWeek(w.id);
+  var prev = prevPeriod(w);
   document.getElementById("finalTitle").textContent = "Главные выводы по периоду: " + w.label;
   var intro = "";
   var bullets = [];
