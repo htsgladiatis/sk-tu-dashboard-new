@@ -1675,6 +1675,7 @@ function getChartColors(){
    BALANCE CARD
    =========================================================== */
 function renderBal(w){
+  var av = w.avito || {};
   var prev = prevPeriod(w);
   var chip = document.getElementById("balChip");
   if(prev){
@@ -1817,9 +1818,12 @@ function initCharts(w){
   var labels = Object.keys(w.accounts);
   var accs = Object.values(w.accounts);
   var totals = accs.reduce(function(s,a){ return {spend:s.spend+a.spend, leads:s.leads+a.leads, target:s.target+a.target, clicks:s.clicks+a.clicks, imp:s.imp+a.imp}; }, {spend:0,leads:0,target:0,clicks:0,imp:0});
+  var paidSpend = totals.spend + (w.avito && w.avito.spend || 0);
+  var paidViews = totals.imp + (w.avito && w.avito.impressions || 0);
+  var paidContacts = w.avito && w.avito.contacts || 0;
 
-  document.getElementById("spendLeadsTotals").textContent = "Сумма: " + rub(totals.spend) + " · " + fmt(totals.leads) + " лидов · " + fmt(totals.target) + " целевых";
-  document.getElementById("impClicksTotals").textContent  = "Сумма: " + fmt(totals.imp) + " показов · " + fmt(totals.clicks) + " кликов";
+  document.getElementById("spendLeadsTotals").textContent = "Директ: " + rub(totals.spend) + " · Avito: " + rub(w.avito && w.avito.spend || 0) + " · CRM-лиды: " + fmt(totals.leads) + " · Avito-контакты: " + fmt(paidContacts);
+  document.getElementById("impClicksTotals").textContent  = "Директ: " + fmt(totals.imp) + " показов · Avito: " + fmt(w.avito && w.avito.impressions || 0) + " показов · Директ-клики: " + fmt(totals.clicks);
 
   var baseFont = "JetBrains Mono";
   var dark = "rgba(11,18,32,.97)";
@@ -2009,7 +2013,7 @@ function renderDetailTable(w){
   // Avito — отдельный источник статистики, не CRM-лид
   if(w.avito){
     h += '<tr class="row-channel">'+
-      '<td><b>Avito</b><span class="meta">статистика API/XLSX</span></td>'+
+      '<td><b>Avito</b><span class="meta">w11 · API + XLSX</span></td>'+
       '<td class="r">'+fmt(w.avito.impressions)+'</td><td class="r">'+fmt(w.avito.views)+'</td><td class="r">'+pct(w.avito.impressions>0?w.avito.views/w.avito.impressions*100:null)+'</td><td class="r">'+rub(w.avito.spend/w.avito.views)+'</td>'+
       '<td class="r">'+fmt(w.avito.contacts)+'</td><td class="r">'+pct(w.avito.views>0?w.avito.contacts/w.avito.views*100:null)+'</td><td class="r">'+rub(w.avito.spend/w.avito.contacts)+'</td>'+
       '<td class="r">—</td><td class="r">—</td><td class="r">—</td><td class="r">'+rub(w.avito.spend)+'</td>'+
