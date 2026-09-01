@@ -350,7 +350,7 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
     <div class="ix-extra" id="kpiPeriod">27.07.2026 — 02.08.2026</div>
   </div>
   <div class="sec-b">
-    <p class="lead">8 метрик с дельтами относительно предыдущей недели. <b>Зелёный</b> — рост показателя (для CPC/CPL/CPA рост считается ухудшением и отмечается красным). Для w1 сравнения нет (baseline).</p>
+    <p class="lead" id="kpiDescription">8 метрик с дельтами относительно предыдущей недели. <b>Зелёный</b> — рост показателя (для CPC/CPL/CPA рост считается ухудшением и отмечается красным). Для w1 сравнения нет (baseline).</p>
     <div class="kpi-grid" id="kpiGrid"></div>
   </div>
 </section>
@@ -1381,7 +1381,7 @@ const weeks = {
     m2026_07: {
       id: "m2026_07", label: "Июль 2026", from: "01.07.2026", to: "29.07.2026",
       impressions: 3062359, clicks: 45860, spend: 969141.05, leads: 401, target: 120,
-      ctr: 1.50, cpc: 21.13, cpa: 2417, cpl: 8076.18,
+      ctr: 1.50, cpc: 21.13, cpa: 2417, cpl: 8076.18, sales: 6, revenue: 35938365,
       noteImpressions: null,
       accounts: {
         "Кабинет МСК": { imp: 753467, clicks: 8885, spend: 493070.91, leads: 25, target: 6, campaigns: [
@@ -1467,11 +1467,7 @@ m2026_08: {
       clicks: 31922,
       spend: 908015.69,
       leads: 440,
-      target: 174,
-      ctr: 1.30,
-      cpc: 28.44,
-      cpa: 2063.67,
-      cpl: 5218.48,
+      target: 174,      ctr: 1.30, cpc: 28.44, cpa: 2063.67, cpl: 5218.48, sales: 9, revenue: 103219679,
       noteImpressions: null,
       accounts: {
         "Кабинет МСК": {
@@ -1739,7 +1735,21 @@ function esc(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").rep
    =========================================================== */
 function renderKPI(w){
   var prev = prevPeriod(w);
-  var items = [
+  var isMonth = !!months[w.id];
+  document.getElementById("kpiDescription").innerHTML = isMonth
+    ? "Месячные показатели: рекламные метрики, <b>продажи</b>, CPL и CAC. CAC = расход Директа ÷ число продаж."
+    : "8 метрик с дельтами относительно предыдущей недели. <b>Зелёный</b> — рост показателя (для CPC/CPL/CPA рост считается ухудшением и отмечается красным). Для w1 сравнения нет (baseline).";
+  var items = (isMonth ? [
+    {label:"Показы",    value:fmt(w.impressions), prev:prev?fmt(prev.impressions):null, delta:deltaBadge(w.impressions, prev?prev.impressions:null)},
+    {label:"Клики",     value:fmt(w.clicks),      prev:prev?fmt(prev.clicks):null,      delta:deltaBadge(w.clicks,      prev?prev.clicks:null)},
+    {label:"Расход",    value:rub(w.spend),       prev:prev?rub(prev.spend):null,       delta:deltaBadge(w.spend,       prev?prev.spend:null), custom:"acc"},
+    {label:"Лиды",      value:fmt(w.leads),       prev:prev?fmt(prev.leads):null,       delta:deltaBadge(w.leads,       prev?prev.leads:null)},
+    {label:"Целевые",   value:fmt(w.target),      prev:prev?fmt(prev.target):null,      delta:deltaBadge(w.target,      prev?prev.target:null), custom:"up"},
+    {label:"CTR",       value:pct(w.ctr),         prev:prev?pct(prev.ctr):null,         delta:deltaBadge(w.ctr,         prev?prev.ctr:null)},
+    {label:"Продажи",   value:fmt(w.sales || 0), prev:prev && prev.sales != null ? fmt(prev.sales):null, delta:prev && prev.sales != null ? deltaBadge(w.sales, prev.sales) : {cls:"flat",txt:"· факт продаж"}, custom:"up"},
+    {label:"CPL",       value:rub(w.cpl),         prev:prev?rub(prev.cpl):null,         delta:deltaBadge(w.cpl,         prev?prev.cpl:null), invert:true},
+    {label:"CAC",       value:w.sales ? rub(w.spend/w.sales) : "—", prev:prev && prev.sales ? rub(prev.spend/prev.sales):null, delta:prev && prev.sales ? deltaBadge(w.spend/w.sales, prev.spend/prev.sales) : {cls:"flat",txt:"· расход ÷ продажи"}, invert:true, custom:"acc"}
+  ] : [
     {label:"Показы",    value:fmt(w.impressions), prev:prev?fmt(prev.impressions):null, delta:deltaBadge(w.impressions, prev?prev.impressions:null)},
     {label:"Клики",     value:fmt(w.clicks),      prev:prev?fmt(prev.clicks):null,      delta:deltaBadge(w.clicks,      prev?prev.clicks:null)},
     {label:"Расход",    value:rub(w.spend),       prev:prev?rub(prev.spend):null,       delta:deltaBadge(w.spend,       prev?prev.spend:null), custom:"acc"},
@@ -1748,7 +1758,7 @@ function renderKPI(w){
     {label:"CTR",       value:pct(w.ctr),         prev:prev?pct(prev.ctr):null,         delta:deltaBadge(w.ctr,         prev?prev.ctr:null)},
     {label:"CPC",       value:rub(w.cpc),         prev:prev?rub(prev.cpc):null,         delta:deltaBadge(w.cpc,         prev?prev.cpc:null), invert:true},
     {label:"CPL",       value:rub(w.cpl),         prev:prev?rub(prev.cpl):null,         delta:deltaBadge(w.cpl,         prev?prev.cpl:null), invert:true}
-  ];
+  ]);
   document.getElementById("kpiGrid").innerHTML = items.map(function(it){
     var cls = it.delta.cls;
     var arrow = cls==="up"?"▲":(cls==="down"?"▼":"");
