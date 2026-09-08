@@ -2386,8 +2386,8 @@ function  showPeriod(id){
   var tglBtn = document.getElementById("tgl");
   if(tglBtn) tglBtn.addEventListener("click", toggleTheme);
 
-  // First render
-  showPeriod("w11");
+  // First render — всегда последняя неделя из weekOrder/currentWeek
+  showPeriod(currentWeek);
   updateSpy();
 })();
 
@@ -2410,7 +2410,8 @@ function  showPeriod(id){
     return na - nb;
   }
   var weekKeys = Object.keys(weeks).sort(sortByNum);
-  var state = { mode: 'week', currentId: weekKeys[weekKeys.length - 1] || 'w7', query: '' };
+  var initialId = (typeof currentWeek !== 'undefined' && weeks[currentWeek]) ? currentWeek : (typeof weekOrder !== 'undefined' && weekOrder.length ? weekOrder[weekOrder.length - 1] : weekKeys[weekKeys.length - 1]);
+  var state = { mode: 'week', currentId: initialId || weekKeys[weekKeys.length - 1] || 'w7', query: '' };
 
   function getItems(){
     if (state.mode === 'week'){
