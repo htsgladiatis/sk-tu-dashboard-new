@@ -258,7 +258,7 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
 <header class="hdr">
   <div class="hdr-in">
     <div class="brand">
-      <img class="brand-logo" src="https://sk-tu.ru/local/templates/v1.0/static/img/logo-large.svg" alt="Тёплый Угол · маркетинговый дашборд">
+      <img class="brand-logo" src="./logo.svg" alt="Тёплый Угол · маркетинговый дашборд">
       <span class="brand-sub">МАРКЕТИНГ-ДАШБОРД</span>
     </div>
     <a class="ca-link" href="https://htsgladiatis.github.io/sk-tu-ca-analysis/" target="_blank" rel="noopener noreferrer" aria-label="Анализ ЦА — глубокий анализ целевой аудитории, откроется в новой вкладке">
@@ -1832,8 +1832,8 @@ function renderAvito(w){
     ["Контакты",a.contacts,"API · выбранный период"],
     ["Избранное",a.favorites,"API · выбранный период"],
     ["Объявления с данными",a.items,"API · выбранный период"],
-    ["Показы",a.impressions,"XLSX Avito · w11"],
-    ["Расходы",a.spend==null?null:(Number(a.spend).toLocaleString('ru-RU',{minimumFractionDigits:2,maximumFractionDigits:2})+'₽'),"XLSX Avito · w11"],
+    ["Показы",a.impressions,"XLSX Avito · "+(w.label||w.id)],
+    ["Расходы",a.spend==null?null:(Number(a.spend).toLocaleString('ru-RU',{minimumFractionDigits:2,maximumFractionDigits:2})+'₽'),"XLSX Avito · "+(w.label||w.id)],
     ["Цена просмотра",a.viewCost==null?null:(Number(a.viewCost).toLocaleString('ru-RU',{minimumFractionDigits:2,maximumFractionDigits:2})+'₽'),"расходы / просмотры"],
     ["Цена контакта",a.contactCost==null?null:(Number(a.contactCost).toLocaleString('ru-RU',{minimumFractionDigits:2,maximumFractionDigits:2})+'₽'),"расходы / контакты"]
   ];
