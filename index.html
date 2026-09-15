@@ -1461,26 +1461,26 @@ const weeks = {
     w13: {
       id: "w13", label: "07.09–13.09", from: "07.09.2026", to: "13.09.2026",
       avito: {impressions:391, views:112, contacts:10, target:0, favorites:0, items:2, spend:4709.42, viewCost:42.05, contactCost:470.94},
-      impressions: 614897, clicks: 4508, spend: 202352.37, leads: 73, target: 14,
-      ctr: 0.73, cpc: 44.89, cpa: 2771.95, cpl: 14453.74,
+      impressions: 614897, clicks: 4508, spend: 202352.37, leads: 73, target: 19,
+      ctr: 0.73, cpc: 44.89, cpa: 2771.95, cpl: 10650.12,
       noteImpressions: null,
       accounts: {
-        "Кабинет МСК": { imp: 171733, clicks: 3038, spend: 172740.10, leads: 4, target: 0, campaigns: [
-          {name:"Каркас кат. Мастер. МСК. OK.", imp:168653, clicks:2912, spend:149461.65, leads:3, target:0},
+        "Кабинет МСК": { imp: 171733, clicks: 3038, spend: 172740.10, leads: 4, target: 3, campaigns: [
+          {name:"Каркас кат. Мастер. МСК. OK.", imp:168653, clicks:2912, spend:149461.65, leads:3, target:2},
           {name:"Каркас. Поиск. МСК.", imp:3080, clicks:126, spend:23278.45, leads:0, target:0},
-          {name:"Karkas-FID-R5YA-MSK-OK (UTM 119796155, нет в Direct W13)", imp:0, clicks:0, spend:0.00, leads:1, target:0}
+          {name:"Karkas-FID-R5YA-MSK-OK (UTM 119796155, нет в Direct W13)", imp:0, clicks:0, spend:0.00, leads:1, target:1}
         ]},
         "Кабинет СПБ": { imp: 442773, clicks: 1358, spend: 24902.85, leads: 2, target: 0, campaigns: [
           {name:"Товарная кампания sk-tu.ru от 27.08.26 (713907787, новый кабинет СПБ)", imp:442773, clicks:1358, spend:24902.85, leads:2, target:0}
         ]}
       },
       channels: [
-        {name:"Яндекс Директ",leads:6,target:0,spend:197642.95},
+        {name:"Яндекс Директ",leads:6,target:3,spend:197642.95},
         {name:"Avito",leads:10,target:0,spend:4709.42},
         {name:"Выставочный дом",leads:7,target:5,spend:0.00},
         {name:"Инстаграм",leads:3,target:2,spend:0.00},
         {name:"Вх. звонок",leads:19,target:4,spend:0.00},
-        {name:"SEO (вкл. Прямой заход)",leads:12,target:3,spend:0.00},
+        {name:"SEO (вкл. Прямой заход)",leads:12,target:5,spend:0.00},
         {name:"Прочее (VK, прочие)",leads:16,target:0,spend:0.00}
       ],
       seoStats: {
@@ -1785,9 +1785,9 @@ m2026_08: {
 /* ===========================================================
    HELPERS
    =========================================================== */
-function fmt(n){ if(n==null||n===undefined||Number.isNaN(n)) return "—"; return Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, " "); }
-function pct(n, d){ d = d||2; if(n==null||n===undefined||Number.isNaN(n)) return "—"; return n.toFixed(d)+"%"; }
-function rub(n){ if(n==null||n===undefined||Number.isNaN(n)) return "—"; return fmt(Math.round(n))+" ₽"; }
+function fmt(n){ if(n==null||n===undefined||Number.isNaN(n)||!isFinite(n)) return "—"; return Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, " "); }
+function pct(n, d){ d = d||2; if(n==null||n===undefined||Number.isNaN(n)||!isFinite(n)) return "—"; return n.toFixed(d)+"%"; }
+function rub(n){ if(n==null||n===undefined||Number.isNaN(n)||!isFinite(n)) return "—"; return fmt(Math.round(n))+" ₽"; }
 function deltaBadge(curr, prev){
   if(prev==null||prev===undefined||curr==null) return {txt:"— нет сравнения", cls:"flat"};
   if(prev===0) return {txt:"· новый канал", cls:"flat"};
@@ -2178,9 +2178,9 @@ function renderDetailTable(w){
   if(w.avito){
     h += '<tr class="row-channel">'+
       '<td><b>Avito</b><span class="meta">'+ (w.label || w.id) + ' · API + XLSX</span></td>'+
-      '<td class="r">'+fmt(w.avito.impressions)+'</td><td class="r">'+fmt(w.avito.views)+'</td><td class="r">'+pct(w.avito.impressions>0?w.avito.views/w.avito.impressions*100:null)+'</td><td class="r">'+rub(w.avito.spend/w.avito.views)+'</td>'+
-      '<td class="r">'+fmt(w.avito.contacts)+'</td><td class="r">'+pct(w.avito.views>0?w.avito.contacts/w.avito.views*100:null)+'</td><td class="r">'+rub(w.avito.spend/w.avito.contacts)+'</td>'+
-      '<td class="r">'+fmt(w.avito.target)+'</td><td class="r">'+pct(w.avito.contacts>0?w.avito.target/w.avito.contacts*100:null)+'</td><td class="r">'+rub(w.avito.spend/w.avito.target)+'</td><td class="r">'+rub(w.avito.spend)+'</td>'+
+      '<td class="r">'+fmt(w.avito.impressions)+'</td><td class="r">'+fmt(w.avito.views)+'</td><td class="r">'+pct(w.avito.impressions>0?w.avito.views/w.avito.impressions*100:null)+'</td><td class="r">'+(w.avito.views>0?rub(w.avito.spend/w.avito.views):"—")+'</td>'+
+      '<td class="r">'+fmt(w.avito.contacts)+'</td><td class="r">'+pct(w.avito.views>0?w.avito.contacts/w.avito.views*100:null)+'</td><td class="r">'+(w.avito.contacts>0?rub(w.avito.spend/w.avito.contacts):"—")+'</td>'+
+      '<td class="r">'+fmt(w.avito.target)+'</td><td class="r">'+pct(w.avito.contacts>0?w.avito.target/w.avito.contacts*100:null)+'</td><td class="r">'+(w.avito.target>0?rub(w.avito.spend/w.avito.target):"—")+'</td><td class="r">'+rub(w.avito.spend)+'</td>'+
       '</tr>';
   }
 
