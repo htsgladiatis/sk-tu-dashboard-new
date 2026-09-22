@@ -62,7 +62,8 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
 .brand{display:flex;align-items:center;gap:12px}
 .brand-logo{height:32px;width:auto;display:block;filter:drop-shadow(0 0 6px rgba(225,131,53,.25))}
 [data-theme="light"] .brand-logo{filter:drop-shadow(0 0 4px rgba(225,131,53,.18))}
-.brand-sub{font-size:10px;color:var(--txt-3);font-family:'JetBrains Mono',monospace;letter-spacing:.12em;border-left:1px solid var(--line);padding-left:12px;text-transform:uppercase}
+.brand-sub{font-size:10px;color:var(--txt-3);font-family:'JetBrains Mono',monospace;letter-spacing:.12em;text-transform:uppercase}
+.brand-sub-row{flex-basis:100%;order:20;margin:-8px 0 -4px;line-height:1}
 .ca-link{display:inline-flex;align-items:center;gap:7px;font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:500;letter-spacing:.04em;text-decoration:none;color:var(--violet);background:color-mix(in srgb,var(--violet) 12%,transparent);border:1px solid color-mix(in srgb,var(--violet) 30%,transparent);border-radius:10px;padding:7px 13px;transition:all .2s var(--ease);flex-shrink:0;white-space:nowrap}
 .ca-link:hover{color:var(--txt);background:color-mix(in srgb,var(--violet) 20%,transparent);border-color:var(--violet);transform:translateY(-1px);box-shadow:0 4px 14px rgba(139,92,255,.22)}
 .ca-link .ix{font-family:'JetBrains Mono',monospace;font-size:11px;opacity:.7;transition:transform .2s var(--ease),opacity .2s}
@@ -71,7 +72,7 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
 .dc-link{color:var(--acc);background:color-mix(in srgb,var(--acc) 12%,transparent);border-color:color-mix(in srgb,var(--acc) 30%,transparent)}
 .dc-link:hover{color:var(--txt);background:color-mix(in srgb,var(--acc) 20%,transparent);border-color:var(--acc);box-shadow:0 4px 14px rgba(225,131,53,.22)}
 [data-theme="light"] .dc-link:hover{box-shadow:0 4px 14px rgba(225,131,53,.18)}
-@media(max-width:760px){.brand-logo{height:26px}.brand-sub{display:none}.ca-link{padding:6px 10px;font-size:11px}}
+@media(max-width:760px){.brand-logo{height:26px}.brand-sub-row{display:none}.ca-link{padding:6px 10px;font-size:11px}}
 .hdr-sp{flex:1;min-width:8px}
 .period-selector{display:inline-flex;background:var(--panel-2);padding:4px;border-radius:11px;border:1px solid var(--line);gap:2px}
 .seg{display:inline-flex;align-items:center;gap:7px;white-space:nowrap;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--txt-2);
@@ -259,7 +260,6 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
   <div class="hdr-in">
     <div class="brand">
       <img class="brand-logo" src="./logo-large.svg" alt="Тёплый Угол · маркетинговый дашборд">
-      <span class="brand-sub">МАРКЕТИНГ-ДАШБОРД</span>
     </div>
     <a class="ca-link" href="https://htsgladiatis.github.io/sk-tu-ca-analysis/" target="_blank" rel="noopener noreferrer" aria-label="Анализ ЦА — глубокий анализ целевой аудитории, откроется в новой вкладке">
       <span class="ix">↗</span>Анализ ЦА
@@ -303,6 +303,7 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
       </div>
     </div>
     <button class="tgl" id="tgl" role="switch" aria-checked="false" aria-label="Тема"><span class="tgl-k" id="tglK">☀️</span></button>
+    <div class="brand-sub-row"><span class="brand-sub">МАРКЕТИНГ-ДАШБОРД</span></div>
   </div>
 </header>
 
