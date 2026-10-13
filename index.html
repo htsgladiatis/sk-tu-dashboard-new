@@ -1773,6 +1773,43 @@ const weeks = {
         {query:"строительство каркасных домов под ключ",visits:99}
       ]
     },
+    w17: {
+      id: "w17", label: "05.10–11.10", from: "05.10.2026", to: "11.10.2026",
+      avito: {impressions:573, views:141, contacts:2, target:0, favorites:7, items:3, spend:29311.00, viewCost:207.87, contactCost:14655.50},
+      impressions: 573, clicks: 19976, spend: 271559.85, leads: 89, target: 22,
+      ctr: 0, cpc: 13.59, cpa: 3051.23, cpl: 12343.63,
+      noteImpressions: "Показы Директа недоступны (CSV нет, в Calltouch только клики) — impressions только Avito, ctr=0; клики/расход кабинетов из выгрузки Calltouch",
+      accounts: {
+        "Кабинет МСК": { imp: 0, clicks: 2838, spend: 144490.40, leads: 17, target: 3, campaigns: [
+          {name:"Каркас кат. Мастер. МСК. OK.", imp:0, clicks:1693, spend:115186.58, leads:13, target:1},
+          {name:"Каркас. Поиск. МСК.", imp:0, clicks:133, spend:19645.55, leads:2, target:2},
+          {name:"РСЯ", imp:0, clicks:1012, spend:9658.27, leads:1, target:0},
+          {name:"Karkas-Retargeting-MSK-OK (UTM 115397955, нет расхода в W17)", imp:0, clicks:0, spend:0.00, leads:1, target:0}
+        ]},
+        "Кабинет СПБ": { imp: 0, clicks: 16451, spend: 97758.45, leads: 1, target: 0, campaigns: [
+          {name:"Товарная кампания sk-tu.ru от 27.08.26 (713907787, новый кабинет СПБ)", imp:0, clicks:16347, spend:79327.09, leads:0, target:0},
+          {name:"Каркас. Поиск. СПБ.", imp:0, clicks:86, spend:18431.36, leads:0, target:0},
+          {name:"Karkas-Master-SPB-OK-gl (UTM 710722754, нет расхода в W17)", imp:0, clicks:18, spend:0.00, leads:1, target:0}
+        ]}
+      },
+      channels: [
+        {name:"Яндекс Директ",leads:18,target:3,spend:242248.85},
+        {name:"Avito",leads:2,target:0,spend:29311.00},
+        {name:"Выставочный дом",leads:7,target:6,spend:0.00},
+        {name:"Инстаграм",leads:2,target:2,spend:0.00},
+        {name:"Вх. звонок",leads:30,target:5,spend:0.00},
+        {name:"SEO (вкл. Прямой заход)",leads:14,target:4,spend:0.00},
+        {name:"Прочее (VK, прочие)",leads:16,target:2,spend:0.00}
+      ],
+      seoStats: {
+        spb:{visits:0,users:0,bounceRate:0,pageDepth:0,avgDuration:0,goals:null,goalConversion:null,goalRevenue:null},
+        msk:{visits:0,users:0,bounceRate:0,pageDepth:0,avgDuration:0,goals:null,goalConversion:null,goalRevenue:null}
+      },
+      topPagesSpb: [],
+      topPagesMsk: [],
+      topQueriesSpb: [],
+      topQueriesMsk: []
+    },
     };
 
     /* ===========================================================
@@ -2099,8 +2136,8 @@ m2026_08: {
     }
     };
 
-    let currentWeek = "w16";
-    const weekOrder = ["w1","w2","w3","w4","w5","w6","w7","w8","w9","w10","w11","w12","w13","w14","w15","w16"];
+    let currentWeek = "w17";
+    const weekOrder = ["w1","w2","w3","w4","w5","w6","w7","w8","w9","w10","w11","w12","w13","w14","w15","w16","w17"];
 
 /* ===========================================================
    HELPERS
