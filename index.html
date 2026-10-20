@@ -2167,6 +2167,48 @@ m2026_08: {
         {query:"каркасные дома недорого",visits:314}
       ],
       avgCheck: null
+    },
+    m2026_10: {
+      id: "m2026_10", label: "Октябрь 2026", from: "01.10.2026", to: "18.10.2026",
+      avito: {impressions:2005, views:470, contacts:11, target:2, favorites:19, items:3, spend:117756.65, viewCost:250.55, contactCost:10705.15},
+      impressions: 622641, clicks: 36037, spend: 917910.00, leads: 221, target: 47,
+      ctr: 5.79, cpc: 25.47, cpa: 4153.44, cpl: 19530.00, sales: null, revenue: null,
+      noteImpressions: "Показы Директа за 05–11.10 недоступны (Calltouch, CSV нет) — в месячном CTR клики этой недели есть, показов нет; CTR 5,79% завышен, сравнивать с сентябрём по CTR нельзя.",
+      noteLeads: "Лиды/ЦЛ — сумма недельных канонов: 01–04.10 (срез w16) + w17 + w18. w17 шапка 87 сделок vs API 86 (+1 лид). Avito — контакты 2+2+7=11, а не 3 CRM-сделки; 3 CRM-сделки входят в 7 контактов w18. BrainHub 13–18.10: 4/1; 19–20.10 (CRM) и 19.10 BrainHub (2 лида / 3 450 ₽) — следующий период.",
+      noteSeo: "Метрика за октябрь есть только за 12–18.10 (w18): 12 876 визитов. Вебмастер не работает, топ-страницы/запросы не собраны; SEO-цифры в блоке — за w18, не за месяц.",
+      noteAvito: "01–04.10: в XLSX только агрегат 28.09–04.10 без разбивки по дням — взял весь агрегат (2 контакта, 21 321,56 ₽), поэтому в Avito-блоке 3 дня сентября. Другой разбивки нет.",
+      noteSales: "За октябрь нет выгрузки продаж/выручки — sales/revenue = null, CAC не считается.",
+      notePeriod: "01–18.10 — неполный месяц (18 из 31 дня); дельты к сентябрю (30 дней) некорректны по длине.",
+      accounts: {
+        "Кабинет МСК": { imp: 112312, clicks: 8088, spend: 445494.96, leads: 54, target: 6, campaigns: [
+          {name:"Каркас кат. Мастер. МСК. OK.", imp:74427, clicks:4942, spend:378827.59, leads:42, target:4},
+          {name:"Каркас. Поиск. МСК.", imp:2971, clicks:228, spend:36614.11, leads:3, target:2},
+          {name:"РСЯ", imp:34914, clicks:2918, spend:30053.26, leads:9, target:0}
+        ]},
+        "Кабинет СПБ": { imp: 508324, clicks: 27479, spend: 344198.39, leads: 10, target: 2, campaigns: [
+          {name:"Товарная кампания sk-tu.ru от 27.08.26 (713907787)", imp:502927, clicks:27002, spend:244408.50, leads:6, target:1},
+          {name:"Каркас. Поиск. СПб. (714798187)", imp:5397, clicks:477, spend:99789.89, leads:4, target:1}
+        ]}
+      },
+      channels: [
+        {name:"Яндекс Директ",leads:64,target:8,spend:789693.35},
+        {name:"Avito",leads:11,target:2,spend:117756.65},
+        {name:"Выставочный дом",leads:18,target:16,spend:0.00},
+        {name:"Инстаграм",leads:5,target:4,spend:0.00},
+        {name:"Вх. звонок",leads:56,target:7,spend:0.00},
+        {name:"SEO (вкл. Прямой заход)",leads:27,target:6,spend:0.00},
+        {name:"BrainHub",leads:4,target:1,spend:10460.00},
+        {name:"Прочее (VK, прочие)",leads:36,target:3,spend:0.00}
+      ],
+      seoStats: {
+        spb:{visits:10179,users:8446,bounceRate:0.36850378229688574,pageDepth:1.6799292661361627,avgDuration:70,goals:null,goalConversion:null,goalRevenue:null},
+        msk:{visits:2697,users:2164,bounceRate:0.24323322209862808,pageDepth:3.306266221727846,avgDuration:156,goals:22,goalConversion:0.009242144177449169,goalRevenue:0}
+      },
+      topPagesSpb: [],
+      topPagesMsk: [],
+      topQueriesSpb: [],
+      topQueriesMsk: [],
+      avgCheck: null
     }
     };
 
@@ -2313,18 +2355,21 @@ function renderKPI(w){
   var prev = prevPeriod(w);
   var isMonth = !!months[w.id];
   document.getElementById("kpiDescription").innerHTML = isMonth
-    ? "Месячные показатели: рекламные метрики, <b>продажи</b>, CPL и CAC. CAC = расход Директа ÷ число продаж."
+    ? "Месячные показатели: рекламные метрики, <b>продажи</b>, CPL и CAC. CAC = общий расход ÷ число продаж."
     : "8 метрик с дельтами относительно предыдущей недели. <b>Зелёный</b> — рост показателя (для CPC/CPL/CPA рост считается ухудшением и отмечается красным). Для w1 сравнения нет (baseline).";
+  if (isMonth && w.noteImpressions) {
+    document.getElementById("kpiDescription").innerHTML += ' <b>*</b> CTR завышен: часть показов Директа недоступна.';
+  }
   var items = (isMonth ? [
     {label:"Показы",    value:fmt(w.impressions), prev:prev?fmt(prev.impressions):null, delta:deltaBadge(w.impressions, prev?prev.impressions:null)},
     {label:"Клики",     value:fmt(w.clicks),      prev:prev?fmt(prev.clicks):null,      delta:deltaBadge(w.clicks,      prev?prev.clicks:null)},
     {label:"Расход",    value:rub(w.spend),       prev:prev?rub(prev.spend):null,       delta:deltaBadge(w.spend,       prev?prev.spend:null), custom:"acc"},
     {label:"Лиды",      value:fmt(w.leads),       prev:prev?fmt(prev.leads):null,       delta:deltaBadge(w.leads,       prev?prev.leads:null)},
     {label:"Целевые",   value:fmt(w.target),      prev:prev?fmt(prev.target):null,      delta:deltaBadge(w.target,      prev?prev.target:null), custom:"up"},
-    {label:"CTR",       value:pct(w.ctr),         prev:prev?pct(prev.ctr):null,         delta:deltaBadge(w.ctr,         prev?prev.ctr:null)},
-    {label:"Продажи",   value:fmt(w.sales || 0), prev:prev && prev.sales != null ? fmt(prev.sales):null, delta:prev && prev.sales != null ? deltaBadge(w.sales, prev.sales) : {cls:"flat",txt:"· факт продаж"}, custom:"up"},
+    {label:"CTR",       value:pct(w.ctr)+(isMonth && w.noteImpressions ? "*" : ""), prev:prev?pct(prev.ctr):null, delta:deltaBadge(w.ctr, prev?prev.ctr:null)},
+    {label:"Продажи",   value:w.sales==null?"—":fmt(w.sales), prev:w.sales!=null && prev && prev.sales!=null ? fmt(prev.sales):null, delta:w.sales==null ? {cls:"flat",txt:"· нет данных"} : (prev && prev.sales!=null ? deltaBadge(w.sales, prev.sales) : {cls:"flat",txt:"· факт продаж"}), custom:"up"},
     {label:"CPL",       value:rub(w.cpl),         prev:prev?rub(prev.cpl):null,         delta:deltaBadge(w.cpl,         prev?prev.cpl:null), invert:true},
-    {label:"CAC",       value:w.sales ? rub(w.spend/w.sales) : "—", prev:prev && prev.sales ? rub(prev.spend/prev.sales):null, delta:prev && prev.sales ? deltaBadge(w.spend/w.sales, prev.spend/prev.sales) : {cls:"flat",txt:"· расход ÷ продажи"}, invert:true, custom:"acc"}
+    {label:"CAC",       value:w.sales ? rub(w.spend/w.sales) : "—", prev:w.sales && prev && prev.sales ? rub(prev.spend/prev.sales):null, delta:w.sales ? (prev && prev.sales ? deltaBadge(w.spend/w.sales, prev.spend/prev.sales) : {cls:"flat",txt:"· расход ÷ продажи"}) : {cls:"flat",txt:"· нет данных"}, invert:true, custom:"acc"}
   ] : [
     {label:"Показы",    value:fmt(w.impressions), prev:prev?fmt(prev.impressions):null, delta:deltaBadge(w.impressions, prev?prev.impressions:null)},
     {label:"Клики",     value:fmt(w.clicks),      prev:prev?fmt(prev.clicks):null,      delta:deltaBadge(w.clicks,      prev?prev.clicks:null)},
@@ -2720,7 +2765,17 @@ function renderFinal(w){
   }
   // Month mode: custom intro
   if (months[w.id]) {
-    intro = "Месячный отчёт за <b>"+w.label+"</b> ("+w.from+"–"+w.to+"). Расход: <b>"+rub(w.spend)+"</b>, ЦЛ: <b>"+w.target+"</b>, CPL: <b>"+rub(w.cpl)+"</b>. Сравнение с предыдущим месяцем пока недоступно — это первый месячный отчёт в дашборде.";
+    intro = "Месячный отчёт за <b>"+w.label+"</b> ("+w.from+"–"+w.to+"). Расход: <b>"+rub(w.spend)+"</b>, ЦЛ: <b>"+w.target+"</b>, CPL: <b>"+rub(w.cpl)+"</b>.";
+    if (prev) {
+      var mTarget = ((w.target-prev.target)/Math.max(prev.target,1)*100);
+      var mSpend = ((w.spend-prev.spend)/Math.max(prev.spend,1)*100);
+      intro += " К прошлому месяцу («"+prev.label+"»): ЦЛ "+(mTarget>=0?"+":"")+mTarget.toFixed(0)+"%, расход "+(mSpend>=0?"+":"")+mSpend.toFixed(0)+"%.";
+    } else {
+      intro += " Предыдущий месяц для сравнения недоступен.";
+    }
+  }
+  if (w.notePeriod) {
+    bullets.push("<span class=\"assump\">⚠ период</span> "+w.notePeriod);
   }
   // 2) Channel mix
   var direct = w.channels.find(function(c){return c.name==="Яндекс Директ";});
@@ -2754,15 +2809,27 @@ function renderFinal(w){
   // 5) SEO
   var seoTotal = w.seoStats.spb.visits + w.seoStats.msk.visits;
   var mskShare = seoTotal>0 ? w.seoStats.msk.visits/seoTotal*100 : 0;
-  var periodWord = months[w.id] ? "за месяц" : "за неделю";
+  var periodWord = months[w.id] ? ("за месяц" + (w.noteSeo ? " (частично)" : "")) : "за неделю";
   bullets.push("Органический трафик: <b>"+fmt(seoTotal)+"</b> визитов "+periodWord+". Доля МСК: "+mskShare.toFixed(0)+"%, СПБ: "+(100-mskShare).toFixed(0)+"%. "+(mskShare>=60?"МСК доминирует в органике — возможна переоценка SEO-стратегии СПБ.":"СПб лидирует в органике, МСК стоит подтянуть контентом."));
+  if(w.noteSeo){
+    bullets.push("<span class=\"assump\">⚠ SEO</span> "+w.noteSeo);
+  }
 
   // 6) special: w2/w3 data quality note
   if(w.noteImpressions){
-    bullets.push("<span class=\"assump\">⚠ допущение</span> "+w.noteImpressions+". Это влияет только на график «Показы и клики по кабинетам» для недели "+w.label+" — все остальные метрики рассчитаны из реальных данных.");
+    var noteImpText = months[w.id]
+      ? "<span class=\"assump\">⚠ допущение</span> "+w.noteImpressions
+      : "<span class=\"assump\">⚠ допущение</span> "+w.noteImpressions+". Это влияет только на график «Показы и клики по кабинетам» для недели "+w.label+" — все остальные метрики рассчитаны из реальных данных.";
+    bullets.push(noteImpText);
   }
   if(w.noteLeads){
-    bullets.push("<span class=\"assump\">⚠ лиды</span> "+w.noteLeads);
+    bullets.push("<span class=\"assump\">⚠ "+(months[w.id]?"методика":"лиды")+"</span> "+w.noteLeads);
+  }
+  if(w.noteAvito){
+    bullets.push("<span class=\"assump\">⚠ Avito</span> "+w.noteAvito);
+  }
+  if(w.noteSales){
+    bullets.push("<span class=\"assump\">⚠ продажи</span> "+w.noteSales);
   }
 
   document.getElementById("finalBody").innerHTML =
