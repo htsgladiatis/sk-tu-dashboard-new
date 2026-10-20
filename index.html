@@ -2530,10 +2530,13 @@ function renderDetailTable(w){
 
   // Яндекс Директ (2 кабинета суммарно)
   var direct = w.channels.find(function(c){return c.name==="Яндекс Директ";}) || {leads:0, target:0, spend:0};
+  var directImp = w.accounts['Кабинет МСК'].imp + w.accounts['Кабинет СПБ'].imp;
+  var directClicks = w.accounts['Кабинет МСК'].clicks + w.accounts['Кабинет СПБ'].clicks;
+  var directCtr = directImp>0 ? directClicks/directImp*100 : 0;
   h += '<tr class="row-channel">'+
     '<td><b>Яндекс Директ</b> · 2 кабинета<span class="meta">расход = сумма 2 кабинетов</span></td>'+
-    '<td class="r">'+fmt(w.impressions)+'</td><td class="r">'+fmt(w.clicks)+'</td><td class="r">'+pct(avgCtr)+'</td><td class="r">'+rub(w.spend/Math.max(w.clicks,1))+'</td>'+
-    '<td class="r">'+fmt(direct.leads)+'</td><td class="r">'+pct(direct.leads!=null && w.clicks>0?direct.leads/w.clicks*100:null)+'</td><td class="r">'+((direct.leads?rub(direct.spend/direct.leads):"—"))+'</td>'+
+    '<td class="r">'+fmt(directImp)+'</td><td class="r">'+fmt(directClicks)+'</td><td class="r">'+pct(directCtr)+'</td><td class="r">'+rub(direct.spend/Math.max(directClicks,1))+'</td>'+
+    '<td class="r">'+fmt(direct.leads)+'</td><td class="r">'+pct(direct.leads!=null && directClicks>0?direct.leads/directClicks*100:null)+'</td><td class="r">'+((direct.leads?rub(direct.spend/direct.leads):"—"))+'</td>'+
     '<td class="r">'+fmt(direct.target)+'</td><td class="r">'+pct(direct.target!=null && direct.leads>0?direct.target/direct.leads*100:null)+'</td><td class="r">'+((direct.target?rub(direct.spend/direct.target):"—"))+'</td><td class="r">'+rub(direct.spend)+'</td>'+
     '</tr>';
 
