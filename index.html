@@ -2591,11 +2591,13 @@ function renderDetailTable(w){
   // Прочие каналы (Avito отдельно — исключаем чтобы не дублировать строку)
   w.channels.filter(function(c){return c.name!=="Яндекс Директ" && c.name!=="Avito";}).forEach(function(c){
     var chCpl = c.leads>0 ? c.target/c.leads*100 : 0;
+    var chCpa = (c.leads>0 && c.spend>0) ? c.spend/c.leads : null;
+    var chCostPerTarget = (c.target>0 && c.spend>0) ? c.spend/c.target : null;
     h += '<tr>'+
       '<td>'+esc(c.name)+'</td>'+
       '<td class="r">—</td><td class="r">—</td><td class="r">—</td><td class="r">—</td>'+
-      '<td class="r">'+fmt(c.leads)+'</td><td class="r">—</td><td class="r">—</td>'+
-      '<td class="r">'+fmt(c.target)+'</td><td class="r">'+pct(chCpl)+'</td><td class="r">—</td><td class="r">'+(c.spend>0?rub(c.spend):"—")+'</td>'+
+      '<td class="r">'+fmt(c.leads)+'</td><td class="r">—</td><td class="r">'+(chCpa?rub(chCpa):"—")+'</td>'+
+      '<td class="r">'+fmt(c.target)+'</td><td class="r">'+pct(chCpl)+'</td><td class="r">'+(chCostPerTarget?rub(chCostPerTarget):"—")+'</td><td class="r">'+(c.spend>0?rub(c.spend):"—")+'</td>'+
       '</tr>';
   });
 
