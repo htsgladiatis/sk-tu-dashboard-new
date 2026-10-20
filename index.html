@@ -2545,14 +2545,27 @@ function renderDetailTable(w){
     var accCpa = acc.leads>0 ? acc.spend/acc.leads : null;
     var accCpl = acc.target>0 ? acc.spend/acc.target : null;
     var impCell = (acc.imp>0 ? fmt(acc.imp) : '<span class="meta">нет данных</span>');
+    // Кампании без трафика в периоде (0 показов и 0 расхода) не рисуем отдельной строкой:
+    // их лиды/ЦЛ остаются в сумме кабинета и объясняются пометкой.
+    var hiddenCamps = acc.campaigns.filter(function(c){ return c.spend===0 && c.imp===0; });
+    var hiddenLeads = hiddenCamps.reduce(function(s,c){ return s+(c.leads||0); }, 0);
+    var hiddenTarget = hiddenCamps.reduce(function(s,c){ return s+(c.target||0); }, 0);
+    var accNote = '';
+    if(hiddenLeads || hiddenTarget){
+      var bits = [];
+      if(hiddenLeads) bits.push('+'+hiddenLeads+' лид.');
+      if(hiddenTarget) bits.push('+'+hiddenTarget+' ЦЛ');
+      accNote = '<span class="meta">вкл. '+bits.join(' / ')+' с клика вне периода</span>';
+    }
     h += '<tr class="row-account">'+
-      '<td><b>'+accName+'</b></td>'+
+      '<td><b>'+accName+'</b>'+accNote+'</td>'+
       '<td class="r">'+impCell+'</td><td class="r">'+fmt(acc.clicks)+'</td><td class="r">'+pct(accCtr)+'</td><td class="r">'+ (acc.clicks>0?rub(acc.spend/acc.clicks):"—") +'</td>'+
       '<td class="r">'+fmt(w.noteLeads && acc.leads===0 && acc.spend>0 ? null : acc.leads)+'</td><td class="r">'+pct((acc.leads!=null && acc.clicks>0)?acc.leads/acc.clicks*100:null)+'</td><td class="r">'+((accCpa?rub(accCpa):"—"))+'</td>'+
       '<td class="r">'+fmt(w.noteLeads && acc.target===0 && acc.spend>0 ? null : acc.target)+'</td><td class="r">'+pct((acc.target!=null && acc.leads>0)?acc.target/acc.leads*100:null)+'</td><td class="r">'+((accCpl?rub(accCpl):"—"))+'</td><td class="r">'+rub(acc.spend)+'</td>'+
       '</tr>';
 
     acc.campaigns.forEach(function(c){
+      if(c.spend===0 && c.imp===0) return; // орфан-кампании без трафика — см. accNote
       var cCtr = c.imp>0 ? c.clicks/c.imp*100 : 0;
       var cCpa = c.leads>0 ? c.spend/c.leads : null;
       var cCpl = c.target>0 ? c.spend/c.target : null;
