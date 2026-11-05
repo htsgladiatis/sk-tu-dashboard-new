@@ -1881,6 +1881,42 @@ const weeks = {
       topQueriesSpb: [],
       topQueriesMsk: []
     },
+    w20: {
+      id: "w20", label: "26.10–01.11", from: "26.10.2026", to: "01.11.2026",
+      avito: {impressions:0, views:0, contacts:0, target:0, favorites:0, items:0, spend:0.00, viewCost:0.00, contactCost:0.00},
+      impressions: 131909, clicks: 3847, spend: 204686.38, leads: 86, target: 21,
+      ctr: 2.92, cpc: 53.19, cpa: 2380.07, cpl: 9747.92,
+      noteImpressions: "Показы — только Директ (CSV): МСК без 28.10, СПБ без 31.10–01.11; Вебмастер не выгружался. Avito XLSX не предоставлен — блок Avito нулевой, досчитать",
+      accounts: {
+        "Кабинет МСК": { imp: 28050, clicks: 1687, spend: 70501.90, leads: 3, target: 0, campaigns: [
+          {name:"Каркас кат. Мастер. МСК. OK.", imp:28050, clicks:1687, spend:70501.90, leads:3, target:0}
+        ]},
+        "Кабинет СПБ": { imp: 103859, clicks: 2160, spend: 120125.48, leads: 3, target: 1, campaigns: [
+          {name:"Товарная кампания tu-dom.ru от 29.10.26 (715595895)", imp:24640, clicks:442, spend:24278.18, leads:2, target:1},
+          {name:"Каркас. Поиск. СПб. (копия) (715595976)", imp:2044, clicks:189, spend:23854.92, leads:1, target:0},
+          {name:"Каркас. Поиск. СПб. (714798187)", imp:2079, clicks:171, spend:54819.91, leads:0, target:0},
+          {name:"Товарная кампания sk-tu.ru от 27.08.26 (713907787)", imp:75096, clicks:1358, spend:17172.47, leads:0, target:0}
+        ]}
+      },
+      channels: [
+        {name:"Яндекс Директ",leads:6,target:1,spend:190627.38},
+        {name:"Avito",leads:0,target:0,spend:0.00},
+        {name:"Выставочный дом",leads:7,target:4,spend:0.00},
+        {name:"Инстаграм",leads:3,target:3,spend:0.00},
+        {name:"Вх. звонок",leads:19,target:2,spend:0.00},
+        {name:"SEO (вкл. Прямой заход)",leads:23,target:7,spend:0.00},
+        {name:"BrainHub",leads:15,target:3,spend:14059.00},
+        {name:"Прочее (VK, прочие)",leads:13,target:1,spend:0.00}
+      ],
+      seoStats: {
+        spb:{visits:6528,users:5304,bounceRate:0.33547794117647056,pageDepth:2.65625,avgDuration:133,goals:null,goalConversion:null,goalRevenue:null},
+        msk:{visits:2303,users:1734,bounceRate:0.21450282240555796,pageDepth:4.075553625705601,avgDuration:219,goals:24,goalConversion:0.012110726643598614,goalRevenue:0}
+      },
+      topPagesSpb: [],
+      topPagesMsk: [],
+      topQueriesSpb: [],
+      topQueriesMsk: []
+    }
     };
 
     /* ===========================================================
@@ -2250,8 +2286,8 @@ m2026_08: {
     }
     };
 
-    let currentWeek = "w19";
-    const weekOrder = ["w1","w2","w3","w4","w5","w6","w7","w8","w9","w10","w11","w12","w13","w14","w15","w16","w17","w18","w19"];
+    let currentWeek = "w20";
+    const weekOrder = ["w1","w2","w3","w4","w5","w6","w7","w8","w9","w10","w11","w12","w13","w14","w15","w16","w17","w18","w19","w20"];
 
 /* ===========================================================
    HELPERS
