@@ -8,7 +8,7 @@
  * current at first SW fetch — even after a fresh push lands the new file
  * on origin. Symptom: user sees OLD layout despite server already shipping NEW.
  */
-const TU_CACHE = 'tu-dash-v2-2026-11-05-w20';
+const TU_CACHE = 'tu-dash-v2-2026-11-05-m10full';
 
 self.addEventListener('install', () => {
   self.skipWaiting();
@@ -17,7 +17,7 @@ self.addEventListener('install', () => {
 self.addEventListener('activate', event => {
   event.waitUntil(
     caches.keys()
-      .then(keys => Promise.all(keys.filter(k => k !== tu-dash-v2-2026-11-05-w20
+      .then(keys => Promise.all(keys.filter(k => k !== 'tu-dash-v2-2026-11-05-m10full')))
       .then(() => self.clients.claim())
   );
 });
@@ -33,7 +33,7 @@ self.addEventListener('fetch', event => {
       .then(response => {
         if (response && response.ok) {
           const clone = response.clone();
-          caches.open(tu-dash-v2-2026-11-05-w20;
+          caches.open('tu-dash-v2-2026-11-05-m10full');
         }
         return response;
       })
