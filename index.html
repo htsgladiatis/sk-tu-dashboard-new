@@ -1920,34 +1920,34 @@ const weeks = {
     w21: {
       id: "w21", label: "02.11–08.11", from: "02.11.2026", to: "08.11.2026",
       avito: {impressions:0, views:0, contacts:0, target:0, favorites:0, items:0, spend:0.00, viewCost:0.00, contactCost:0.00},
-      impressions: 278855, clicks: 6642, spend: 284631.85, leads: 77, target: 25,
+      impressions: 278855, clicks: 6642, spend: 284631.85, leads: 77, target: 26,
       ctr: 2.38, cpc: 40.90, cpa: 11317.54, cpl: 3696.52,
-      noteImpressions: "Показы — только Директ (CSV МСК+СПБ, 02–08.11, полные дни). Вебмастера нет. Avito XLSX не предоставлен — блок нулевой. Метрика за 02–08.11 не выгружена: seoStats сняты 01.11 и покрывают предыдущую неделю. BrainHub: расход 12 970 ₽ и 9 подтверждённых лидов (Скорозвон), в CRM дотянуто 12 лидов — 3 по тегу и 9 номеров заявок, подписанных на BrainHub",
-      noteLeads: "BrainHub = 9 лидов Скорозвона + 3 сделки с тегом «BrainHub Лиды». Из «Вх. звонка» исключены 9 авто-сделок «Сделка N» (интеграция коллтрекинга отлетала, тегов нет) — они и есть номера заявок Скорозвона. 09.11 (1 лид / 1 248 ₽) — следующая неделя.",
+      noteImpressions: "Показы — только Директ (CSV МСК+СПБ, 02–08.11, полные дни). Вебмастера нет. Avito XLSX не предоставлен — блок нулевой. Метрика — полные выгрузки за 02–08.11 (МСК 898 визитов / 4 цели, СПБ 2 196); счётчик tu-dom.ru — отдельный, в seoStats не входит",
+      noteLeads: "BrainHub = 9 лидов Скорозвона + 3 сделки с тегом «BrainHub Лиды» = 12, расход 12 970 ₽. Из «Вх. звонка» исключены 9 авто-сделок «Сделка N» (интеграция коллтрекинга отлетала) — это номера заявок Скорозвона. Правило первоисточника: если у сделки есть utm (cpc/organic), она остаётся за своим каналом, тег BrainHub её не перетягивает — поэтому Виктория, Фёдоровское (cpc 715595895) ушла в Директ, а Сделка 79616516290 (cpc) и Сделка 79811275588 (organic) остались Директом и SEO. 09.11 (1 лид / 1 248 ₽) — следующая неделя.",
       accounts: {
         "Кабинет МСК": { imp: 138634, clicks: 3735, spend: 113318.85, leads: 5, target: 0, campaigns: [
           {name:"Каркас кат. Мастер. МСК. OK.", imp:138634, clicks:3735, spend:113318.85, leads:5, target:0}
         ]},
-        "Кабинет СПБ": { imp: 140221, clicks: 2907, spend: 158343.00, leads: 8, target: 4, campaigns: [
-          {name:"Товарная кампания tu-dom.ru от 29.10.26 (715595895)", imp:132389, clicks:2357, spend:67603.46, leads:3, target:2},
+        "Кабинет СПБ": { imp: 140221, clicks: 2907, spend: 158343.00, leads: 9, target: 5, campaigns: [
+          {name:"Товарная кампания tu-dom.ru от 29.10.26 (715595895)", imp:132389, clicks:2357, spend:67603.46, leads:4, target:3},
           {name:"Каркас. Поиск. СПб. (копия) (715595976)", imp:7832, clicks:550, spend:90739.54, leads:4, target:1},
           {name:"Товарная кампания sk-tu.ru от 27.08.26 (713907787, нет в Direct w21)", imp:0, clicks:0, spend:0.00, leads:0, target:0},
           {name:"Каркас. Мастер. СПБ. OK. gl. (710722754, нет в Direct w21)", imp:0, clicks:0, spend:0.00, leads:1, target:1}
         ]}
       },
       channels: [
-        {name:"Яндекс Директ",leads:13,target:4,spend:271661.85},
+        {name:"Яндекс Директ",leads:14,target:5,spend:271661.85},
         {name:"Avito",leads:0,target:0,spend:0.00},
         {name:"Выставочный дом",leads:13,target:12,spend:0.00},
         {name:"Инстаграм",leads:2,target:2,spend:0.00},
-        {name:"Вх. звонок",leads:18,target:2,spend:0.00},
+        {name:"Вх. звонок",leads:17,target:2,spend:0.00},
         {name:"SEO (вкл. Прямой заход)",leads:5,target:1,spend:0.00},
         {name:"BrainHub",leads:12,target:2,spend:12970.00},
         {name:"Прочее (VK, прочие)",leads:14,target:2,spend:0.00}
       ],
       seoStats: {
-        spb:{visits:140,users:119,bounceRate:0.39285714285714285,pageDepth:1.3428571428571427,avgDuration:54,goals:null,goalConversion:null,goalRevenue:null},
-        msk:{visits:810,users:736,bounceRate:0.1506172839506173,pageDepth:2.065432098765432,avgDuration:113,goals:0,goalConversion:0.0,goalRevenue:0}
+        spb:{visits:2196,users:1783,bounceRate:0.3087431693989071,pageDepth:3.394353369763206,avgDuration:177,goals:null,goalConversion:null,goalRevenue:null},
+        msk:{visits:898,users:636,bounceRate:0.24832962138084633,pageDepth:4.533407572383074,avgDuration:256,goals:4,goalConversion:0.00628930817610063,goalRevenue:0}
       },
       topPagesSpb: [],
       topPagesMsk: [],
