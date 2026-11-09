@@ -2705,7 +2705,9 @@ function renderDetailTable(w){
     var impCell = (acc.imp>0 ? fmt(acc.imp) : '<span class="meta">нет данных</span>');
     // Кампании без трафика в периоде (0 показов и 0 расхода) не рисуем отдельной строкой:
     // их лиды/ЦЛ остаются в сумме кабинета и объясняются пометкой.
-    var hiddenCamps = acc.campaigns.filter(function(c){ return c.spend===0 && c.imp===0; });
+    // Кампании без трафика в периоде, но с лидами/ЦЛ — рисуем отдельной строкой (см. ниже),
+    // в подпись кабинета попадают только те, где вообще нет лидов.
+    var hiddenCamps = acc.campaigns.filter(function(c){ return c.spend===0 && c.imp===0 && !(c.leads||0) && !(c.target||0); });
     var hiddenLeads = hiddenCamps.reduce(function(s,c){ return s+(c.leads||0); }, 0);
     var hiddenTarget = hiddenCamps.reduce(function(s,c){ return s+(c.target||0); }, 0);
     var accNote = '';
@@ -2723,13 +2725,20 @@ function renderDetailTable(w){
       '</tr>';
 
     acc.campaigns.forEach(function(c){
-      if(c.spend===0 && c.imp===0) return; // орфан-кампании без трафика — см. accNote
+      var noTraffic = (c.spend===0 && c.imp===0);
+      // Кампания без трафика и без лидов — не рисуем (в подписи кабинета её тоже нет).
+      if(noTraffic && !(c.leads||0) && !(c.target||0)) return;
       var cCtr = c.imp>0 ? c.clicks/c.imp*100 : 0;
       var cCpa = c.leads>0 ? c.spend/c.leads : null;
       var cCpl = c.target>0 ? c.spend/c.target : null;
       var cImpCell = (c.imp>0 ? fmt(c.imp) : '<span class="meta">—</span>');
+      // Лиды есть, показов в периоде нет: заявка пришла с клика более ранней даты.
+      var cNameCell = esc(c.name);
+      if(noTraffic && ((c.leads||0)||(c.target||0))){
+        cNameCell += ' <span class="meta">— лиды с клика вне периода, трафика в этой неделе нет</span>';
+      }
       h += '<tr class="row-campaign">'+
-        '<td style="padding-left:32px">'+esc(c.name)+'</td>'+
+        '<td style="padding-left:32px">'+cNameCell+'</td>'+
         '<td class="r">'+cImpCell+'</td><td class="r">'+fmt(c.clicks)+'</td><td class="r">'+pct(cCtr)+'</td><td class="r">'+ (c.clicks>0?rub(c.spend/c.clicks):"—") +'</td>'+
         '<td class="r">'+fmt(w.noteLeads && c.leads===0 && c.spend>0 ? null : c.leads)+'</td><td class="r">'+pct((c.leads!=null && c.clicks>0)?c.leads/c.clicks*100:null)+'</td><td class="r">'+((cCpa?rub(cCpa):"—"))+'</td>'+
         '<td class="r">'+fmt(w.noteLeads && c.target===0 && c.spend>0 ? null : c.target)+'</td><td class="r">'+pct((c.target!=null && c.leads>0)?c.target/c.leads*100:null)+'</td><td class="r">'+((cCpl?rub(cCpl):"—"))+'</td><td class="r">'+rub(c.spend)+'</td>'+
