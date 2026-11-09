@@ -8,7 +8,7 @@
  * current at first SW fetch — even after a fresh push lands the new file
  * on origin. Symptom: user sees OLD layout despite server already shipping NEW.
  */
-const TU_CACHE = 'tu-dash-v2-2026-11-05-m10full';
+const TU_CACHE = 'tu-dash-v2-2026-11-10-w21';
 
 self.addEventListener('install', () => {
   self.skipWaiting();
