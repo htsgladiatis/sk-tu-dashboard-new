@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="light">
+<head>
+<meta name="robots" content="noindex, nofollow">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>СК «Тёплый угол» · Отчёт Ноябрь 2026 · CMO L99</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+<style>
+:root{
+  --bg:#06080d; --bg-2:#0a0d15; --panel:#0f131d; --panel-2:#141a27; --panel-3:#1a2230;
+  --line:#1c2433; --line-2:#2a3447; --glass:rgba(20,26,39,.6);
+  --txt:#eaf0fa; --txt-2:#94a2bb; --txt-3:#5a6880;
+  --acc:#E18335; --acc-ink:#140a03;
+  --mint:#00e5a0; --violet:#8b5cff; --blue:#3d7dff; --cyan:#22d3ee; --amber:#ffb020;
+  --up:#26d07c; --down:#ff5a6e; --up-soft:rgba(38,208,124,.14); --down-soft:rgba(255,90,110,.14);
+  --grad-acc:linear-gradient(135deg,#f29c52,#d8721f);
+  --grad-text:linear-gradient(100deg,#eaf0fa 0%,#E18335 55%,#8b5cff 100%);
+  --grad-balance:radial-gradient(120% 140% at 0% 0%,#2a2014 0%,#0f131d 42%),linear-gradient(135deg,rgba(225,131,53,.16),rgba(139,92,255,.14));
+  --glow-acc:0 0 0 1px rgba(225,131,53,.4),0 8px 30px rgba(225,131,53,.22);
+  --elev-1:0 1px 0 rgba(255,255,255,.03) inset,0 6px 18px rgba(0,0,0,.5);
+  --elev-2:0 1px 0 rgba(255,255,255,.04) inset,0 16px 44px rgba(0,0,0,.6);
+  --r:14px; --r-sm:10px; --r-xs:7px; --maxw:1240px;
+  --ease:cubic-bezier(.22,1,.36,1);
+}
+[data-theme="light"]{
+  --bg:#f4f6fb; --bg-2:#eef1f8; --panel:#ffffff; --panel-2:#f7f9fd; --panel-3:#eef2f8;
+  --line:#e4e9f2; --line-2:#d2dae8; --glass:rgba(255,255,255,.7);
+  --txt:#0b1220; --txt-2:#48566e; --txt-3:#8493ab;
+  --acc:#E18335; --acc-ink:#ffffff; --mint:#00a877; --violet:#6d3bff; --blue:#2563eb; --cyan:#0891b2; --amber:#b8730a;
+  --up:#0c9d63; --down:#e23048; --up-soft:rgba(12,157,99,.12); --down-soft:rgba(226,48,72,.12);
+  --grad-text:linear-gradient(100deg,#0b1220 0%,#E18335 55%,#6d3bff 100%);
+  --grad-balance:radial-gradient(120% 140% at 0% 0%,#ffedd9 0%,#ffffff 46%),linear-gradient(135deg,rgba(225,131,53,.12),rgba(109,59,255,.10));
+  --glow-acc:0 0 0 1px rgba(225,131,53,.35),0 10px 30px rgba(225,131,53,.18);
+  --elev-1:0 2px 10px rgba(15,23,42,.07); --elev-2:0 16px 40px rgba(15,23,42,.12);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--txt);line-height:1.55;overflow-x:hidden;
+  transition:background .5s var(--ease),color .5s var(--ease);-webkit-font-smoothing:antialiased}
+body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
+  background-image:radial-gradient(var(--line) .6px,transparent .6px);background-size:26px 26px;opacity:.55;
+  -webkit-mask:radial-gradient(ellipse 70% 55% at 50% 0%,#000,transparent 80%);mask:radial-gradient(ellipse 70% 55% at 50% 0%,#000,transparent 80%)}
+.num{font-family:'JetBrains Mono',monospace;font-variant-numeric:tabular-nums;letter-spacing:-.02em;white-space:nowrap}
+::-webkit-scrollbar{width:10px;height:10px}::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--line-2);border-radius:6px;border:2px solid var(--bg)}
+::-webkit-scrollbar-thumb:hover{background:var(--acc)}
+.hdr{position:sticky;top:0;z-index:100;background:var(--glass);backdrop-filter:blur(16px) saturate(150%);border-bottom:1px solid var(--line)}
+.hdr-in{max-width:var(--maxw);margin:0 auto;padding:14px 24px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:12px}
+.brand-logo{height:32px;width:auto;display:block;filter:drop-shadow(0 0 6px rgba(225,131,53,.25))}
+[data-theme="light"] .brand-logo{filter:drop-shadow(0 0 4px rgba(225,131,53,.18))}
+.brand-sub{font-size:10px;color:var(--txt-3);font-family:'JetBrains Mono',monospace;letter-spacing:.12em;border-left:1px solid var(--line);padding-left:12px;text-transform:uppercase;white-space:nowrap}
+.hdr-sp{flex:1;min-width:8px}
+.dc-back{display:inline-flex;align-items:center;gap:7px;font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:500;letter-spacing:.04em;text-decoration:none;color:var(--acc);background:rgba(225,131,53,.12);border:1px solid rgba(225,131,53,.3);border-radius:10px;padding:7px 13px;transition:all .2s var(--ease);flex-shrink:0;white-space:nowrap}
+.dc-back:hover{color:var(--txt);background:rgba(225,131,53,.2);border-color:var(--acc);transform:translateY(-1px);box-shadow:0 4px 14px rgba(225,131,53,.2)}
+.dc-back .ix{font-size:11px;opacity:.7}
+.plan-chip{display:inline-flex;align-items:center;gap:8px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--txt);
+  background:var(--panel-2);border:1px solid var(--line);border-radius:11px;padding:8px 13px;white-space:nowrap}
+.plan-chip .pc-mode{color:var(--txt-3);font-size:10px;letter-spacing:.08em;text-transform:uppercase;padding-right:8px;margin-right:6px;border-right:1px solid var(--line)}
+.plan-chip b{color:var(--acc);font-weight:600}
+.tgl{width:54px;height:28px;border-radius:16px;border:1px solid var(--line-2);background:var(--panel-2);position:relative;cursor:pointer;flex-shrink:0;padding:0;border:none}
+.tgl-k{position:absolute;top:2px;left:2px;width:22px;height:22px;border-radius:50%;background:var(--panel);box-shadow:var(--elev-1);display:flex;align-items:center;justify-content:center;font-size:12px;transition:transform .4s var(--ease)}
+[data-theme="light"] .tgl-k{transform:translateX(26px)}
+@media(max-width:760px){.dc-back{padding:6px 10px;font-size:11px}.brand-sub{display:none}}
+.hero{position:relative;z-index:1;max-width:var(--maxw);margin:0 auto;padding:48px 24px 22px;display:grid;grid-template-columns:minmax(0,1fr) 400px;gap:36px;align-items:center}
+.hero-tag{display:inline-flex;align-items:center;gap:8px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--acc);padding:6px 13px;border:1px solid var(--line-2);border-radius:20px;background:var(--panel);margin-bottom:18px;white-space:nowrap}
+.hero h1{font-family:'Space Grotesk',sans-serif;font-size:clamp(28px,4.4vw,46px);font-weight:700;line-height:1.06;letter-spacing:-.02em;
+  background:var(--grad-text);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:14px}
+.hero p{font-size:14px;color:var(--txt-2);max-width:520px;margin-bottom:16px;line-height:1.6}
+.hero p b{color:var(--txt);font-weight:600}
+.hero-note{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--txt-3);line-height:1.85;display:flex;flex-wrap:wrap;gap:8px}
+.hero-note .pill{display:inline-flex;align-items:center;gap:6px;padding:3px 9px;border:1px solid var(--line);border-radius:7px;background:var(--panel-2);white-space:nowrap}
+.hero-note b{color:var(--acc);font-weight:600}
+.bal{position:relative;border:1px solid var(--line-2);border-radius:18px;padding:22px;background:var(--grad-balance);overflow:hidden;box-shadow:var(--elev-2);min-height:208px}
+.bal::after{content:'';position:absolute;inset:0;background:radial-gradient(80% 60% at 100% 0%,rgba(139,92,255,.14),transparent 60%);pointer-events:none}
+.bal-top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px;position:relative}
+.bal-label{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--txt-2);letter-spacing:.08em;text-transform:uppercase}
+.bal-chip{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--up);background:var(--up-soft);border:1px solid rgba(38,208,124,.35);padding:3px 9px;border-radius:8px;white-space:nowrap;flex-shrink:0}
+.bal-chip.down{color:var(--down);background:var(--down-soft);border-color:rgba(255,90,110,.35)}
+.bal-amt{font-family:'JetBrains Mono',monospace;font-size:34px;font-weight:700;letter-spacing:-.03em;margin:2px 0 4px;line-height:1.05;position:relative;white-space:nowrap}
+.bal-amt .cur{color:var(--txt-3);font-size:15px;font-weight:500;margin-left:6px;white-space:nowrap}
+.bal-sub{font-size:12.5px;color:var(--txt-2);margin-bottom:14px;position:relative;line-height:1.35;min-height:34px;display:flex;align-items:center}
+.bal-sub b{color:var(--txt);font-weight:600}
+.bal-foot{display:flex;justify-content:space-between;gap:10px;margin-top:10px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--txt-3);position:relative}
+.bal-foot span{white-space:nowrap}
+.bal-foot span b{color:var(--acc);font-weight:600}
+.wrap{position:relative;z-index:1;max-width:var(--maxw);margin:0 auto;padding:24px 24px 70px;display:flex;flex-direction:column;gap:22px}
+.sec{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;box-shadow:var(--elev-1)}
+.sec-h{display:flex;align-items:center;gap:13px;padding:18px 22px;border-bottom:1px solid var(--line);background:var(--panel-2)}
+.sec-ix{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;border:1px solid var(--line-2);background:var(--panel-3)}
+.sec-h .ix-hd{min-width:0;flex:0 1 auto}
+.sec-h .ix-n{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--txt-3);letter-spacing:.1em;white-space:nowrap}
+.sec-h .ix-t{font-family:'Space Grotesk',sans-serif;font-size:18px;font-weight:600;letter-spacing:-.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sec-h .ix-extra{margin-left:auto;flex-shrink:0;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--txt-3);letter-spacing:.05em;white-space:nowrap}
+@media(max-width:760px){.sec-h .ix-extra{display:none}.sec-h .ix-t{white-space:normal;font-size:16px}.sec-h .ix-n{font-size:10px}}
+.sec-b{padding:22px}
+.lead{font-size:14px;color:var(--txt-2);margin-bottom:18px;max-width:900px;line-height:1.6}
+.lead b{color:var(--txt)}
+.eyebrow{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--txt-3);margin:22px 0 12px;display:flex;align-items:center;gap:10px;white-space:nowrap}
+.eyebrow::after{content:'';flex:1;height:1px;background:var(--line)}
+.eyebrow:first-child{margin-top:0}
+.tbl-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:var(--r-sm);margin:6px 0}
+.tbl{width:100%;border-collapse:collapse;font-size:12.5px;font-variant-numeric:tabular-nums;font-feature-settings:"tnum" 1,"lnum" 1}
+.tbl th{text-align:left;font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--txt-3);
+  background:var(--panel-2);padding:10px 9px;border-bottom:1px solid var(--line);white-space:nowrap}
+.tbl td{padding:9px 9px;color:var(--txt-2);border-bottom:1px solid var(--line);vertical-align:middle;line-height:1.35}
+.tbl tr:last-child td{border-bottom:none}
+.tbl tbody tr{transition:background .15s}.tbl tbody tr:hover{background:var(--panel-2)}
+.tbl td:first-child{color:var(--txt);font-weight:500;white-space:nowrap}
+.tbl th.r,.tbl td.r{text-align:right;font-family:'JetBrains Mono',monospace;font-feature-settings:"tnum" 1,"lnum" 1;font-variant-numeric:tabular-nums;white-space:nowrap}
+.row-total td{font-weight:700;font-size:13px;border-top:2px solid var(--acc);color:var(--txt)!important;background:rgba(225,131,53,.06)}
+.row-off td{background:rgba(34,211,238,.04)}
+.row-off td:first-child{color:var(--txt-2)}
+.tbl .meta{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--txt-3);font-weight:500;margin-left:6px;padding:1px 6px;border:1px solid var(--line);border-radius:5px;background:var(--panel-2);letter-spacing:.02em;white-space:nowrap}
+.tbl .d-up{color:var(--up);font-weight:600}
+.tbl .d-down{color:var(--down);font-weight:600}
+.tbl .zero{color:var(--down);font-weight:700}
+.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:13px}
+@media(max-width:1100px){.kpi-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:520px){.kpi-grid{grid-template-columns:1fr}}
+.kpi{position:relative;border:1px solid var(--line);border-radius:13px;padding:17px;background:var(--panel-2);overflow:hidden;transition:transform .3s var(--ease),border-color .3s;display:flex;flex-direction:column;gap:6px;min-height:118px}
+.kpi:hover{transform:translateY(-3px);border-color:var(--acc)}
+.kpi .lab{font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--txt-3);letter-spacing:.06em;text-transform:uppercase;white-space:nowrap}
+.kpi .val{font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:700;letter-spacing:-.02em;line-height:1.1;color:var(--txt);white-space:nowrap}
+.kpi .val.acc{color:var(--acc)}
+.kpi .val.up{color:var(--up)}
+.kpi .val.down{color:var(--down)}
+.kpi .val.violet{color:var(--violet)}
+.kpi .dl{display:inline-flex;align-items:center;gap:5px;font-family:'JetBrains Mono',monospace;font-size:11px;padding:3px 9px;border-radius:7px;width:fit-content;margin-top:auto;white-space:nowrap}
+.kpi .dl.up{color:var(--up);background:var(--up-soft)}
+.kpi .dl.down{color:var(--down);background:var(--down-soft)}
+.kpi .dl.flat{color:var(--txt-3);background:var(--panel)}
+.kpi .dl.acc{color:var(--acc);background:rgba(225,131,53,.14)}
+.charts-3{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:14px}
+@media(max-width:760px){.charts-3{grid-template-columns:1fr}}
+.chart-card{background:var(--panel);border:1px solid var(--line);border-radius:var(--r-sm);padding:18px;box-shadow:var(--elev-1);position:relative}
+.chart-card h3{font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:600;margin-bottom:4px;color:var(--txt);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.chart-card .sub{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--txt-3);letter-spacing:.04em;margin-bottom:14px}
+.chart-card .cht{position:relative;height:250px}
+.chart-card .cht canvas{width:100%!important;height:100%!important}
+.verdict{border:1px solid rgba(225,131,53,.45);border-radius:18px;padding:24px 26px;background:var(--grad-balance);box-shadow:var(--elev-2)}
+.verdict .ft{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--acc);margin-bottom:10px;display:flex;align-items:center;gap:8px;white-space:nowrap}
+.verdict p{font-size:14.5px;color:var(--txt-2);max-width:900px;line-height:1.65;margin-bottom:12px}
+.verdict p b{color:var(--txt)}
+.verdict ul{margin:8px 0 0;padding-left:0;list-style:none;display:flex;flex-direction:column;gap:9px;max-width:920px}
+.verdict li{font-size:13.5px;color:var(--txt-2);line-height:1.55;padding-left:26px;position:relative}
+.verdict li::before{content:'▸';position:absolute;left:4px;color:var(--acc);font-weight:700}
+.verdict li b{color:var(--txt)}
+.chain{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;align-items:center}
+.chain .cstep{font-family:'JetBrains Mono',monospace;font-size:11.5px;color:var(--acc);background:rgba(225,131,53,.12);border:1px solid rgba(225,131,53,.3);border-radius:8px;padding:5px 11px;white-space:nowrap}
+.chain .carr{color:var(--txt-3);font-size:12px}
+.note{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--txt-3);line-height:1.85;margin-top:14px;padding:12px 14px;border:1px dashed var(--line-2);border-radius:var(--r-sm);background:var(--panel-2)}
+.note b{color:var(--amber);font-weight:600}
+.footer{position:relative;z-index:1;border-top:1px solid var(--line);background:var(--bg-2);margin-top:30px}
+.footer-in{max-width:var(--maxw);margin:0 auto;padding:30px 24px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--txt-3);line-height:1.9;display:flex;flex-wrap:wrap;gap:18px;justify-content:space-between;align-items:flex-start}
+.footer-in b{color:var(--txt-2);font-weight:600}
+.footer-in .r{text-align:right;font-size:10.5px;line-height:1.7;max-width:520px}
+.footer-in .r b{color:var(--txt-2);font-weight:600;display:block;font-size:11.5px}
+@media(max-width:860px){.hero{grid-template-columns:1fr;padding-top:34px}.bal{order:-1}}
+@media(max-width:560px){.hero h1{font-size:29px}.wrap{padding:18px 14px 50px}.hdr-in{padding:12px 14px}.bal-amt{font-size:27px}.bal-amt .cur{font-size:12px}}
+@media print{.tgl,.plan-chip,.dc-back{display:none!important}}
+.charts-2{display:grid;grid-template-columns:repeat(auto-fit,minmax(430px,1fr));gap:14px}@media(max-width:900px){.charts-2{grid-template-columns:1fr}}.tbl.compact th,.tbl.compact td{padding:7px 8px;font-size:11.5px}.num,code.num{font-family:"JetBrains Mono",monospace;font-variant-numeric:tabular-nums;font-size:.94em;background:var(--panel-2);border:1px solid var(--line);border-radius:5px;padding:1px 5px;white-space:nowrap}.tbl tr.row-total td{font-weight:700;border-top:2px solid var(--acc);background:rgba(225,131,53,.06);color:var(--txt)!important}
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-in">
+    <div class="brand">
+      <img class="brand-logo" src="https://sk-tu.ru/local/templates/v1.0/static/img/logo-large.svg" alt="Тёплый Угол">
+      <span class="brand-sub">ОТЧЁТ · НОЯБРЬ</span>
+    </div>
+    <a class="dc-back" href="./index.html" aria-label="Вернуться к маркетинговому дашборду"><span class="ix">←</span>Дашборд</a>
+    <div class="hdr-sp"></div>
+    <span class="plan-chip"><span class="pc-mode">Месяц</span>Ноябрь 2026 · <b>ФАКТ</b> (02–22.11, 3 недели)</span>
+    <button class="tgl" id="tgl" type="button" role="switch" aria-checked="false" aria-label="Тема"><span class="tgl-k" id="tglK">☀️</span></button>
+  </div>
+</header>
+
+<section class="hero">
+  <div>
+    <span class="hero-tag">◈ Отчёт CMO L99 · факт 02–22.11 · Директ + Avito + CRM</span>
+    <h1>Ноябрь 2026 · 02–22.11</h1>
+    <p>Месяц собран как <b>сумма трёх полных недель</b> (w21 + w22 + w23) — <b>21 день</b>. В месяц <b>не входят</b> 01.11 (это ещё неделя w20) и 23–30.11 (выгрузок нет), поэтому с полными месяцами сравниваем <b>в пересчёте на день</b>.</p>
+    <div class="hero-note">
+      <span class="pill">▸ Период: 02.11–22.11.2026</span>
+      <span class="pill">▸ Расход: <b>971 139,65₽</b></span>
+      <span class="pill">▸ Лиды: <b>190</b> · ЦЛ: <b>72</b></span>
+      <span class="pill">▸ CPL: <b>5 111₽</b> · CPA: <b>13 488₽</b></span>
+    </div>
+  </div>
+  <div class="bal">
+    <div class="bal-top">
+      <span class="bal-label">Главный KPI · CPL за 21 день</span>
+      <span class="bal-chip up">▸ 5 111₽ за лид</span>
+    </div>
+    <div class="bal-amt"><span>5 111₽</span><span class="cur">за лид (CPL)</span></div>
+    <div class="bal-sub"><b>971 139,65₽</b> расхода → <b>190</b> лидов · <b>72</b> ЦЛ</div>
+    <div class="bal-foot"><span>CTR: <b>2,64%</b></span><span>CPC: <b>58,51₽</b></span><span>CPA: <b>13 488₽</b></span></div>
+  </div>
+</section>
+
+<div class="wrap">
+
+  <section class="sec" id="sec-kpi">
+    <div class="sec-h">
+      <div class="sec-ix">◈</div>
+      <div class="ix-hd">
+        <div class="ix-n">SECTION 01 · SUMMARY</div>
+        <div class="ix-t">Ключевые цифры · 21 день ноября</div>
+      </div>
+      <div class="ix-extra">02.11–22.11 · ВСЕ КАНАЛЫ</div>
+    </div>
+    <div class="sec-b">
+      <div class="kpi-grid">
+        <div class="kpi"><span class="lab">Рекламные расходы</span><span class="val acc">971 139,65₽</span><span class="dl flat">▸ Директ + Avito + BrainHub</span></div>
+        <div class="kpi"><span class="lab">Показы</span><span class="val">628 829</span><span class="dl flat">▸ Директ 628 114 + Avito 715</span></div>
+        <div class="kpi"><span class="lab">Клики</span><span class="val">16 597</span><span class="dl flat">▸ CPC 58,51₽ · CTR 2,64%</span></div>
+        <div class="kpi"><span class="lab">Лиды</span><span class="val">190</span><span class="dl flat">▸ 9,05 в день · ▼ 24,8% к октябрю</span></div>
+        <div class="kpi"><span class="lab">Целевые лиды</span><span class="val up">72</span><span class="dl up">▸ 3,43 в день · ▲ 22,2%</span></div>
+        <div class="kpi"><span class="lab">CPL</span><span class="val">5 111,26₽</span><span class="dl down">▸ ▲ 8,3% к октябрю</span></div>
+        <div class="kpi"><span class="lab">CPA (ЦЛ)</span><span class="val">13 488,05₽</span><span class="dl up">▸ ▼ 33,3% к октябрю</span></div>
+        <div class="kpi"><span class="lab">CPC</span><span class="val">58,51₽</span><span class="dl flat">▸ ▲ 60,2% к октябрю</span></div>
+      </div>
+      <p class="lead" style="margin-top:18px"><b>Пересчёт на день</b> (ноябрь: 21 день, октябрь: 31 день) — единственный честный способ сравнить неполный месяц с полным: расход <b>46 245₽/день</b> против <b>56 764₽/день</b> (▼ 18,5%); ЦЛ <b>3,43/день</b> против <b>2,81/день</b> (▲ 22,2%); лиды <b>9,05/день</b> против <b>12,03/день</b> (▼ 24,8%). Вывод: <b>ЦЛ идут быстрее и дешевле</b> (CPA 13 488₽ против 20 226₽), а общий поток лидов тоньше.</p>
+    </div>
+  </section>
+
+  <section class="sec" id="sec-math">
+    <div class="sec-h">
+      <div class="sec-ix">Σ</div>
+      <div class="ix-hd">
+        <div class="ix-n">SECTION 02 · АРИФМЕТИКА</div>
+        <div class="ix-t">Из чего сложился месяц: неделя + неделя + неделя</div>
+      </div>
+      <div class="ix-extra">ПРОВЕРЯЕТСЯ СЛОЖЕНИЕМ</div>
+    </div>
+    <div class="sec-b">
+      <p class="lead">Цифры месяца не считаются заново — они <b>складываются из трёх уже проверенных недель</b>. Любая цифра проверяется сложением строк таблицы: каждая неделя проходит <code class="num">node scripts/validate_week.js wNN</code>, месяц — <code class="num">node scripts/validate_month.js m2026_11</code>.</p>
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <thead><tr><th>Период</th><th class="r">Показы</th><th class="r">Клики</th><th class="r">CTR</th><th class="r">Расход</th><th class="r">Лиды</th><th class="r">ЦЛ</th><th class="r">CPA</th><th class="r">CPL</th></tr></thead>
+          <tbody>
+<tr><td>w21 · 02.11–08.11</td><td class="r">278 855</td><td class="r">6 642</td><td class="r">2,38%</td><td class="r">284 631,85₽</td><td class="r">78</td><td class="r">27</td><td class="r">10 542₽</td><td class="r">3 649₽</td></tr>
+<tr><td>w22 · 09.11–15.11</td><td class="r">233 245</td><td class="r">7 516</td><td class="r">3,22%</td><td class="r">322 159,28₽</td><td class="r">56</td><td class="r">25</td><td class="r">12 886₽</td><td class="r">5 753₽</td></tr>
+<tr><td>w23 · 16.11–22.11</td><td class="r">116 729</td><td class="r">2 439</td><td class="r">2,09%</td><td class="r">364 348,52₽</td><td class="r">56</td><td class="r">20</td><td class="r">18 217₽</td><td class="r">6 506₽</td></tr>
+<tr class="row-total"><td>Итого · 21 день</td><td class="r">628 829</td><td class="r">16 597</td><td class="r">2,64%</td><td class="r">971 139,65₽</td><td class="r">190</td><td class="r">72</td><td class="r">13 488₽</td><td class="r">5 111₽</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="charts-3" style="margin-top:16px">
+        <div class="chart-card"><h3>Расход: проверка</h3><div class="sub">три канала = итог</div>
+          <div class="tbl-wrap"><table class="tbl compact"><tbody>
+            <tr><td>Директ (МСК + СПБ)</td><td class="r">906 611,05₽</td></tr>
+            <tr><td>Avito (API)</td><td class="r">50 310,60₽</td></tr>
+            <tr><td>BrainHub (Скорозвон)</td><td class="r">14 218,00₽</td></tr>
+            <tr class="row-total"><td>Σ = расход месяца</td><td class="r">971 139,65₽</td></tr>
+          </tbody></table></div>
+        </div>
+        <div class="chart-card"><h3>Показы: проверка</h3><div class="sub">кабинеты + Avito</div>
+          <div class="tbl-wrap"><table class="tbl compact"><tbody>
+            <tr><td>МСК</td><td class="r">300 260</td></tr>
+            <tr><td>СПБ</td><td class="r">327 854</td></tr>
+            <tr><td>Avito</td><td class="r">715</td></tr>
+            <tr class="row-total"><td>Σ = показы месяца</td><td class="r">628 829</td></tr>
+          </tbody></table></div>
+        </div>
+        <div class="chart-card"><h3>Клики: проверка</h3><div class="sub">клики Директа + просмотры Avito</div>
+          <div class="tbl-wrap"><table class="tbl compact"><tbody>
+            <tr><td>МСК</td><td class="r">8 243</td></tr>
+            <tr><td>СПБ</td><td class="r">8 216</td></tr>
+            <tr><td>Avito</td><td class="r">138</td></tr>
+            <tr class="row-total"><td>Σ = клики месяца</td><td class="r">16 597</td></tr>
+          </tbody></table></div>
+        </div>
+      </div>
+      <div class="chart-card" style="margin-top:16px"><h3>Динамика по неделям</h3><div class="sub">расход (бары) и целевые лиды (линия)</div><div class="cht"><canvas id="chWeek"></canvas></div></div>
+    </div>
+  </section>
+
+  <section class="sec" id="sec-ch">
+    <div class="sec-h">
+      <div class="sec-ix">▦</div>
+      <div class="ix-hd">
+        <div class="ix-n">SECTION 03 · КАНАЛЫ</div>
+        <div class="ix-t">Кто дал лиды и ЦЛ за 02–22.11</div>
+      </div>
+      <div class="ix-extra">Σ 190 ЛИДОВ · 72 ЦЛ</div>
+    </div>
+    <div class="sec-b">
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <thead><tr><th>Канал</th><th class="r">Лиды</th><th class="r">ЦЛ</th><th class="r">Доля ЦЛ</th><th class="r">Расход</th><th class="r">CPL</th><th class="r">CPA</th></tr></thead>
+          <tbody>
+<tr><td>Яндекс Директ</td><td class="r">39</td><td class="r">14</td><td class="r">19,4%</td><td class="r">906 611,05₽</td><td class="r">23 246₽</td><td class="r">64 758₽</td></tr>
+<tr><td>Avito</td><td class="r">7</td><td class="r">0</td><td class="r">0,0%</td><td class="r">50 310,60₽</td><td class="r">7 187₽</td><td class="r">—</td></tr>
+<tr><td>Выставочный дом</td><td class="r">27</td><td class="r">26</td><td class="r">36,1%</td><td class="r">—</td><td class="r">—</td><td class="r">—</td></tr>
+<tr><td>Инстаграм</td><td class="r">3</td><td class="r">3</td><td class="r">4,2%</td><td class="r">—</td><td class="r">—</td><td class="r">—</td></tr>
+<tr><td>Вх. звонок</td><td class="r">51</td><td class="r">13</td><td class="r">18,1%</td><td class="r">—</td><td class="r">—</td><td class="r">—</td></tr>
+<tr><td>SEO (вкл. Прямой заход)</td><td class="r">25</td><td class="r">6</td><td class="r">8,3%</td><td class="r">—</td><td class="r">—</td><td class="r">—</td></tr>
+<tr><td>BrainHub</td><td class="r">12</td><td class="r">3</td><td class="r">4,2%</td><td class="r">14 218,00₽</td><td class="r">1 185₽</td><td class="r">4 739₽</td></tr>
+<tr><td>Прочее (VK, прочие)</td><td class="r">26</td><td class="r">7</td><td class="r">9,7%</td><td class="r">—</td><td class="r">—</td><td class="r">—</td></tr>
+<tr class="row-total"><td>Итого</td><td class="r">190</td><td class="r">72</td><td class="r">100,0%</td><td class="r">971 139,65₽</td><td class="r">5 111₽</td><td class="r">13 488₽</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="lead">Правила, без которых цифры не сходятся: <b>лиды</b> — все сделки в канале, <b>ЦЛ</b> — только целевые (тег «Целевой» или статус ≥ «Квалифицирован»); дубли (Причина отказа = «Дубль») исключены; канал определяется по <code class="num">utm</code>, а не по «Откуда узнали» (<code class="num">utm &gt; source</code>). Поэтому «Вх. звонок» — 51 лидов, а не все звонки: часть звонков пришла на рекламные utm и учтена в Директе.</p>
+      <div class="charts-3" style="margin-top:16px">
+        <div class="chart-card"><h3>ЦЛ по каналам</h3><div class="sub">штук · 02–22.11</div><div class="cht"><canvas id="chTarget"></canvas></div></div>
+        <div class="chart-card"><h3>Лиды по каналам</h3><div class="sub">штук · 02–22.11</div><div class="cht"><canvas id="chLeads"></canvas></div></div>
+        <div class="chart-card"><h3>Расход по каналам</h3><div class="sub">₽ · только платные</div><div class="cht"><canvas id="chSpend"></canvas></div></div>
+        <div class="chart-card"><h3>Визиты из поиска</h3><div class="sub">Метрика · по неделям</div><div class="tbl-wrap"><table class="tbl compact"><thead><tr><th>Неделя</th><th class="r">СПБ</th><th class="r">МСК</th></tr></thead><tbody><tr><td>w21</td><td class="r">2 196</td><td class="r">898</td></tr>
+<tr><td>w22</td><td class="r">2 618</td><td class="r">1 194</td></tr>
+<tr><td>w23</td><td class="r">2 367</td><td class="r">1 348</td></tr><tr class="row-total"><td>Σ 21 день</td><td class="r">7 181</td><td class="r">3 440</td></tr></tbody></table></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="sec-acc">
+    <div class="sec-h">
+      <div class="sec-ix">▣</div>
+      <div class="ix-hd">
+        <div class="ix-n">SECTION 04 · ДИРЕКТ</div>
+        <div class="ix-t">Кабинеты и кампании · по отдельности</div>
+      </div>
+      <div class="ix-extra">МСК 414 328₽ · СПБ 492 283₽</div>
+    </div>
+    <div class="sec-b">
+      <p class="lead">Два кабинета <b>никогда не сливаются</b>. МСК — 414 328,34₽: 300 260 показов, 8 243 кликов, 22 лидов / 6 ЦЛ, CPA 69 055₽. СПБ — 492 282,71₽: 327 854 показов, 8 216 кликов, 17 лидов / 8 ЦЛ, CPA 61 535₽. Σ по кабинетам = 906 611,05₽ — ровно канал «Яндекс Директ».</p>
+      <div class="charts-2">
+        <div class="chart-card" style="padding:0;overflow:hidden"><div style="padding:16px 18px 6px"><h3>Кабинет МСК</h3><div class="sub">w21–w23 · расход 414 328,34₽ · 22 лидов / 6 ЦЛ</div></div><div class="tbl-wrap" style="margin:6px 10px 12px"><table class="tbl compact"><thead><tr><th>Кампания</th><th class="r">Расход</th><th class="r">Клики</th><th class="r">Лиды</th><th class="r">ЦЛ</th><th class="r">CPA</th></tr></thead><tbody><tr><td>Каркас кат. Мастер. МСК. OK.</td><td class="r">249 742₽</td><td class="r">7 234</td><td class="r">14</td><td class="r">4</td><td class="r">62 435₽</td></tr>
+<tr><td>Каркас. Поиск. МСК.</td><td class="r">164 587₽</td><td class="r">1 009</td><td class="r">8</td><td class="r">2</td><td class="r">82 293₽</td></tr><tr class="row-total"><td>Σ по кабинету</td><td class="r">414 328₽</td><td class="r">8 243</td><td class="r">22</td><td class="r">6</td><td class="r">69 055₽</td></tr></tbody></table></div></div>
+        <div class="chart-card" style="padding:0;overflow:hidden"><div style="padding:16px 18px 6px"><h3>Кабинет СПБ</h3><div class="sub">w21–w23 · расход 492 282,71₽ · 17 лидов / 8 ЦЛ</div></div><div class="tbl-wrap" style="margin:6px 10px 12px"><table class="tbl compact"><thead><tr><th>Кампания</th><th class="r">Расход</th><th class="r">Клики</th><th class="r">Лиды</th><th class="r">ЦЛ</th><th class="r">CPA</th></tr></thead><tbody><tr><td>Каркас. Поиск. Спб. (копия)</td><td class="r">340 621₽</td><td class="r">1 399</td><td class="r">11</td><td class="r">5</td><td class="r">68 124₽</td></tr>
+<tr><td>Товарная кампания tu-dom.ru от 29.10.26</td><td class="r">151 662₽</td><td class="r">6 817</td><td class="r">5</td><td class="r">2</td><td class="r">75 831₽</td></tr>
+<tr><td>Товарная кампания sk-tu.ru от 27.08.26</td><td class="r">0₽</td><td class="r">0</td><td class="r">0</td><td class="r">0</td><td class="r">—</td></tr>
+<tr><td>Каркас. Мастер. СПБ. OK. gl.</td><td class="r">0₽</td><td class="r">0</td><td class="r">1</td><td class="r">1</td><td class="r">—</td></tr><tr class="row-total"><td>Σ по кабинету</td><td class="r">492 283₽</td><td class="r">8 216</td><td class="r">17</td><td class="r">8</td><td class="r">61 535₽</td></tr></tbody></table></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="sec-avito">
+    <div class="sec-h">
+      <div class="sec-ix">◈</div>
+      <div class="ix-hd">
+        <div class="ix-n">SECTION 05 · AVITO</div>
+        <div class="ix-t">Avito · впервые по API, а не по скринам</div>
+      </div>
+      <div class="ix-extra">715 ПОКАЗОВ · 7 КОНТАКТОВ</div>
+    </div>
+    <div class="sec-b">
+      <p class="lead">Данные снимаются напрямую из <code class="num">api.avito.ru/stats/v2</code> (кабинет 444246321; креды в <code class="num">market-hub/.env</code>; сборщик <code class="num">scripts/fetch_avito_stats.py</code>) и сходятся со скринами кабинета <b>до копейки</b>: расход 50 310,60₽, 7 контактов → цена контакта 7 187,23₽. Показы начались только 17.11 — до этого нули; за весь срез 01–23.11 кабинет отдал <b>59&nbsp;358,20₽</b> при 800 показах, 166 просмотрах и 8 контактах, то есть почти вся активность месяца — это неделя w23.</p>
+      <div class="kpi-grid">
+        <div class="kpi"><span class="lab">Показы</span><span class="val">715</span><span class="dl flat">▸ с 17.11</span></div>
+        <div class="kpi"><span class="lab">Просмотры</span><span class="val">138</span><span class="dl flat">▸ цена 364,57₽</span></div>
+        <div class="kpi"><span class="lab">Контакты</span><span class="val up">7</span><span class="dl up">▸ все — чаты (messenger)</span></div>
+        <div class="kpi"><span class="lab">В избранном</span><span class="val">9</span><span class="dl flat">▸ 2 объявления</span></div>
+        <div class="kpi"><span class="lab">Расход</span><span class="val acc">50 310,60₽</span><span class="dl flat">▸ продвижение + размещение</span></div>
+        <div class="kpi"><span class="lab">Цена контакта</span><span class="val">7 187,23₽</span><span class="dl flat">▸ = 50 310,60₽ / 7</span></div>
+        <div class="kpi"><span class="lab">ЦЛ с Avito</span><span class="val down">0</span><span class="dl down">▼ в CRM дошла 1 сделка, без тега ЦЛ</span></div>
+        <div class="kpi"><span class="lab">Расход кабинета 01–23.11</span><span class="val">59 358,20₽</span><span class="dl flat">▸ 800 показов · 166 просмотров</span></div>
+      </div>
+      <div class="tbl-wrap" style="margin-top:16px">
+        <table class="tbl">
+          <thead><tr><th>День</th><th class="r">Показы</th><th class="r">Просмотры</th><th class="r">Контакты</th><th class="r">Избранное</th><th class="r">Расход</th></tr></thead>
+          <tbody>
+<tr><td>16.11</td><td class="r">0</td><td class="r">0</td><td class="r">0</td><td class="r">0</td><td class="r">0,00₽</td></tr>
+<tr><td>17.11</td><td class="r">79</td><td class="r">17</td><td class="r">1</td><td class="r">1</td><td class="r">6 450,00₽</td></tr>
+<tr><td>18.11</td><td class="r">138</td><td class="r">25</td><td class="r">1</td><td class="r">4</td><td class="r">8 823,80₽</td></tr>
+<tr><td>19.11</td><td class="r">134</td><td class="r">27</td><td class="r">2</td><td class="r">2</td><td class="r">9 911,90₽</td></tr>
+<tr><td>20.11</td><td class="r">88</td><td class="r">21</td><td class="r">0</td><td class="r">0</td><td class="r">7 663,00₽</td></tr>
+<tr><td>21.11</td><td class="r">130</td><td class="r">21</td><td class="r">1</td><td class="r">1</td><td class="r">7 750,00₽</td></tr>
+<tr><td>22.11</td><td class="r">146</td><td class="r">27</td><td class="r">2</td><td class="r">1</td><td class="r">9 711,90₽</td></tr>
+            <tr class="row-total"><td>Σ 16–22.11</td><td class="r">715</td><td class="r">138</td><td class="r">7</td><td class="r">9</td><td class="r">50 310,60₽</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="lead" style="margin-top:12px"><b>Почему канал Avito — 7 лидов / 0 ЦЛ:</b> контактов в кабинете 7, а в CRM дошла <b>1</b> сделка с <code class="num">utm_campaign=avito_messenger</code>, и она не целевая. По конвенции проекта канал Avito повторяет контакты кабинета (7), а ЦЛ берутся из CRM (0). Это разные определения лида, а не ошибка сложения.</p>
+    </div>
+  </section>
+
+  <section class="sec" id="sec-gaps">
+    <div class="sec-h">
+      <div class="sec-ix">⚠</div>
+      <div class="ix-hd">
+        <div class="ix-n">SECTION 06 · ЧЕСТНО О ДЫРАХ</div>
+        <div class="ix-t">Что в этих цифрах неполное и почему</div>
+      </div>
+      <div class="ix-extra">БЕЗ ВЫГРУЗОК НЕ ЧИНИТСЯ</div>
+    </div>
+    <div class="sec-b">
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <thead><tr><th>Что</th><th>Как искажает цифру</th><th>Что нужно</th></tr></thead>
+          <tbody>
+            <tr><td>Месяц неполный</td><td>нет 01.11 (в w20) и 23–30.11 → месяц считается за <b>21 день</b>, а не за 30</td><td>выгрузки за 23–30.11; решить, тянуть ли 01.11 из w20</td></tr>
+            <tr><td>СПБ Директ без 21–22.11</td><td>в w23 выгрузка СПБ только 16–20.11 → расход/клики/показы занижены примерно на 2 дня</td><td>догрузка CSV СПБ за 21–22.11</td></tr>
+            <tr><td>Скорозвон (BrainHub)</td><td>выгрузки за w22–w23 нет: 14 218,00₽ расхода есть, лидов почти нет (12 / 3 — в основном из w21)</td><td>лист Скорозвона за 02–22.11</td></tr>
+            <tr><td>Вебмастер</td><td>недельных позиций нет — есть только срез 01.10–20.11</td><td>выгрузка «Позиции сайта» за ноябрь</td></tr>
+            <tr><td>Calltouch</td><td>13 авто-сделок «Сделка NNN» лежат во «Вх. звонке» без разметки целевых</td><td>разметка или перенос в BrainHub</td></tr>
+            <tr><td>Avito: 1 сделка из 7 контактов</td><td>ЦЛ Avito = 0 — возможно недосчёт: чаты не заносятся в CRM</td><td>регламент: каждый контакт Avito → сделка</td></tr>
+            <tr><td>Продажи и выручка</td><td>листа отдела продаж за ноябрь нет → CAC и ДРР не считаются</td><td>выгрузка «Отчет отдела продаж» за ноябрь</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="sec-src">
+    <div class="sec-h">
+      <div class="sec-ix">◈</div>
+      <div class="ix-hd">
+        <div class="ix-n">SECTION 07 · ИСТОЧНИКИ И ПРОВЕРКИ</div>
+        <div class="ix-t">Откуда взята каждая цифра</div>
+      </div>
+      <div class="ix-extra">СОБРАНО 23.11.2026</div>
+    </div>
+    <div class="sec-b">
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <thead><tr><th>Блок</th><th>Источник</th><th>Проверка</th></tr></thead>
+          <tbody>
+            <tr><td>Директ МСК / СПБ</td><td>CSV «По кампаниям» из кабинетов за 16–22.11 + закрытые недели w21–w22</td><td>Σ кампаний = Σ кабинетов; <code class="num">validate_week</code> w21–w23 — PASS</td></tr>
+            <tr><td>Avito</td><td><code class="num">api.avito.ru/stats/v2</code> + месячная выгрузка кабинета 01–23.11</td><td>7 контактов / 50 310,60₽ — со скринами кабинета 1:1</td></tr>
+            <tr><td>Лиды / ЦЛ</td><td>amoCRM, воронка «Продажи» 6912594, недельные срезы</td><td>Σ каналов = 190 лидов / 72 ЦЛ</td></tr>
+            <tr><td>Звонки</td><td>Calltouch calls-diary за 16–22.11</td><td>разметка «Сделка NNN» остаётся на владельце</td></tr>
+            <tr><td>SEO / Метрика</td><td>Метрика по доменам, недельные срезы</td><td>визиты: СПБ 7 181 + МСК 3 440 = 10 621</td></tr>
+            <tr><td>Месячный блок</td><td><code class="num">scripts/aggregate_month.js m2026_11 w21,w22,w23</code> → <code class="num">data/month_m2026_11.json</code></td><td><code class="num">validate_month m2026_11</code> — PASS</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<footer class="footer">
+  <div class="footer-in">
+    <div>
+      <b>СК «Тёплый угол» · Отчёт для собственника</b><br>
+      Яндекс.Директ + Avito + CRM + Метрика · Ноябрь 2026 (02–22.11, три полные недели) · роль CMO L99
+    </div>
+    <div class="r">
+      <b>Источники данных и периоды</b>
+      Директ: CSV МСК + СПБ по неделям w21–w23 · Avito: API 16–22.11 + выгрузка 01–23.11<br>
+      Лиды/ЦЛ: amoCRM (недельные срезы, дубли исключены) · Метрика: визиты по доменам<br>
+      Сборка 23.11.2026 · <code class="num">aggregate_month.js</code> → <code class="num">build_month_report.js</code>
+    </div>
+  </div>
+</footer>
+
+<script>
+const tgl=document.getElementById('tgl'),tglK=document.getElementById('tglK'),root=document.documentElement;
+function setTheme(t){root.setAttribute('data-theme',t);tgl.setAttribute('aria-checked',t==='light');tglK.textContent=t==='light'?'☀️':'🌙'}
+tgl.addEventListener('click',()=>setTheme(root.getAttribute('data-theme')==='light'?'dark':'light'));
+setTheme('light');
+
+const mono={family:"'JetBrains Mono',monospace"};
+const acc='#E18335',violet='#8b5cff',up='#26d07c',down='#e23048',cyan='#0891b2',line='#d2dae8',amber='#ffb020';
+Chart.defaults.font.family="'Inter',sans-serif";Chart.defaults.color='#48566e';
+const money=v=>Number(v).toLocaleString('ru-RU');
+
+new Chart(document.getElementById('chWeek'),{type:'bar',data:{labels:["w21 02.11–08.11","w22 09.11–15.11","w23 16.11–22.11"],
+  datasets:[{label:'Расход, ₽',data:[284631.85,322159.28,364348.52],backgroundColor:acc,borderRadius:8,borderSkipped:false,yAxisID:'y'},
+            {label:'Целевые лиды',data:[27,25,20],type:'line',borderColor:violet,backgroundColor:violet,tension:.35,pointRadius:5,yAxisID:'y1'}]},
+  options:{plugins:{legend:{labels:{font:mono}},tooltip:{callbacks:{label:c=>c.dataset.label+': '+(c.datasetIndex===0?money(c.parsed.y)+' ₽':c.parsed.y)}}},
+  scales:{y:{beginAtZero:true,ticks:{callback:v=>(v/1000)+'к₽',font:mono},grid:{color:'rgba(0,0,0,.05)'}},y1:{position:'right',beginAtZero:true,ticks:{font:mono},grid:{display:false}},x:{grid:{display:false},ticks:{font:{...mono,size:11}}}}}});
+
+function bars(el,labels,data,colors,noun,tickFmt){return new Chart(document.getElementById(el),{type:'bar',data:{labels,datasets:[{data,backgroundColor:colors,borderRadius:7,borderSkipped:false}]},options:{indexAxis:'y',plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>noun(c.parsed.x)}}},scales:{x:{beginAtZero:true,ticks:{font:mono,callback:tickFmt||undefined},grid:{color:'rgba(0,0,0,.05)'}},y:{grid:{display:false},ticks:{font:{...mono,size:10}}}}}})}
+const chNames=["Яндекс Директ","Avito","Выставочный дом","Инстаграм","Вх. звонок","SEO","BrainHub","Прочее (VK, прочие)"];
+bars('chTarget',chNames,[14,0,26,3,13,6,3,7],[violet,up,acc,amber,cyan,line,down,'#94a2bb'],v=>v+' ЦЛ');
+bars('chLeads',chNames,[39,7,27,3,51,25,12,26],[violet,up,acc,amber,cyan,line,down,'#94a2bb'],v=>v+' лидов');
+bars('chSpend',["Яндекс Директ","Avito","BrainHub"],[906611.05,50310.6,14218],[acc,up,down],v=>money(v)+' ₽',v=>(v/1000)+'к');
+</script>
+</body>
+</html>

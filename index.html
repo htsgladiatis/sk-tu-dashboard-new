@@ -191,7 +191,6 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
 .chart-card .badge{position:absolute;top:14px;right:14px;font-family:'JetBrains Mono',monospace;font-size:10.5px;padding:3px 9px;border-radius:7px;letter-spacing:.04em}
 .chart-card .scroll{height:240px;overflow:auto}
 
-
 /* ====== FINAL CALLOUT ====== */
 .final{border:1px solid color-mix(in srgb,var(--acc) 45%,transparent);border-radius:18px;padding:24px 26px;background:var(--grad-balance);box-shadow:var(--elev-2)}
 .final .ft{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--acc);margin-bottom:10px;display:flex;align-items:center;gap:8px}
@@ -279,6 +278,9 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
     </a>
     <a class="ca-link dc-link" href="./plan-fact-october-2026.html" aria-label="План/факт Октябрь 2026 — план из декомпозиции против факта месяца">
       <span class="ix">⚖</span>План/факт
+    </a>
+    <a class="ca-link dc-link" href="./report-november-2026.html" aria-label="Отчёт Ноябрь 2026 — месячный отчёт 02–22.11: Директ + Avito + CRM, три полные недели">
+      <span class="ix">◈</span>Отчёт Ноябрь
     </a>
     <div class="hdr-sp"></div>
     <div class="period-wrap">
@@ -2401,7 +2403,50 @@ m2026_08: {
        topQueriesSpb: [],
        topQueriesMsk: [],
        avgCheck: 11060166.67
-     }
+     },
+     m2026_11: {
+        id: "m2026_11", label: "Ноябрь 2026", from: "02.11.2026", to: "22.11.2026",
+        weeksIncluded: ["w21","w22","w23"],
+        avito: {impressions:715, views:138, contacts:7, target:0, favorites:9, items:2, spend:50310.60, viewCost:364.57, contactCost:7187.23},
+        impressions: 628829, clicks: 16597, spend: 971139.65, leads: 190, target: 72,
+        ctr: 2.64, cpc: 58.51, cpa: 13488.05, cpl: 5111.26,
+        noteLeads: "Месяц собран как сумма трёх полных недель: w21 (02–08.11) 78/27, w22 (09–15.11) 56/25, w23 (16–22.11) 56/20 → 190 лидов / 72 ЦЛ. НЕ входит: 01.11 (это w20) и 23–30.11 (не собраны) — месяц неполный, поэтому сравнивать с полными m2026_09/m2026_10 нельзя. Дубли (Причина отказа = Дубль) исключены, ЦЛ = max(тег, статус), маршрутизация utm > source. Показы/клики/расход — полные CSV Директа по неделям: МСК 300 260 / 8 243 / 414 328,34 ₽, СПБ 327 854 / 8 216 / 492 282,71 ₽ (в СПБ за w23 нет 21–22.11 — как и во всей неделе).",
+        noteAvito: "Avito по API (кабинет 444246321) за 02–22.11: активность только с 17.11 — 715 показов, 138 просмотров, 7 контактов, 9 в избранном, 50 310,60 ₽ (цена контакта 7 187,23 ₽). До 17.11 нули. В CRM дошла 1 сделка с utm_campaign=avito_messenger (не ЦЛ) → канал Avito 7/0. Полный месяц кабинета 01–23.11: 800 / 166 / 8 / 12 / 59 358,20 ₽ (23.11 вне недель).",
+
+        notePeriod: "Ноябрь 2026 собран из трёх полных недель — 02–22.11 (21 день), а не как полный календарный месяц: 01.11 входит в w20, 23–30.11 ещё не собраны. Цифры этого блока — сумма трёх недель; сравнения с Сентябрём/Октябрём здесь по абсолютным суммам, а корректное сравнение «на день» и расшифровка всех каналов — на странице «◈ Отчёт Ноябрь» (report-november-2026.html).",
+        seoStats: {
+          spb: {visits: 7181, users: 5607, bounceRate: 0.259295, pageDepth: 3.604373, avgDuration: 196, goals: null, goalConversion: null, goalRevenue: null},
+          msk: {visits: 3440, users: 2415, bounceRate: 0.192151, pageDepth: 4.650872, avgDuration: 260, goals: 10, goalConversion: 0.002907, goalRevenue: 0}
+        },
+        topPagesSpb: [],
+        topPagesMsk: [],
+        topQueriesSpb: [],
+        topQueriesMsk: [],
+        channels: [
+          {name:"Яндекс Директ",leads:39,target:14,spend:906611.05},
+          {name:"Avito",leads:7,target:0,spend:50310.60},
+          {name:"Выставочный дом",leads:27,target:26,spend:0},
+          {name:"Инстаграм",leads:3,target:3,spend:0},
+          {name:"Вх. звонок",leads:51,target:13,spend:0},
+          {name:"SEO (вкл. Прямой заход)",leads:25,target:6,spend:0},
+          {name:"BrainHub",leads:12,target:3,spend:14218},
+          {name:"Прочее (VK, прочие)",leads:26,target:7,spend:0}
+        ],
+        accounts: {
+        "Кабинет МСК": {imp:300260,clicks:8243,spend:414328.34,leads:22,target:6,
+          campaigns:[
+            {name:"Каркас кат. Мастер. МСК. OK.",imp:265426,clicks:7234,spend:249741.61,leads:14,target:4},
+            {name:"Каркас. Поиск. МСК. (115397956)",imp:34834,clicks:1009,spend:164586.73,leads:8,target:2}
+          ]},
+        "Кабинет СПБ": {imp:327854,clicks:8216,spend:492282.71,leads:17,target:8,
+          campaigns:[
+            {name:"Каркас. Поиск. Спб. (копия) (715595976)",imp:20727,clicks:1399,spend:340620.98,leads:11,target:5},
+            {name:"Товарная кампания tu-dom.ru от 29.10.26 (715595895)",imp:307127,clicks:6817,spend:151661.73,leads:5,target:2},
+            {name:"Товарная кампания sk-tu.ru от 27.08.26 (713907787)",imp:0,clicks:0,spend:0,leads:0,target:0},
+            {name:"Каркас. Мастер. СПБ. OK. gl. (710722754)",imp:0,clicks:0,spend:0,leads:1,target:1}
+          ]}
+        }
+      }
     };
 
     let currentWeek = "w23";
@@ -2548,18 +2593,28 @@ function renderAvito(w){
 function renderKPI(w){
   var prev = prevPeriod(w);
   var isMonth = !!months[w.id];
+  function daySpan(x){
+    if(!x || !x.from || !x.to) return 0;
+    function p(s){ var q=String(s).split("."); return Date.UTC(+q[2], +q[1]-1, +q[0]); }
+    var a=p(x.from), b=p(x.to); if(isNaN(a)||isNaN(b)) return 0;
+    return Math.round((b-a)/86400000)+1;
+  }
+  var dCur = isMonth ? daySpan(w) : 0;
+  var dPrev = (isMonth && prev) ? daySpan(prev) : 0;
+  function pc(v){ return (dCur && v!=null) ? v/dCur : v; }
+  function pv(v){ return (dPrev && v!=null) ? v/dPrev : v; }
   document.getElementById("kpiDescription").innerHTML = isMonth
-    ? "Месячные показатели: рекламные метрики, <b>продажи</b>, CPL и CAC. CAC = общий расход ÷ число продаж."
+    ? "Месячные показатели: рекламные метрики, <b>продажи</b>, CPL и CAC. CAC = общий расход ÷ число продаж. Дельты «vs прошлый месяц» считаются <b>на день</b> — месяцы разной длины, абсолютные суммы сравнивать нельзя."
     : "8 метрик с дельтами относительно предыдущей недели. <b>Зелёный</b> — рост показателя (для CPC/CPL/CPA рост считается ухудшением и отмечается красным). Для w1 сравнения нет (baseline).";
   if (isMonth && w.noteImpressions) {
     document.getElementById("kpiDescription").innerHTML += ' <b>*</b> CTR завышен: часть показов Директа недоступна.';
   }
   var items = (isMonth ? [
-    {label:"Показы",    value:fmt(w.impressions), prev:prev?fmt(prev.impressions):null, delta:deltaBadge(w.impressions, prev?prev.impressions:null)},
-    {label:"Клики",     value:fmt(w.clicks),      prev:prev?fmt(prev.clicks):null,      delta:deltaBadge(w.clicks,      prev?prev.clicks:null)},
-    {label:"Расход",    value:rub(w.spend),       prev:prev?rub(prev.spend):null,       delta:deltaBadge(w.spend,       prev?prev.spend:null), custom:"acc"},
-    {label:"Лиды",      value:fmt(w.leads),       prev:prev?fmt(prev.leads):null,       delta:deltaBadge(w.leads,       prev?prev.leads:null)},
-    {label:"Целевые",   value:fmt(w.target),      prev:prev?fmt(prev.target):null,      delta:deltaBadge(w.target,      prev?prev.target:null), custom:"up"},
+    {label:"Показы",    value:fmt(w.impressions), prev:prev?fmt(pv(prev.impressions)):null, delta:deltaBadge(pc(w.impressions), prev?pv(prev.impressions):null), perDay:true},
+    {label:"Клики",     value:fmt(w.clicks),      prev:prev?fmt(pv(prev.clicks)):null,      delta:deltaBadge(pc(w.clicks),      prev?pv(prev.clicks):null), perDay:true},
+    {label:"Расход",    value:rub(w.spend),       prev:prev?rub(pv(prev.spend)):null,       delta:deltaBadge(pc(w.spend),       prev?pv(prev.spend):null), custom:"acc", perDay:true},
+    {label:"Лиды",      value:fmt(w.leads),       prev:prev?fmt(pv(prev.leads)):null,       delta:deltaBadge(pc(w.leads),       prev?pv(prev.leads):null), perDay:true},
+    {label:"Целевые",   value:fmt(w.target),      prev:prev?fmt(pv(prev.target)):null,      delta:deltaBadge(pc(w.target),      prev?pv(prev.target):null), custom:"up", perDay:true},
     {label:"CTR",       value:pct(w.ctr)+(isMonth && w.noteImpressions ? "*" : ""), prev:prev?pct(prev.ctr):null, delta:deltaBadge(w.ctr, prev?prev.ctr:null)},
     {label:"Продажи",   value:w.sales==null?"—":fmt(w.sales), prev:w.sales!=null && prev && prev.sales!=null ? fmt(prev.sales):null, delta:w.sales==null ? {cls:"flat",txt:"· нет данных"} : (prev && prev.sales!=null ? deltaBadge(w.sales, prev.sales) : {cls:"flat",txt:"· факт продаж"}), custom:"up"},
     {label:"CPL",       value:rub(w.cpl),         prev:prev?rub(prev.cpl):null,         delta:deltaBadge(w.cpl,         prev?prev.cpl:null), invert:true},
@@ -2583,7 +2638,7 @@ function renderKPI(w){
       else if(cls==="down") { cls = "up"; arrow = "▲"; }
     }
     var deltaTxt = it.delta.txt.replace(/^[▲▼]\s*/,"");
-    var prevTxt = it.prev ? " vs "+it.prev : "";
+    var prevTxt = it.prev ? (" vs "+it.prev + (it.perDay ? " /день" : "")) : "";
     return '<div class="kpi">'+
       '<div class="lab">'+it.label+'</div>'+
       '<div class="val '+(it.custom||"")+'">'+it.value+'</div>'+
@@ -2891,9 +2946,18 @@ function renderSeoCharts(w){
   ["Spb","Msk"].forEach(function(s){
     var canvasId = "seoPerformanceChart"+s;
     var badgeId = (s==="Spb"?"spbMetricBadge":"mskMetricBadge");
-    var data = w.seoStats[s.toLowerCase()];
+    var data = w.seoStats && w.seoStats[s.toLowerCase()];
   var prev = prevPeriod(w);
-  var prevData = prev ? prev.seoStats[s.toLowerCase()] : null;
+  var prevData = (prev && prev.seoStats) ? prev.seoStats[s.toLowerCase()] : null;
+  if(!data){
+    if(charts["seo"+s]){ charts["seo"+s].destroy(); charts["seo"+s]=null; }
+    var pEl = document.getElementById(s==="Spb"?"seoSpbPeriod":"seoMskPeriod");
+    if(pEl) pEl.textContent = w.label+" · "+w.from+"–"+w.to;
+    var mEl = document.getElementById(s==="Spb"?"seoSpbMeta":"seoMskMeta");
+    if(mEl) mEl.textContent = "Метрика за этот период не агрегирована";
+    updateSeoBadge(badgeId, null, null);
+    return;
+  }
     var periodEl = document.getElementById(s==="Spb"?"seoSpbPeriod":"seoMskPeriod");
     if(periodEl) periodEl.textContent = w.label+" · "+w.from+"–"+w.to;
     var metaEl = document.getElementById(s==="Spb"?"seoSpbMeta":"seoMskMeta");
@@ -3018,10 +3082,14 @@ function renderFinal(w){
     bullets.push("ТОП-3 кампании по лидам: "+topList);
   }
   // 5) SEO
-  var seoTotal = w.seoStats.spb.visits + w.seoStats.msk.visits;
-  var mskShare = seoTotal>0 ? w.seoStats.msk.visits/seoTotal*100 : 0;
-  var periodWord = months[w.id] ? ("за месяц" + (w.noteSeo ? " (частично)" : "")) : "за неделю";
-  bullets.push("Органический трафик: <b>"+fmt(seoTotal)+"</b> визитов "+periodWord+". Доля МСК: "+mskShare.toFixed(0)+"%, СПБ: "+(100-mskShare).toFixed(0)+"%. "+(mskShare>=60?"МСК доминирует в органике — возможна переоценка SEO-стратегии СПБ.":"СПб лидирует в органике, МСК стоит подтянуть контентом."));
+  if(w.seoStats && w.seoStats.spb && w.seoStats.msk){
+    var seoTotal = w.seoStats.spb.visits + w.seoStats.msk.visits;
+    var mskShare = seoTotal>0 ? w.seoStats.msk.visits/seoTotal*100 : 0;
+    var periodWord = months[w.id] ? ("за месяц" + (w.noteSeo ? " (частично)" : "")) : "за неделю";
+    bullets.push("Органический трафик: <b>"+fmt(seoTotal)+"</b> визитов "+periodWord+". Доля МСК: "+mskShare.toFixed(0)+"%, СПБ: "+(100-mskShare).toFixed(0)+"%. "+(mskShare>=60?"МСК доминирует в органике — возможна переоценка SEO-стратегии СПБ.":"СПб лидирует в органике, МСК стоит подтянуть контентом."));
+  } else {
+    bullets.push("Органический трафик: данные Метрики за этот период не агрегированы.");
+  }
   if(w.noteSeo){
     bullets.push("<span class=\"assump\">⚠ SEO</span> "+w.noteSeo);
   }
